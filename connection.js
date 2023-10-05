@@ -9,13 +9,14 @@ const pino = require("pino")
 const { format } = require('util')
 const { exec } = require("child_process")
 
-exports.connectWA = async (start) => {
+exports.connectToNetworking = async (start) => {
     const { state, saveCreds } = await useMultiFileAuthState("session");
     const level = pino({ level: "silent"})
     const client = WAConnection({
         logger: level,
         printQRInTerminal: true,
-        browser: [ "AlexitoBot", "Firefox", "3.0.0" ],
+        browser: Browsers.macOS( "kaori", "Firefox", "3.0.0" ),
+        syncFullHistory: true,
         auth: {
             creds: state.creds,
             keys: makeCacheableSignalKeyStore(state.keys, level)
@@ -39,7 +40,7 @@ exports.connectWA = async (start) => {
                 })
             }
         } else if (connection === "open") {
-            console.log("Bot está en línea")
+            console.log("Kaori esta en red")
         }
     })
 
