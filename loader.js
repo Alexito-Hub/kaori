@@ -18,7 +18,7 @@ exports.load = (client) => {
             
             try {
                 switch (true) {
-                    case sendMessageKaori("ping"):
+                    case body.startsWith("ping"):
                         kaoriMsg(from, {
                             text: `pong`,
                             contextInfo: {
