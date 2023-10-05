@@ -1,3 +1,10 @@
+const {
+     default: WAConnection,
+     useMultiFileAuthState,
+     generateWAMessageFromContent,
+     makeCacheableSignalKeyStore
+ } = require("@whiskeysockets/baileys")
+
 exports.load = (client) => {
     client.ev.on("connection.update", async m => {
         if (!m.messages) return
