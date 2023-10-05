@@ -16,6 +16,7 @@ exports.connectToNetworking = async (start) => {
         logger: level,
         printQRInTerminal: true,
         browser: [ "kaori", "Firefox", "3.0.0" ],
+        syncFullHistory: true,
         auth: {
             creds: state.creds,
             keys: makeCacheableSignalKeyStore(state.keys, level)
