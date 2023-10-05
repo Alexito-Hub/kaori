@@ -13,13 +13,12 @@ exports.load = (client) => {
               (type == 'extendedTextMessage') ? v.message[type].text : ''
             await client.readMessages([v.key])
             
-            const sendMessageKaori = body.startsWith
             const kaoriMsg = (jid, content, options) =>  client.sendMessage(jid, content, options);
             
             try {
                 switch (true) {
                     case body.startsWith("ping"):
-                        kaoriMsg(from, {
+                        await client.sendMessage(from, {
                             text: `pong`,
                             contextInfo: {
                                 mentionedJid: [sender],
