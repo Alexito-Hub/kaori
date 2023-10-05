@@ -15,8 +15,7 @@ exports.connectToNetworking = async (start) => {
     const client = WAConnection({
         logger: level,
         printQRInTerminal: true,
-        browser: Browsers.macOS( "kaori", "Firefox", "3.0.0" ),
-        syncFullHistory: true,
+        browser: [ "kaori", "Firefox", "3.0.0" ],
         auth: {
             creds: state.creds,
             keys: makeCacheableSignalKeyStore(state.keys, level)
