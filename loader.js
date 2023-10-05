@@ -26,18 +26,7 @@ exports.load = (client) => {
                 switch (true) {
                     case body.startsWith("ping"):
                         await client.sendMessage(from, {
-                            text: `pong`,
-                            contextInfo: {
-                                mentionedJid: [sender],
-                                externalAdReply: {
-                                    title: `ᴍᴏᴄʜɪ • ᴛᴀᴋᴜ ᴍᴇᴅɪᴀ`,
-                                    body: `0 dias 0 horas 0 minutos 0 segundos`,
-                                    showAdAttribution: true,
-                                    renderLargerThumbnail: false, 
-                                    mediaType: 1, 
-                                    thumbnailUrl: 'https://telegra.ph/file/1c2c3f99dc5d010cf5435.jpg'
-                                }
-                            }
+                            text: `pong`
                         })
                     break
                 }
