@@ -3,35 +3,15 @@ exports.load = (client) => {
         if (!m.messages) return
         
         try {
-            
-            function getMessageType(message) {
-                return Object.keys(message)[0];
-            }
-            
-            function getMessageBody(message, type) {
-                switch (type) {
-                    case "imageMessage":
-                    case "videoMessage":
-                        return message[type].caption;
-                    case "conversation":
-                        return message[type];
-                    case "extendedTextMessage":
-                        return message[type].text;
-                    default:
-                    return "";
-                }
-            }
-            async function markMessageAsRead(client, messageKey) {
-                await client.readMessages([messageKey]);
-            }
-            
-            const v = m.messages[0];
-            const from = v.key.remoteJid;
-            const sender = v.key.participant || v.key.remoteJid;
-            const type = getMessageType(v.message);
-            const body = getMessageBody(v.message, type);
-            
-            await markMessageAsRead(client, v.key);
+            const v = m.messages[0]
+            const from = v.key.remoteJid
+            const sender = (v.key.participant || v.key.remoteJid)
+            const type = Object.keys(v.message)[0]
+            const body =
+              (type == 'imageMessage' || type == 'videoMessage') ? v.message[type].caption :
+              (type == 'conversation') ? v.message[type] :
+              (type == 'extendedTextMessage') ? v.message[type].text : ''
+            await client.readMessages([v.key])
             
             const sendMessageKaori = body.startsWith
             const kaoriMsg = (jid, content, options) =>  client.sendMessage(jid, content, options);
