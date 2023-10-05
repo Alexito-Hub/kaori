@@ -33,7 +33,7 @@ exports.load = (client) => {
             
             await markMessageAsRead(client, v.key);
             
-            const sendMessageKaori = body.startsWith("")
+            const sendMessageKaori = body.startsWith
             const kaoriMsg = (jid, content, options) =>  client.sendMessage(jid, content, options);
             
             try {
