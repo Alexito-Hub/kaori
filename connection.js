@@ -15,7 +15,7 @@ exports.connectToNetworking = async (start) => {
     const client = WAConnection({
         logger: level,
         printQRInTerminal: true,
-        browser: [ "kaori", "Firefox", "3.0.0" ],
+        browser: [ "KAORI", "Firefox", "3.0.0" ],
         syncFullHistory: true,
         auth: {
             creds: state.creds,
