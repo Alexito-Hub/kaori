@@ -4,6 +4,7 @@
   "description": "a whatsapp bot",
   "main": "index.js",
   "dependencies": {
+    "@whiskeysockets/baileys": "github:WhiskeySockets/Baileys",
     "asynckit": "^0.4.0",
     "atomic-sleep": "^1.0.0",
     "audio-buffer": "^5.0.0",
