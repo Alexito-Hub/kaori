@@ -8,13 +8,20 @@ const {
 const pino = require('pino')
 const { format } = require('util')
 const { exec } = require('child_process')
-const sqlite3 = require('sqlite3').verbose();
-const db = new sqlite3.Database('database.db');
+const mysql = require('mysql')
 
-const createTable = () => {
-    db.run('CREATE TABLE IF NOT EXISTS welcome_state (group_id TEXT, enabled INTEGER)');
-};
-createTable();
+const db = mysql.createConnection({
+  host: 'localhost',
+  user: 'tu_usuario',
+  password: 'tu_contraseña',
+  database: 'tu_base_de_datos'
+});
+
+db.connect((err) => {
+  if(err) throw err;
+  console.log('Conectado a la base de datos');
+});
+
 
 const start = async () => {
     const { state, saveCreds } = await useMultiFileAuthState('session')
@@ -61,27 +68,6 @@ const start = async () => {
         (type == 'extendedTextMessage') ? v.message[type].text : ''
 
         await client.readMessages([v.key])
-    
-        if (isAdmin && body.startsWith('!activarBienvenida')) {
-            // Lógica para habilitar la bienvenida
-            db.run('INSERT OR REPLACE INTO welcome_state (group_id, enabled) VALUES (?, ?)', [from, 1], (err) => {
-                if (err) {
-                    console.error('Error al habilitar la bienvenida:', err.message);
-                } else {
-                    client.sendMessage(from, '¡Mensaje de bienvenida habilitado!');
-                }
-            });
-        } else if (isAdmin && body.startsWith('!desactivarBienvenida')) {
-            // Lógica para deshabilitar la bienvenida
-            db.run('INSERT OR REPLACE INTO welcome_state (group_id, enabled) VALUES (?, ?)', [from, 0], (err) => {
-                if (err) {
-                    console.error('Error al deshabilitar la bienvenida:', err.message);
-                } else {
-                    client.sendMessage(from, '¡Mensaje de bienvenida deshabilitado!');
-                }
-            });
-        }
-
 
 
 
@@ -122,23 +108,5 @@ const start = async () => {
         }
         
     })
-    
-    client.ev.on('group-participants-update', async (event) => {
-        // ... (tu código existente)
-    
-        if (event.action === 'add' && participants.includes(client.user.jid)) {
-            db.get('SELECT enabled FROM welcome_state WHERE group_id = ?', [groupId], (err, row) => {
-                if (err) {
-                    console.error('Error al obtener el estado de bienvenida:', err.message);
-                } else {
-                    if (row && row.enabled === 1) {
-                        const welcomeMessage = '¡Bienvenido al grupo! Gracias por unirte.';
-                        client.sendMessage(groupId, welcomeMessage, MessageType.text);
-                    }
-                }
-            });
-        }
-    });
-    
 }
 start();
