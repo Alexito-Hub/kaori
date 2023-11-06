@@ -8,19 +8,16 @@ const {
 const pino = require('pino')
 const { format } = require('util')
 const { exec } = require('child_process')
-const mysql = require('mysql')
-
-const db = mysql.createConnection({
-  host: 'localhost',
-  user: 'tu_usuario',
-  password: 'tu_contraseña',
-  database: 'tu_base_de_datos'
+const MongoClient = require('mongodb').MongoClient;
+const uri = "mongodb+srv://<username>:<password>@cluster0.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+client.connect(err => {
+  const collection = client.db("test").collection("devices");
+  // perform actions on the collection object
+  client.close();
 });
 
-db.connect((err) => {
-  if(err) throw err;
-  console.log('Conectado a la base de datos');
-});
+
 
 
 const start = async () => {
