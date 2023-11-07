@@ -8,17 +8,6 @@ const {
 const pino = require('pino')
 const { format } = require('util')
 const { exec } = require('child_process')
-const MongoClient = require('mongodb').MongoClient;
-const uri = "mongodb+srv://kaori:alexito1638@cluster0.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
-const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-client.connect(err => {
-  const collection = client.db("test").collection("devices");
-  // perform actions on the collection object
-  client.close();
-});
-
-
-
 
 const start = async () => {
     const { state, saveCreds } = await useMultiFileAuthState('session')
