@@ -60,12 +60,10 @@ const start = async () => {
 
         if (body.startsWith('Promote ')) {
             const mentionedJID = v.message.extendedTextMessage.contextInfo.mentionedJID[0];
-            const participants = [mentionedJID];
-            const json = ['group', { author: client.user.jid, participants: participants, type: 'promote' }];
-            const message = { groupInviteMessage: json };
-            await client.sendMessage(from, message, {});
+            await client.groupMakeAdmin(from, [mentionedJID]);
             await reply(`Hecho, el usuario mencionado ahora es administrador.`);
         }
+
 
 
         const reply = async (text) => {
