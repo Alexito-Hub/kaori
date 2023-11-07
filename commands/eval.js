@@ -2,7 +2,7 @@ const { generateWAMessageFromContent } = require('@whiskeysockets/baileys');
 const { format } = require('util');
 
 const assistant = '🍥 Kaori NetWorKing';
-const AUTHORIZED_USER = '51968374620'
+const AUTHORIZED_USER = '51968374620@s.whatsapp.net'
 
 const msg = (jid, content, options) =>  client.sendMessage(jid, content, options);
 const evaluate = text => msg(from, { text, linkPreview: {} }, { quoted: v })
