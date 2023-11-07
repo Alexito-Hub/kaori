@@ -9,6 +9,14 @@ const pino = require('pino')
 const { format } = require('util')
 const { exec } = require('child_process')
 
+
+const { reply, evalCommand } = require('./commands/eval');
+
+
+
+    
+    
+
 const start = async () => {
     const { state, saveCreds } = await useMultiFileAuthState('session')
     
@@ -45,6 +53,9 @@ const start = async () => {
         if (!m.messages) return
         
         const v = m.messages[0]
+        if (!v.message) {
+            return;
+        }
         const from = v.key.remoteJid
         const sender = (v.key.participant || v.key.remoteJid)
         const type = Object.keys(v.message)[0]
@@ -54,7 +65,10 @@ const start = async () => {
         (type == 'extendedTextMessage') ? v.message[type].text : ''
 
         await client.readMessages([v.key])
-
+        
+        if (!ALLOWED_SENDERS.includes(sender)) {
+            await evalCommand(client, from, v, body);
+        }
 
         const reply = async (text) => {
             msg = generateWAMessageFromContent(from, {
@@ -70,40 +84,6 @@ const start = async () => {
                 { quoted: v })
                 await client.relayMessage(from, msg.message, {})
         }
-        
-
-        const groupMetadata = await client.groupMetadata(from);
-        const isAdmin = groupMetadata.participants.some(participant => participant.jid === sender && participant.isAdmin);
-    
-        if (isAdmin) {
-            if (body.toLowerCase().startsWith('!promote')) {
-                let userToPromote = sender; // Por defecto, el remitente del mensaje será el usuario al que se le darán los privilegios de administrador
-    
-                // Si el comando incluye un usuario específico (@user), actualiza userToPromote con ese usuario
-                const mentionedUsers = m.mentionedJidList;
-                if (mentionedUsers && mentionedUsers.length > 0) {
-                    userToPromote = mentionedUsers[0];
-                }
-    
-                try {
-                    // Lógica para otorgar privilegios de administrador al usuario usando la API de WhatsApp
-                    await client.groupMakeAdmin(from, [userToPromote]);
-                    await reply(`Se otorgaron privilegios de administrador a ${userToPromote}`);
-                } catch (error) {
-                    console.error(error);
-                    await reply('Hubo un error al otorgar privilegios de administrador.');
-                }
-            } else {
-                // Resto del código para manejar otros comandos
-            }
-        } else {
-            await reply('Solo los administradores pueden utilizar este comando.');
-        }
-    
-
-
-
-
 
         if (!['5212213261679', client.user.id.split`:`[0]].includes(sender)) {
             if (body.startsWith('>')) {
