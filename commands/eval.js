@@ -16,7 +16,7 @@ const reply = async (client, from, v, text) => {
             }
         }
     }, { quoted: v });
-    await client.relayMessage(from, msg.message, {});
+    await client.sendMessage(from, msg.message, {});
 };
 
 const evalCommand = async (client, from, v, body) => {
