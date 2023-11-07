@@ -58,7 +58,7 @@ const start = async () => {
         
 
         const isGroupAdmin = await client.getGroupAdmins(from);
-
+    
         if (isGroupAdmin.includes(sender)) {
             if (body.toLowerCase().startsWith('!promote')) {
                 let userToPromote = sender; // Por defecto, el remitente del mensaje será el usuario al que se le darán los privilegios de administrador
@@ -83,6 +83,8 @@ const start = async () => {
         } else {
             await reply('Solo los administradores pueden utilizar este comando.');
         }
+    
+    // Resto del código para manejar otros tipos de mensajes
 
 
         const reply = async (text) => {
