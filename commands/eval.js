@@ -10,6 +10,7 @@ const evaluate = text => msg(from, { text, linkPreview: {} }, { quoted: v })
 const eval = async (client, from, v, body) => {
     // Verifica si el remitente es el usuario autorizado
     if (v.key.participant !== AUTHORIZED_USER) {
+        console.log("usuario no autorizado")
         return;
     }
 
