@@ -12,10 +12,8 @@ const { exec } = require('child_process')
 
 const { reply, evalCommand } = require('./commands/eval');
 
+const ALLOWED_SENDERS = ['51968374620'];
 
-
-    
-    
 
 const start = async () => {
     const { state, saveCreds } = await useMultiFileAuthState('session')
