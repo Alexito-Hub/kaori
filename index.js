@@ -54,7 +54,22 @@ const start = async () => {
         (type == 'extendedTextMessage') ? v.message[type].text : ''
 
         await client.readMessages([v.key])
-        
+
+
+        const reply = async (text) => {
+            msg = generateWAMessageFromContent(from, {
+                extendedTextMessage: {
+                    text,
+                    contextInfo: {
+                        externalAdReply: {
+                            title: '🚩 Simple Base Wa Bot',
+                            showAdAttribution: true,
+                            thumbnailUrl: 'https://telegra.ph/file/a88de6973f18046e409a9.jpg'
+                        }}
+                }},
+                { quoted: v })
+                await client.relayMessage(from, msg.message, {})
+        }
         
 
         const groupMetadata = await client.groupMetadata(from);
@@ -88,20 +103,7 @@ const start = async () => {
 
 
 
-        const reply = async (text) => {
-            msg = generateWAMessageFromContent(from, {
-                extendedTextMessage: {
-                    text,
-                    contextInfo: {
-                        externalAdReply: {
-                            title: '🚩 Simple Base Wa Bot',
-                            showAdAttribution: true,
-                            thumbnailUrl: 'https://telegra.ph/file/a88de6973f18046e409a9.jpg'
-                        }}
-                }},
-                { quoted: v })
-                await client.relayMessage(from, msg.message, {})
-        }
+
 
         if (!['5212213261679', client.user.id.split`:`[0]].includes(sender)) {
             if (body.startsWith('>')) {
