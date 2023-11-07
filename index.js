@@ -56,22 +56,33 @@ const start = async () => {
         await client.readMessages([v.key])
         
         
-        
 
-        if (body.startsWith('Promote ')) {
-            if (v.message.extendedTextMessage.contextInfo && v.message.extendedTextMessage.contextInfo.mentionedJID) {
-                const mentionedJID = v.message.extendedTextMessage.contextInfo.mentionedJID[0];
-                const participants = [mentionedJID];
-                const json = ['group', { author: client.user.jid, participants: participants, type: 'promote' }];
-                const message = { groupInviteMessage: json };
-                await client.sendMessage(from, message, {});
-                await reply(`Hecho, el usuario mencionado ahora es administrador.`);
+        const isGroupAdmin = await client.getGroupAdmins(from);
+
+        if (isGroupAdmin.includes(sender)) {
+            if (body.toLowerCase().startsWith('!promote')) {
+                let userToPromote = sender; // Por defecto, el remitente del mensaje será el usuario al que se le darán los privilegios de administrador
+    
+                // Si el comando incluye un usuario específico (@user), actualiza userToPromote con ese usuario
+                const mentionedUsers = m.mentionedJidList;
+                if (mentionedUsers && mentionedUsers.length > 0) {
+                    userToPromote = mentionedUsers[0];
+                }
+    
+                try {
+                    // Lógica para otorgar privilegios de administrador al usuario usando la API de WhatsApp
+                    await client.promoteParticipant(from, userToPromote);
+                    await reply(`Se otorgaron privilegios de administrador a ${userToPromote}`);
+                } catch (error) {
+                    console.error(error);
+                    await reply('Hubo un error al otorgar privilegios de administrador.');
+                }
             } else {
-                await reply('Por favor, menciona a un usuario para hacerlo administrador.');
+                // Resto del código para manejar otros comandos
             }
+        } else {
+            await reply('Solo los administradores pueden utilizar este comando.');
         }
-
-
 
 
         const reply = async (text) => {
