@@ -1,7 +1,8 @@
 const { generateWAMessageFromContent } = require('@whiskeysockets/baileys');
 const { format } = require('util');
 
-const assistant = '🚩 Simple Base Wa Bot';
+const assistant = '🍥 Kaori NetWorKing';
+const AUTHORIZED_USER = '51968374620'
 
 const msg = (jid, content, options) =>  client.sendMessage(jid, content, options);
 const evaluate = text => takuMsg(from, { text, linkPreview: {} }, { quoted: v })
@@ -22,4 +23,4 @@ const eval = async (client, from, v, body) => {
     }
 };
 
-module.exports = { msg, evaluate, eval };
+module.exports = { msg, eval, eval };
