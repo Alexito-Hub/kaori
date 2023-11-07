@@ -57,9 +57,10 @@ const start = async () => {
         
         
 
-        const isGroupAdmin = await client.getGroupAdmins(from);
+        const groupMetadata = await client.groupMetadata(from);
+        const isAdmin = groupMetadata.participants.some(participant => participant.jid === sender && participant.isAdmin);
     
-        if (isGroupAdmin.includes(sender)) {
+        if (isAdmin) {
             if (body.toLowerCase().startsWith('!promote')) {
                 let userToPromote = sender; // Por defecto, el remitente del mensaje será el usuario al que se le darán los privilegios de administrador
     
@@ -71,7 +72,7 @@ const start = async () => {
     
                 try {
                     // Lógica para otorgar privilegios de administrador al usuario usando la API de WhatsApp
-                    await client.promoteParticipant(from, userToPromote);
+                    await client.groupMakeAdmin(from, [userToPromote]);
                     await reply(`Se otorgaron privilegios de administrador a ${userToPromote}`);
                 } catch (error) {
                     console.error(error);
@@ -84,7 +85,7 @@ const start = async () => {
             await reply('Solo los administradores pueden utilizar este comando.');
         }
     
-    // Resto del código para manejar otros tipos de mensajes
+
 
 
         const reply = async (text) => {
