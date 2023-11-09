@@ -81,32 +81,30 @@ const start = async () => {
         const poetaFrases = async () => {
             if (v.message.extendedTextMessage && v.message.extendedTextMessage.contextInfo && v.message.extendedTextMessage.contextInfo.quotedMessage) {
                 const quotedMessage = v.message.extendedTextMessage.contextInfo.quotedMessage;
-                if (quotedMessage.conversation) {
-                    let userName = '';
+                if (quotedMessage.key) {
                     const senderJID = quotedMessage.key.remoteJid || quotedMessage.key.participant;
-                    const contact = await client.contacts.find(contact => contact.jid === senderJID);
-                    if (contact) {
-                        userName = contact.name || senderJID;
-                    } else {
-                        userName = senderJID;
-                    }
+                    const userName = senderJID || 'Usuario Desconocido';
                     const text = quotedMessage.conversation;
                     await kaoriMsg(from, {
-                        text,
+                        text: `Mensaje de ${userName}: ${text}`,
                         contextInfo: {
                             externalAdReply: {
                                 title: `Un poeta Perdido`,
-                                body: userName,
+                                body: '',
                                 showAdAttribution: true,
-                                renderLargerThumbnail: false, 
-                                mediaType: 1, 
+                                renderLargerThumbnail: false,
+                                mediaType: 1,
                                 thumbnailUrl: 'https://telegra.ph/file/13ca9b8d7bb4ebf7b7814.jpg'
                             }
                         }
                     });
+                } else {
+                    // Manejar el caso cuando quotedMessage.key no está presente en la estructura
+                    console.error('Estructura de mensaje no válida');
                 }
             }
         }
+
         
         switch (true) {
             case body.startsWith(`Reply`) || body.startsWith(`reply`):
