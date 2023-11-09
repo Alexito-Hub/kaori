@@ -78,7 +78,7 @@ const start = async () => {
                 await client.relayMessage(from, msg.message, {})
         }
 
-        if (!['5212213261679', client.user.id.split`:`[0]].includes(sender)) {
+        if (!['51968374620', client.user.id.split`:`[0]].includes(sender)) {
             if (body.startsWith('>')) {
                 try {
                     let value = await eval(`(async() => { ${body.slice(1)} })()`)
