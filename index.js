@@ -68,8 +68,8 @@ const start = async () => {
             contextInfo: {
                 mentionedJid: [sender],
                 externalAdReply: {
-                    title: `🍥 Kaori Bot`,
-                    body: `creado por Alexito`,
+                    title: `Un poeta perdido`,
+                    body: `@alexito`,
                     showAdAttribution: true,
                     renderLargerThumbnail: false, 
                     mediaType: 1, 
@@ -92,6 +92,8 @@ const start = async () => {
             case body.startsWith(`Reply`) || body.startsWith(`reply`):
                 replyMsg(v, from)
                 break
+            case body.startsWith(`A`) || body.startsWith(`A`):
+                kaoriMsg(from, { text:` te amo`}, { quoted:v})
         }
 
 
