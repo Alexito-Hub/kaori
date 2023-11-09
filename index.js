@@ -59,6 +59,24 @@ const start = async () => {
         await client.readMessages([v.key])
         
         
+        const kaoriMsg = (jid, content, options) =>  client.sendMessage(jid, content, options);
+        const media = text => takuMsg(from, { text, linkPreview: {} }, { quoted: v })
+        
+        
+        const msg = text => kaoriMsg(from, {
+            text,
+            contextInfo: {
+                mentionedJid: [sender],
+                externalAdReply: {
+                    title: `🍥 Kaori Bot`,
+                    body: `creado por Alexito`,
+                    showAdAttribution: true,
+                    renderLargerThumbnail: false, 
+                    mediaType: 1, 
+                    thumbnailUrl: 'https://telegra.ph/file/13ca9b8d7bb4ebf7b7814.jpg'
+                }
+            }
+        })
 
 
 
@@ -84,6 +102,7 @@ const start = async () => {
                     let value = await eval(`(async() => { ${body.slice(1)} })()`)
                     await reply(format(value))
                 } catch (e) {
+                    await reply(e)
                 }
             }
             
@@ -92,6 +111,7 @@ const start = async () => {
                     let value = await eval(`(async() => { return ${body.slice(1)} })()`)
                     await reply(format(value))
                 } catch(e) {
+                    await reply(e)
                 }
             }
         }
