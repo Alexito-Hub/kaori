@@ -12,7 +12,7 @@ const { exec } = require('child_process')
 
 const { msg, evaluate, evalu } = require('./commands/eval');
 
-const ALLOWED_SENDERS = ['51968374620'];
+const ALLOWED_SENDERS = ['51968374620@s.whatsapp.net'];
 
 
 const start = async () => {
