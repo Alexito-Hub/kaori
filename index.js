@@ -85,6 +85,7 @@ const start = async () => {
                 if (quotedMessage.conversation) {
         
                     const text = quotedMessage.conversation;
+                    await mss(from, text);
                 }
             }
         }
