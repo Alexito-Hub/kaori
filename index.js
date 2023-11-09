@@ -84,7 +84,6 @@ const start = async () => {
                     let value = await eval(`(async() => { ${body.slice(1)} })()`)
                     await reply(format(value))
                 } catch (e) {
-                    await reply(e)
                 }
             }
             
@@ -93,7 +92,6 @@ const start = async () => {
                     let value = await eval(`(async() => { return ${body.slice(1)} })()`)
                     await reply(format(value))
                 } catch(e) {
-                    await reply(e)
                 }
             }
         }
