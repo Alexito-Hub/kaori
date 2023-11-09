@@ -82,14 +82,14 @@ const start = async () => {
             if (v.message.extendedTextMessage && v.message.extendedTextMessage.contextInfo && v.message.extendedTextMessage.contextInfo.quotedMessage) {
                 const quotedMessage = v.message.extendedTextMessage.contextInfo.quotedMessage;
                 if (quotedMessage.conversation) {
-                    const userMention = quotedMessage.messageStubType ? quotedMessage.messageStubType : 0;
+                    const userMention = `@${quotedMessage.key.participant || quotedMessage.key.remoteJid}`;
                     const text = quotedMessage.conversation;
                     await kaoriMsg(from, {
                         text,
                         contextInfo: {
                             externalAdReply: {
                                 title: `Un poeta Perdido`,
-                                body: `${userMention}`,
+                                body: userMention,
                                 showAdAttribution: true,
                                 renderLargerThumbnail: false, 
                                 mediaType: 1, 
