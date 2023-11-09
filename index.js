@@ -81,29 +81,33 @@ const start = async () => {
         const poetaFrases = async () => {
             if (v.message.extendedTextMessage && v.message.extendedTextMessage.contextInfo && v.message.extendedTextMessage.contextInfo.quotedMessage) {
                 const quotedMessage = v.message.extendedTextMessage.contextInfo.quotedMessage;
-                if (quotedMessage.key) {
+                let userName = 'Usuario Desconocido';
+        
+                if (quotedMessage.key && (quotedMessage.key.remoteJid || quotedMessage.key.participant)) {
                     const senderJID = quotedMessage.key.remoteJid || quotedMessage.key.participant;
-                    const userName = senderJID || 'Usuario Desconocido';
-                    const text = quotedMessage.conversation;
-                    await kaoriMsg(from, {
-                        text: `Mensaje de ${userName}: ${text}`,
-                        contextInfo: {
-                            externalAdReply: {
-                                title: `Un poeta Perdido`,
-                                body: '',
-                                showAdAttribution: true,
-                                renderLargerThumbnail: false,
-                                mediaType: 1,
-                                thumbnailUrl: 'https://telegra.ph/file/13ca9b8d7bb4ebf7b7814.jpg'
-                            }
-                        }
-                    });
-                } else {
-                    // Manejar el caso cuando quotedMessage.key no está presente en la estructura
-                    console.error('Estructura de mensaje no válida');
+                    const contact = await client.contacts.find(contact => contact.jid === senderJID);
+                    if (contact) {
+                        userName = contact.name || senderJID;
+                    }
                 }
+        
+                const text = quotedMessage.conversation;
+                await kaoriMsg(from, {
+                    text: text,
+                    contextInfo: {
+                        externalAdReply: {
+                            title: `Un poeta Perdido`,
+                            body: userName,
+                            showAdAttribution: true,
+                            renderLargerThumbnail: false,
+                            mediaType: 1,
+                            thumbnailUrl: 'https://telegra.ph/file/13ca9b8d7bb4ebf7b7814.jpg'
+                        }
+                    }
+                });
             }
         }
+
 
         
         switch (true) {
