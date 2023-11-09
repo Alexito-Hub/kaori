@@ -90,7 +90,7 @@ const start = async () => {
         
         switch (true) {
             case body.startsWith(`Reply`) || body.startsWith(`reply`):
-                await replyMsg(v, from)
+                replyMsg(v, from)
                 break
         }
 
