@@ -82,7 +82,10 @@ const start = async () => {
             if (v.message.extendedTextMessage && v.message.extendedTextMessage.contextInfo && v.message.extendedTextMessage.contextInfo.quotedMessage) {
                 const quotedMessage = v.message.extendedTextMessage.contextInfo.quotedMessage;
                 if (quotedMessage.conversation) {
-                    const userMention = `@${quotedMessage.key.participant || quotedMessage.key.remoteJid}`;
+                    let userMention = '';
+                    if (quotedMessage.key && (quotedMessage.key.participant || quotedMessage.key.remoteJid)) {
+                        userMention = `@${quotedMessage.key.participant || quotedMessage.key.remoteJid}`;
+                    }
                     const text = quotedMessage.conversation;
                     await kaoriMsg(from, {
                         text,
