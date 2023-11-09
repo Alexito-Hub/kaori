@@ -83,11 +83,13 @@ const start = async () => {
                 const quotedMessage = v.message.extendedTextMessage.contextInfo.quotedMessage;
                 let userNumber = 'Número Desconocido';
         
-                if (quotedMessage.key && (quotedMessage.key.remoteJid || quotedMessage.key.participant)) {
-                    const senderJID = quotedMessage.key.remoteJid || quotedMessage.key.participant;
-                    const phoneNumber = senderJID.split('@')[0]; // Extraer el número de teléfono
-                    const formattedPhoneNumber = phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, '$1 $2 $3'); // Formatear el número con espacios
-                    userNumber = `+${formattedPhoneNumber}`;
+                if (quotedMessage.key) {
+                    let senderJID = quotedMessage.key.remoteJid || quotedMessage.key.participant || '';
+                    if (senderJID.includes('@s.whatsapp.net')) {
+                        // Formatear el número si es un número de teléfono válido
+                        senderJID = `+${senderJID.split('@')[0]}`;
+                        userNumber = senderJID.replace(/(\d{2})(\d{4})(\d{4})/, '+$1 $2 $3');
+                    }
                 }
         
                 const text = quotedMessage.conversation;
