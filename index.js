@@ -69,7 +69,7 @@ const start = async () => {
                     text,
                     contextInfo: {
                         externalAdReply: {
-                            title: '🚩 Simple Base Wa Bot',
+                            title: '🍥 Kaori Bot',
                             showAdAttribution: true,
                             thumbnailUrl: 'https://telegra.ph/file/a88de6973f18046e409a9.jpg'
                         }}
