@@ -81,35 +81,28 @@ const start = async () => {
         const poetaFrases = async () => {
             if (v.message.extendedTextMessage && v.message.extendedTextMessage.contextInfo && v.message.extendedTextMessage.contextInfo.quotedMessage) {
                 const quotedMessage = v.message.extendedTextMessage.contextInfo.quotedMessage;
-                let userNumber = 'Número Desconocido';
         
-                if (quotedMessage.key) {
-                    let senderJID = quotedMessage.key.remoteJid || quotedMessage.key.participant || '';
-                    if (senderJID.includes('@s.whatsapp.net')) {
-                        // Formatear el número si es un número de teléfono válido
-                        senderJID = `+${senderJID.split('@')[0]}`;
-                        userNumber = senderJID.replace(/(\d{2})(\d{4})(\d{4})/, '+$1 $2 $3');
-                    }
-                }
+                // Obtiene el número del usuario del mensaje citado
+                const userNumber = quotedMessage.key.participant || quotedMessage.key.remoteJid;
         
-                const text = quotedMessage.conversation;
-                await kaoriMsg(from, {
-                    text: text,
-                    contextInfo: {
-                        externalAdReply: {
-                            title: `Un poeta Perdido`,
-                            body: userNumber,
-                            showAdAttribution: true,
-                            renderLargerThumbnail: false,
-                            mediaType: 1,
-                            thumbnailUrl: 'https://telegra.ph/file/13ca9b8d7bb4ebf7b7814.jpg'
+                if (quotedMessage.conversation) {
+                    const text = quotedMessage.conversation;
+                    await kaoriMsg(from, {
+                        text,
+                        contextInfo: {
+                            externalAdReply: {
+                                title: `Un poeta Perdido`,
+                                body: userNumber,
+                                showAdAttribution: true,
+                                renderLargerThumbnail: false, 
+                                mediaType: 1, 
+                                thumbnailUrl: 'https://telegra.ph/file/13ca9b8d7bb4ebf7b7814.jpg'
+                            }
                         }
-                    }
-                });
+                    });
+                }
             }
         }
-
-
 
         
         switch (true) {
