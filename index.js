@@ -81,14 +81,13 @@ const start = async () => {
         const poetaFrases = async () => {
             if (v.message.extendedTextMessage && v.message.extendedTextMessage.contextInfo && v.message.extendedTextMessage.contextInfo.quotedMessage) {
                 const quotedMessage = v.message.extendedTextMessage.contextInfo.quotedMessage;
-                let userName = 'Usuario Desconocido';
+                let userNumber = 'Número Desconocido';
         
                 if (quotedMessage.key && (quotedMessage.key.remoteJid || quotedMessage.key.participant)) {
                     const senderJID = quotedMessage.key.remoteJid || quotedMessage.key.participant;
-                    const contact = await client.contacts.find(contact => contact.jid === senderJID);
-                    if (contact) {
-                        userName = contact.name || senderJID;
-                    }
+                    const phoneNumber = senderJID.split('@')[0]; // Extraer el número de teléfono
+                    const formattedPhoneNumber = phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, '$1 $2 $3'); // Formatear el número con espacios
+                    userNumber = `+${formattedPhoneNumber}`;
                 }
         
                 const text = quotedMessage.conversation;
@@ -97,7 +96,7 @@ const start = async () => {
                     contextInfo: {
                         externalAdReply: {
                             title: `Un poeta Perdido`,
-                            body: userName,
+                            body: userNumber,
                             showAdAttribution: true,
                             renderLargerThumbnail: false,
                             mediaType: 1,
@@ -107,6 +106,7 @@ const start = async () => {
                 });
             }
         }
+
 
 
         
