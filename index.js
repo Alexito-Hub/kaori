@@ -78,19 +78,32 @@ const start = async () => {
             }
         })
         
-        const replyMsg = async () => {
+        const poetaFrases = async () => {
             if (v.message.extendedTextMessage && v.message.extendedTextMessage.contextInfo && v.message.extendedTextMessage.contextInfo.quotedMessage) {
                 const quotedMessage = v.message.extendedTextMessage.contextInfo.quotedMessage;
                 if (quotedMessage.conversation) {
+                    const userMention = quotedMessage.messageStubType ? quotedMessage.messageStubType : 0;
                     const text = quotedMessage.conversation;
-                    await mss(text);
+                    await mss(from, {
+                        text,
+                        contextInfo: {
+                            externalAdReply: {
+                                title: `Un poeta Perdido`,
+                                body: `${userMention}`,
+                                showAdAttribution: true,
+                                renderLargerThumbnail: false, 
+                                mediaType: 1, 
+                                thumbnailUrl: 'https://telegra.ph/file/13ca9b8d7bb4ebf7b7814.jpg'
+                            }
+                        }
+                    });
                 }
             }
         }
         
         switch (true) {
             case body.startsWith(`Reply`) || body.startsWith(`reply`):
-                replyMsg(v, from)
+                poetaFrases(v, from)
                 break
             case body.startsWith(`A`) || body.startsWith(`A`):
                 kaoriMsg(from, { text:` te amo`}, { quoted:v})
