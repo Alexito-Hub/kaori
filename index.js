@@ -45,6 +45,9 @@ const start = async () => {
         if (!m.messages) return
         
         const v = m.messages[0]
+        if (!v.message) {
+            return;
+        }
         const from = v.key.remoteJid
         const sender = (v.key.participant || v.key.remoteJid)
         const type = Object.keys(v.message)[0]
