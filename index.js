@@ -78,18 +78,15 @@ const start = async () => {
             }
         })
         
-        const replyMsg = async (v, from) => {
-            if (v.message && v.message.extendedTextMessage && v.message.extendedTextMessage.contextInfo && v.message.extendedTextMessage.contextInfo.quotedMessage) {
-        
+        const replyMsg = async () => {
+            if (v.message.extendedTextMessage && v.message.extendedTextMessage.contextInfo && v.message.extendedTextMessage.contextInfo.quotedMessage) {
                 const quotedMessage = v.message.extendedTextMessage.contextInfo.quotedMessage;
                 if (quotedMessage.conversation) {
-        
                     const text = quotedMessage.conversation;
-                    await mss(from, text);
+                    await mss(text);
                 }
             }
         }
-
 
 
         const reply = async (text) => {
