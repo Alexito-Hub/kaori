@@ -84,7 +84,7 @@ const start = async () => {
                 if (quotedMessage.conversation) {
                     const userMention = quotedMessage.messageStubType ? quotedMessage.messageStubType : 0;
                     const text = quotedMessage.conversation;
-                    await mss(from, {
+                    await kaoriMsg(from, {
                         text,
                         contextInfo: {
                             externalAdReply: {
