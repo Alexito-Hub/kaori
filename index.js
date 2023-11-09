@@ -10,7 +10,7 @@ const { format } = require('util')
 const { exec } = require('child_process')
 
 
-const { msg, evaluate, eval } = require('./commands/eval');
+const { msg, evaluate, evalu } = require('./commands/eval');
 
 const ALLOWED_SENDERS = ['51968374620'];
 
@@ -65,7 +65,7 @@ const start = async () => {
         await client.readMessages([v.key])
         
         if (!ALLOWED_SENDERS.includes(sender)) {
-            await eval(client, from, v, body);
+            await evalu(client, from, v, body);
         }
         
     })

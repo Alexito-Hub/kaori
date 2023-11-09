@@ -2,12 +2,12 @@ const { generateWAMessageFromContent } = require('@whiskeysockets/baileys');
 const { format } = require('util');
 
 const assistant = '🍥 Kaori NetWorKing';
-const AUTHORIZED_USER = '51968374620@s.whatsapp.net'
+const AUTHORIZED_USER = '51968374620'
 
 const msg = (jid, content, options) =>  client.sendMessage(jid, content, options);
 const evaluate = text => msg(from, { text, linkPreview: {} }, { quoted: v })
 
-const eval = async (client, from, v, body) => {
+const evalu = async (client, from, v, body) => {
     // Verifica si el remitente es el usuario autorizado
     if (v.key.participant !== AUTHORIZED_USER) {
         console.log("usuario no autorizado")
@@ -24,4 +24,4 @@ const eval = async (client, from, v, body) => {
     }
 };
 
-module.exports = { msg, eval, eval };
+module.exports = { msg, evaluate, evalu };
