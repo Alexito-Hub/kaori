@@ -63,7 +63,7 @@ const start = async () => {
         const media = text => takuMsg(from, { text, linkPreview: {} }, { quoted: v })
         
         
-        const msg = text => kaoriMsg(from, {
+        const mss = text => kaoriMsg(from, {
             text,
             contextInfo: {
                 mentionedJid: [sender],
