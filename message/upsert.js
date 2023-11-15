@@ -43,7 +43,8 @@ module.exports = async(sock, m, store) => {
 
         for (const file of commandFiles) {
           const command = require(path.join(__dirname, 'commands', file));
-    
+          commands.push(command);
+          
           const allAliases = [command.name, ...(command.aliases || [])];
           if (allAliases.includes(command)) {
             // Ejecuta el comando correspondiente
@@ -51,7 +52,11 @@ module.exports = async(sock, m, store) => {
             return;
           }
         }
-		
+        function getCommandInfo(commandName) {
+          return commands.find(cmd => cmd.name === commandName || (cmd.aliases && cmd.aliases.includes(commandName)));
+        }
+        
+        
 		switch (command) {
 case 'Menu':
     break;
