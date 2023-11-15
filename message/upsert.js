@@ -40,8 +40,6 @@ module.exports = async(sock, m, store) => {
 		    case 'ping':
 		        v.reply('pong')
 		        break
-		        default:
-		        v.reply('code error')
 		}
 		
 		switch (command) {
