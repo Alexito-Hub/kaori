@@ -40,10 +40,22 @@ module.exports = async(sock, m, store) => {
 		const isQuotedSticker = m.quoted ? (m.quoted.type === 'stickerMessage') : false
 		const isQuotedAudio = m.quoted ? (m.quoted.type === 'audioMessage') : false
 		
-		switch (command) {
-		    case 'ping':
-		        v.reply('pong')
-		        break
+		switch (commans) {
+case 'help':
+    const helpMessage = 'Lista de comandos disponibles:';
+    const helpOptions = [{
+      buttonId: 'showCommands',
+      buttonText: {
+        displayText: 'Ver Comandos',
+      },
+      type: 1,
+    }];
+
+    v.reply(helpMessage, {
+      buttons: helpOptions,
+      quoted: m,
+    });
+    break;
 		}
 		
 		switch (command) {
@@ -61,6 +73,7 @@ module.exports = async(sock, m, store) => {
 		
 	} catch (e) {
 		console.log(e)
+		v.reply('Error Metadata')
 	}
 }
 
