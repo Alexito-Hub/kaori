@@ -39,6 +39,8 @@ module.exports = async(sock, m, store) => {
 		const isQuotedSticker = m.quoted ? (m.quoted.type === 'stickerMessage') : false
 		const isQuotedAudio = m.quoted ? (m.quoted.type === 'audioMessage') : false
 		
+		const commands = [];
+		
 		const commandFiles = fs.readdirSync(path.join(__dirname, 'commands')).filter(file => file.endsWith('.js'));
 
         for (const file of commandFiles) {
