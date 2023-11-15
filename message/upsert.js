@@ -11,13 +11,12 @@ const commandFiles = fs.readdirSync(path.join(__dirname, 'commands')).filter(fil
 
 for (const file of commandFiles) {
   const command = require(path.join(__dirname, 'commands', file));
-
-  // Puedes acceder a la información del comando
-  console.log(`Nombre del comando: ${command.name}`);
-  console.log(`Descripción del comando: ${command.description}`);
-  console.log(`Aliases del comando: ${command.aliases.join(', ')}`);
-
-  // ... (Añade la lógica para manejar el comando cuando sea invocado)
+  
+  const allAliases = [command.name, ...(command.aliases || [])];
+  if (allAliases.includes(commandToExecute)) {
+    // Ejecuta el comando
+    await command.execute(sock, m);
+    break;
 }
 
 module.exports = async(sock, m, store) => {
