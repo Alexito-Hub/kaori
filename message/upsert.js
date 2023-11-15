@@ -1,10 +1,23 @@
 require('../config')
 
 const fs = require('fs')
+const path = require('path');
 const util = require('util')
 
 const { Json, removeAccents } = require('../lib/functions')
 const { client, sms } = require('../lib/simple')
+const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+
+for (const file of commandFiles) {
+  const command = require(path.join(__dirname, 'commands', file));
+
+  // Puedes acceder a la información del comando
+  console.log(`Nombre del comando: ${command.name}`);
+  console.log(`Descripción del comando: ${command.description}`);
+  console.log(`Aliases del comando: ${command.aliases.join(', ')}`);
+
+  // ... (Añade la lógica para manejar el comando cuando sea invocado)
+}
 
 module.exports = async(sock, m, store) => {
 	try {
@@ -41,21 +54,10 @@ module.exports = async(sock, m, store) => {
 		const isQuotedAudio = m.quoted ? (m.quoted.type === 'audioMessage') : false
 		
 		switch (commans) {
-case 'help':
-    const helpMessage = 'Lista de comandos disponibles:';
-    const helpOptions = [{
-      buttonId: 'showCommands',
-      buttonText: {
-        displayText: 'Ver Comandos',
-      },
-      type: 1,
-    }];
-
-    v.reply(helpMessage, {
-      buttons: helpOptions,
-      quoted: m,
-    });
+case 'Menu':
     break;
+case 'help':
+    break
 		}
 		
 		switch (command) {
@@ -73,7 +75,6 @@ case 'help':
 		
 	} catch (e) {
 		console.log(e)
-		v.reply('Error Metadata')
 	}
 }
 
