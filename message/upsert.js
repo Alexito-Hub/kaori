@@ -6,18 +6,6 @@ const util = require('util')
 
 const { Json, removeAccents } = require('../lib/functions')
 const { client, sms } = require('../lib/simple')
-const commandFiles = fs.readdirSync(path.join(__dirname, 'commands')).filter(file => file.endsWith('.js'));
-
-
-for (const file of commandFiles) {
-  const command = require(path.join(__dirname, 'commands', file));
-  
-  const allAliases = [command.name, ...(command.aliases || [])];
-  if (allAliases.includes(commandToExecute)) {
-    // Ejecuta el comando
-    await command.execute(sock, m);
-    break;
-}
 
 module.exports = async(sock, m, store) => {
 	try {
@@ -51,7 +39,20 @@ module.exports = async(sock, m, store) => {
 		const isQuotedSticker = m.quoted ? (m.quoted.type === 'stickerMessage') : false
 		const isQuotedAudio = m.quoted ? (m.quoted.type === 'audioMessage') : false
 		
-		switch (commans) {
+		const commandFiles = fs.readdirSync(path.join(__dirname, 'commands')).filter(file => file.endsWith('.js'));
+
+        for (const file of commandFiles) {
+          const command = require(path.join(__dirname, 'commands', file));
+    
+          const allAliases = [command.name, ...(command.aliases || [])];
+          if (allAliases.includes(command)) {
+            // Ejecuta el comando correspondiente
+            await command.execute(sock, m);
+            break;
+          }
+        }
+		
+		switch (command) {
 case 'Menu':
     break;
 case 'help':
