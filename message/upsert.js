@@ -6,7 +6,8 @@ const util = require('util')
 
 const { Json, removeAccents } = require('../lib/functions')
 const { client, sms } = require('../lib/simple')
-const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+const commandFiles = fs.readdirSync(path.join(__dirname, 'commands')).filter(file => file.endsWith('.js'));
+
 
 for (const file of commandFiles) {
   const command = require(path.join(__dirname, 'commands', file));
