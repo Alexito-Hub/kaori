@@ -48,7 +48,7 @@ const start = async() => {
 		messages.message = (getContentType(messages.message) === 'ephemeralMessage') ? messages.message.ephemeralMessage.message : messages.message
 		if (messages.key && messages.key.remoteJid === 'status@broadcast') return
 		
-		require('./message/upsert')(sock, messages)
+		await require('./message/upsert')(sock, messages)
 	})
 }
 
