@@ -37,6 +37,28 @@ module.exports = async(sock, m, store) => {
 		const isQuotedAudio = m.quoted ? (m.quoted.type === 'audioMessage') : false
 		
 		switch (command) {
+case 'mention':
+  if (m.isGroup) {
+    const mentionedUsers = groupMembers.map(member => member.id);
+    const mentionText = `Hey ${mentionedUsers.join(' ')}! ${q || m.body}`;
+
+    // Verificar si hay contenido multimedia adjunto
+    if (isMedia) {
+      // Enviar contenido multimedia mencionando a los usuarios
+      v.reply(mentionText, {
+        quoted: m,
+        sendMedia: true,
+        media: m.msg,
+      });
+    } else {
+      // Replicar el mensaje con menciones
+      v.reply(mentionText, { quoted: m });
+    }
+  } else {
+    v.reply('Este comando solo funciona en grupos.');
+  }
+  break
+
 			
 case 'test':
 v.reply('test')
