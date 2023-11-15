@@ -48,7 +48,7 @@ module.exports = async(sock, m, store) => {
           if (allAliases.includes(command)) {
             // Ejecuta el comando correspondiente
             await command.execute(sock, m);
-            break;
+            return;
           }
         }
 		

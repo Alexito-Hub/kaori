@@ -1,11 +1,9 @@
 // commands/test.js
-const executeTestCommand = async (sock, m) => {
-  sock.reply(m.chat, 'pruebs');
-};
-
 module.exports = {
   name: 'test',
-  description: 'prueba',
-  aliases: ['testing', 'try'],
-  execute: executeTestCommand,
+  aliases: ['t', 'testing', 'test'], // Agrega los aliases aquí
+  execute: async (sock, m) => {
+    // Lógica del comando 'test'
+    v.reply('¡Respuesta del comando test!');
+  },
 };
