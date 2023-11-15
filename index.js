@@ -111,6 +111,11 @@ const start = async () => {
                 break
             case body.startsWith(`A`) || body.startsWith(`A`):
                 kaoriMsg(from, { text:` te amo`}, { quoted:v})
+                break
+            case body.startsWith('boku'):
+                // code
+                break;
+            
         }
 
 
