@@ -39,24 +39,27 @@ module.exports = async(sock, m, store) => {
 		const isQuotedSticker = m.quoted ? (m.quoted.type === 'stickerMessage') : false
 		const isQuotedAudio = m.quoted ? (m.quoted.type === 'audioMessage') : false
 		
-		const commands = [];
-		
-		const commandFiles = fs.readdirSync(path.join(__dirname, 'commands')).filter(file => file.endsWith('.js'));
-
+        const commands = [];
+        
+        // Mueve la función getCommandInfo aquí, antes de usarla
+        function getCommandInfo(commandName) {
+          return commands.find(cmd => cmd.name === commandName || (cmd.aliases && cmd.aliases.includes(commandName)));
+        }
+        
+        const commandFiles = fs.readdirSync(path.join(__dirname, 'commands')).filter(file => file.endsWith('.js'));
+        
         for (const file of commandFiles) {
           const command = require(path.join(__dirname, 'commands', file));
           commands.push(command);
-          
+        
           const allAliases = [command.name, ...(command.aliases || [])];
-          if (allAliases.includes(command)) {
+          if (allAliases.includes(commandName)) {
             // Ejecuta el comando correspondiente
             await command.execute(sock, m);
             return;
           }
         }
-        function getCommandInfo(commandName) {
-          return commands.find(cmd => cmd.name === commandName || (cmd.aliases && cmd.aliases.includes(commandName)));
-        }
+
         
         
 		switch (command) {
