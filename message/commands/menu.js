@@ -16,8 +16,8 @@ module.exports = {
             const minutes = Math.floor((uptimeSeconds % (60 * 60)) / 60);
             const seconds = uptimeSeconds % 60;
 
-            // Utiliza sock.reply en lugar de v.reply
-            await sock.reply(m, {
+            // Utiliza v.reply en lugar de sock.reply
+            await v.reply(m, {
                 text: `*Hola @${user} 🍥*
 ᳃ "Es momento de levantarse y dar pasos largos para lograr nuestros objetivos"
 
