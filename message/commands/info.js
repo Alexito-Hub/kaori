@@ -1,22 +1,20 @@
 // commands/info.js
+
 module.exports = {
   name: 'info',
-  aliases: ['info', 'information'],
-  execute: async (sock, m, args) => {
-    // Lógica para el comando 'info'
-    if (args.length === 0) {
-      v.reply(m.chat, 'Por favor, proporciona un comando para obtener información.');
-      return;
-    }
+  aliases: [],
+  description: 'Obtiene información sobre un comando específico',
 
-    const commandName = args[0].toLowerCase();
-    const commandInfo = getCommandInfo(commandName);
+  async execute(sock, m, args) {
+    const requestedCommand = args[0];
+    const commandInfo = getCommandInfo(requestedCommand.toLowerCase());
 
     if (commandInfo) {
-      const infoMessage = `Información sobre el comando ${commandInfo.name}:\n\nAliases: ${commandInfo.aliases ? commandInfo.aliases.join(', ') : 'Ninguno'}\nDescripción: ${commandInfo.description || 'Sin descripción'}`;
+      const status = commandInfo.disabled ? 'deshabilitado' : 'habilitado';
+      const infoMessage = `Nombre: ${commandInfo.name}\nDescripción: ${commandInfo.description}\nAlias: ${commandInfo.aliases.join(', ')}\nEstado del comando: ${status}`;
       v.reply(m.chat, infoMessage);
     } else {
-      v.reply(m.chat, `No se encontró información para el comando ${commandName}.`);
+      v.reply(m.chat, `El comando ${requestedCommand} no existe.`);
     }
   },
 };
