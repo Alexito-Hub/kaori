@@ -7,17 +7,23 @@ module.exports = {
 
     async execute(sock, m) {
         const user = m.sender.split('@')[0];
+        const prefixList = global.prefix.map(p => `[ ${p} ]`).join(' / ');
+
+        const uptimeSeconds = Math.floor(process.uptime());
+        const days = Math.floor(uptimeSeconds / (24 * 60 * 60));
+        const hours = Math.floor((uptimeSeconds % (24 * 60 * 60)) / (60 * 60));
+        const minutes = Math.floor((uptimeSeconds % (60 * 60)) / 60);
 
         await v.reply(`    *Hola @${user} 🍥*
 ᳃ "Es momento de levantarse y dar pasos largos para lograr nuestros objetivos"
 
-  *Prefijo:* ${global.prefix} 
-  *Modo:* Publico
-  *Actividad:* 00.00.00
+  *Prefijo:* ${prefixList} 
+  *Modo:* Público
+  *Actividad:* ${days > 0 ? `${days}d ` : ''}${hours}h ${minutes}m
 
-Para Obtener la información de algun comando usa "Help <command>
+Para obtener información de algún comando usa "Help <command>"
 
-Comandos Disponibles:
+Comandos disponibles:
 - Test
 - Ping`, { quoted: m });
     }
