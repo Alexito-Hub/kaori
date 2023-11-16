@@ -1,6 +1,8 @@
+// commands/ping.js
+
 module.exports = {
     name: 'ping',
-    description: 'Obten el tiempo de respuesta',
+    description: 'Obtener el tiempo de respuesta',
     aliases: ['ping', 'ms'],
     
     async execute(sock, m, args) {
@@ -16,22 +18,21 @@ module.exports = {
         }
         
         const responseMs = Date.now();
-        const responseTime = roundTime(responseMs - v.messageTimestamp * 1000);
+        const responseTime = roundTime(responseMs - m.messageTimestamp * 1000);
         const formattedResponseTime = (responseTime / 1000).toFixed(3);
-       
         
-        v.reply(v, {
+        await sock.reply(m.chat, {
             text: `*Tiempo de respuesta:* ${formattedResponseTime} ms`,
             contextInfo: {
                 externalAdReply: {
                     title: `Kaori`,
-                    body: `${days} dias ${hours} horas ${minutes} minutos ${seconds} segundos`,
+                    body: `${days} días ${hours} horas ${minutes} minutos ${seconds} segundos`,
                     showAdAttribution: true,
                     renderLargerThumbnail: false, 
                     mediaType: 1, 
                     thumbnailUrl: 'https://telegra.ph/file/ae78c6675b0f413a5c635.jpg'
                 }
             }
-        }, { quoted: m})
+        }, { quoted: m });
     }
-}
+};
