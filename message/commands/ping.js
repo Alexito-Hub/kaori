@@ -11,6 +11,6 @@ module.exports = {
         const responseTime = (endTime - startTime) / 1000; // Convertir a segundos
         const formattedResponseTime = responseTime.toFixed(3); // Redondear a 3 decimales
         
-        v.reply(m.chat, `Tiempo de respuesta: ${formattedResponseTime} s`, { quoted: m });
+        v.reply(`Tiempo de respuesta: ${formattedResponseTime} s`, { quoted: m });
     }
 };
