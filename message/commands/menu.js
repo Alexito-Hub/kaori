@@ -17,7 +17,7 @@ module.exports = {
             const seconds = uptimeSeconds % 60;
 
             // Utiliza m.reply en lugar de sock.reply
-            await m.reply({
+            await sock.sendMessage(m.chat, {
                 text: `*Hola @${user} 🍥*
 ᳃ "Es momento de levantarse y dar pasos largos para lograr nuestros objetivos"
 
