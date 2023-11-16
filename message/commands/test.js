@@ -2,7 +2,7 @@
 
 module.exports = {
   name: 'test',
-  aliases: ['testing'],
+  aliases: ['testing', 'test'],
   description: 'Comando de prueba',
 
   async execute(sock, m, args) {
