@@ -6,17 +6,19 @@ module.exports = {
     aliases: ['help', 'commands'],
 
     async execute(sock, m) {
-        const user = m.sender.split('@')[0];
-        const prefixList = global.prefix.map(p => `[ ${p} ]`).join(' ');
+        try {
+            const user = m.sender.split('@')[0];
+            const prefixList = global.prefix.map(p => `[ ${p} ]`).join(' ');
 
-        const uptimeSeconds = Math.floor(process.uptime());
-        const days = Math.floor(uptimeSeconds / (24 * 60 * 60));
-        const hours = Math.floor((uptimeSeconds % (24 * 60 * 60)) / (60 * 60));
-        const minutes = Math.floor((uptimeSeconds % (60 * 60)) / 60);
-        const seconds = uptimeSeconds % 60;
+            const uptimeSeconds = Math.floor(process.uptime());
+            const days = Math.floor(uptimeSeconds / (24 * 60 * 60));
+            const hours = Math.floor((uptimeSeconds % (24 * 60 * 60)) / (60 * 60));
+            const minutes = Math.floor((uptimeSeconds % (60 * 60)) / 60);
+            const seconds = uptimeSeconds % 60;
 
-        await v.reply(m, {
-            text: `*Hola @${user} 🍥*
+            // Utiliza sock.reply en lugar de v.reply
+            await sock.reply(m, {
+                text: `*Hola @${user} 🍥*
 ᳃ "Es momento de levantarse y dar pasos largos para lograr nuestros objetivos"
 
 *Prefijo:* ${prefixList} 
@@ -28,17 +30,20 @@ Para obtener información de algún comando usa "Help <command>"
 Comandos disponibles:
 - Test
 - Ping`,
-            contextInfo: {
-                mentionedJid: [m.sender],
-                externalAdReply: {
-                    title: `Kaori 🍥`,
-                    body: `por @alexito`,
-                    showAdAttribution: true,
-                    renderLargerThumbnail: false,
-                    mediaType: 1,
-                    thumbnailUrl: 'https://telegra.ph/file/ae78c6675b0f413a5c635.jpg'
+                contextInfo: {
+                    mentionedJid: [m.sender],
+                    externalAdReply: {
+                        title: `Kaori 🍥`,
+                        body: `por @alexito`,
+                        showAdAttribution: true,
+                        renderLargerThumbnail: false,
+                        mediaType: 1,
+                        thumbnailUrl: 'https://telegra.ph/file/ae78c6675b0f413a5c635.jpg'
+                    }
                 }
-            }
-        });
+            });
+        } catch (error) {
+            console.error('Error en la ejecución del comando menu:', error);
+        }
     }
 };
