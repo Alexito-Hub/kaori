@@ -8,8 +8,17 @@ module.exports = {
     async execute(sock, m) {
         const user = m.sender.split('@')[0];
 
-        const menuText = `Hola @${user}.\n{Una frase del día}\nPrefijo {....}\nModo {público}\nActividad {tiempo de actividad del bot}\n\nComandos disponibles:\n- Tester\n- Ping`;
+        await v.reply(`    *Hola @${user} 🍥*
+᳃ "Es momento de levantarse y dar pasos largos para lograr nuestros objetivos"
 
-        await v.reply(menuText, { quoted: m });
+  *Prefijo:* ${global.prefix} 
+  *Modo:* Publico
+  *Actividad:* 00.00.00
+
+Para Obtener la información de algun comando usa "Help <command>
+
+Comandos Disponibles:
+- Test
+- Ping`, { quoted: m });
     }
 };
