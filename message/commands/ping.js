@@ -16,16 +16,15 @@ module.exports = {
         v.reply(v, {
             text: `*Tiempo de respuesta:* ${formattedResponseTime} ms`,
             contextInfo: {
-                mentionedJid: [sender],
                 externalAdReply: {
-                    title: `ᴍᴏᴄʜɪ • ᴛᴀᴋᴜ ᴍᴇᴅɪᴀ`,
-                    body: `${days} dias ${hours} horas ${minutes} minutos ${seconds} segunfos`,
+                    title: `Kaori`,
+                    body: `${days} dias ${hours} horas ${minutes} minutos ${seconds} segundos`,
                     showAdAttribution: true,
                     renderLargerThumbnail: false, 
                     mediaType: 1, 
                     thumbnailUrl: 'https://telegra.ph/file/1c2c3f99dc5d010cf5435.jpg'
                 }
             }
-        })
+        }, { quoted: q})
     }
 }
