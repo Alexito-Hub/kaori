@@ -13,7 +13,7 @@ module.exports = {
       return;
     }
 
-    const commandInfo = getCommandInfo(query.toLowerCase()) || commands.find(cmd => (cmd.aliases || []).map(alias => alias.toLowerCase()).includes(query.toLowerCase()));
+    const commandInfo = commands.find(cmd => cmd.name.toLowerCase() === query.toLowerCase() || (cmd.aliases || []).map(alias => alias.toLowerCase()).includes(query.toLowerCase()));
 
     if (!commandInfo) {
       v.reply(`El comando o alias '${query}' no existe.`);
