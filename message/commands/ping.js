@@ -6,7 +6,7 @@ module.exports = {
     async execute(sock, m, args) {
         
         
-        v.reply(from, {
+        v.reply(v, {
             text: `*Tiempo de respuesta:* ${formattedResponseTime} ms`,
             contextInfo: {
                 mentionedJid: [sender],
