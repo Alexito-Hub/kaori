@@ -8,9 +8,9 @@ module.exports = {
     async execute(sock, m, args) {
         const startTime = Date.now();
         const endTime = Date.now();
-        const responseTime = (endTime - startTime) / 1000; // Convertir a segundos
-        const formattedResponseTime = responseTime.toFixed(3); // Redondear a 3 decimales
+        const responseTime = endTime - startTime;
+        const formattedResponseTime = responseTime.toFixed(3);
         
-        v.reply(`Tiempo de respuesta: ${formattedResponseTime} s`, { quoted: m });
+        v.reply(`Tiempo de respuesta: ${formattedResponseTime} ms`, { quoted: m });
     }
 };
