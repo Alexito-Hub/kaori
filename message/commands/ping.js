@@ -6,8 +6,6 @@ module.exports = {
     aliases: ['ping', 'ms'],
     
     async execute(sock, m, args) {
-        console.log('Comando de ping ejecutado');
-        
         function roundTime(time) {
             return Math.round(time);
         }
@@ -16,6 +14,6 @@ module.exports = {
         const responseTime = roundTime(responseMs - m.messageTimestamp * 1000);
         const formattedResponseTime = (responseTime / 1000).toFixed(3);
 
-        await v.reply(`Tiempo de respuesta: ${formattedResponseTime} s`, { quoted: m });
+        v.reply(`Tiempo de respuesta: ${formattedResponseTime} s`, { quoted: m });
     }
 };
