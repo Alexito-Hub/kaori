@@ -3,20 +3,20 @@
 module.exports = {
   name: 'info',
   description: 'Obtener información sobre un comando',
-  aliases: ['info', 'información'],
+  aliases: ['commandinfo'],
 
   async execute(sock, m, args) {
-    const commandName = args[0];
+    const query = args[0];
 
-    if (!commandName) {
-      v.reply('Por favor, proporciona el nombre o alias del comando para obtener información.');
+    if (!query) {
+      v.reply(m.chat, 'Por favor, proporciona el nombre o alias del comando para obtener información.');
       return;
     }
 
-    const commandInfo = getCommandInfo(commandName.toLowerCase());
+    const commandInfo = getCommandInfo(query.toLowerCase()) || commands.find(cmd => (cmd.aliases || []).map(alias => alias.toLowerCase()).includes(query.toLowerCase()));
 
     if (!commandInfo) {
-      v.reply(m.chat, `El comando o alias '${commandName}' no existe.`);
+      v.reply(m.chat, `El comando o alias '${query}' no existe.`);
       return;
     }
 
