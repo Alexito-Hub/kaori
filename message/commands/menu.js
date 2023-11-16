@@ -18,12 +18,12 @@ module.exports = {
 
             // Utiliza m.reply en lugar de sock.reply
             await sock.sendMessage(m.chat, {
-                text: `*Hola @${user} 🍥*
+                text: `    *Hola @${user} 🍥*
 ᳃ "Es momento de levantarse y dar pasos largos para lograr nuestros objetivos"
 
-*Prefijo:* ${prefixList} 
-*Modo:* Público
-*Actividad:* ${days > 0 ? `${days}d ` : ''}${hours}h ${minutes}m ${seconds}s
+  *Prefijo:* ${prefixList} 
+  *Modo:* Público
+  *Actividad:* ${days > 0 ? `${days}d ` : ''}${hours}h ${minutes}m ${seconds}s
 
 Para obtener información de algún comando usa "Help <command>"
 
