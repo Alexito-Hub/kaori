@@ -7,10 +7,10 @@ module.exports = {
     
     async execute(sock, m, args) {
         const startTime = Date.now();
-        
         const endTime = Date.now();
-        const responseTime = endTime - startTime;
+        const responseTime = (endTime - startTime) / 1000; // Convertir a segundos
+        const formattedResponseTime = responseTime.toFixed(3); // Redondear a 3 decimales
         
-        v.reply(`Tiempo de respuesta: ${responseTime} ms`, { quoted: m });
+        v.reply(m.chat, `Tiempo de respuesta: ${formattedResponseTime} s`, { quoted: m });
     }
 };
