@@ -63,7 +63,9 @@ module.exports = async(sock, m, store) => {
           return;
         }
         
-        const kaoriMs = (jid, content, options) =>  sock.sendMessage(jid, content, options);
+        const messageKa = (jid, content, options) =>  sock.sendMessage(jid, content, options);
+        const kaoriMs = text => messageKa(from, { text, linkPreview: {} }, { quoted: v })
+     
         
 		switch (command) {
 case 'Menu':
