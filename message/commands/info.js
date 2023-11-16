@@ -9,14 +9,14 @@ module.exports = {
     const query = args[0];
 
     if (!query) {
-      v.reply(m.chat, 'Por favor, proporciona el nombre o alias del comando para obtener información.');
+      v.reply('Por favor, proporciona el nombre o alias del comando para obtener información.');
       return;
     }
 
     const commandInfo = getCommandInfo(query.toLowerCase()) || commands.find(cmd => (cmd.aliases || []).map(alias => alias.toLowerCase()).includes(query.toLowerCase()));
 
     if (!commandInfo) {
-      v.reply(m.chat, `El comando o alias '${query}' no existe.`);
+      v.reply(`El comando o alias '${query}' no existe.`);
       return;
     }
 
@@ -29,6 +29,6 @@ Alias: ${commandInfo.aliases ? commandInfo.aliases.join(', ') : 'No hay alias di
 Estado de comando: ${isEnabled ? 'Habilitado' : 'Deshabilitado'}
     `;
 
-    v.reply(m.chat, infoMessage);
+    v.reply(infoMessage);
   },
 };
