@@ -52,6 +52,21 @@ module.exports = async(sock, m, store) => {
 		const isQuotedSticker = m.quoted ? (m.quoted.type === 'stickerMessage') : false
 		const isQuotedAudio = m.quoted ? (m.quoted.type === 'audioMessage') : false
 		
+		const uptime = process.uptime();
+        
+        const days = Math.floor(uptime / (24 * 60 * 60));
+        const hours = Math.floor((uptime % (24 * 60 * 60)) / (60 * 60));
+        const minutes = Math.floor((uptime % (60 * 60)) / 60);
+        const seconds = Math.floor(uptime % 60);
+        
+        function roundTime(time) {
+            return Math.round(time);
+        }
+        
+        const responseMs = Date.now();
+        const responseTime = roundTime(responseMs - v.messageTimestamp * 1000);
+        const formattedResponseTime = (responseTime / 1000).toFixed(3);
+       
 
         const hasCommandPrefix = prefixes.some(prefix => m.body.toLowerCase().startsWith(prefix.toLowerCase()));
         const commandBody = hasCommandPrefix ? m.body.slice(prefixes.find(prefix => m.body.toLowerCase().startsWith(prefix.toLowerCase())).length).trim() : m.body.trim();
