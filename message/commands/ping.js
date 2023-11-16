@@ -6,11 +6,14 @@ module.exports = {
     aliases: ['ping', 'ms'],
     
     async execute(sock, m, args) {
-        const startTime = Date.now();
-        const endTime = Date.now();
-        const responseTime = endTime - startTime;
-        const formattedResponseTime = responseTime.toFixed(3);
         
-        v.reply(`Tiempo de respuesta: ${formattedResponseTime} ms`, { quoted: m });
+        function roundTime(time) {
+            return Math.round(time);
+        }
+        
+        const responseMs = Date.now();
+        const responseTime = roundTime(responseMs - m.messageTimestamp * 1000);
+
+        await v.reply(`Tiempo de respuesta: ${responseTime} ms`, { quoted: m });
     }
 };
