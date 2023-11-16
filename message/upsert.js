@@ -7,6 +7,19 @@ const util = require('util')
 const { Json, removeAccents } = require('../lib/functions')
 const { client, sms } = require('../lib/simple')
 
+const commands = [];
+
+function getCommandInfo(commandName) {
+  return commands.find(cmd => cmd.name === commandName || (cmd.aliases && cmd.aliases.includes(commandName)));
+}
+
+const commandFiles = fs.readdirSync(path.join(__dirname, 'commands')).filter(file => file.endsWith('.js'));
+
+for (const file of commandFiles) {
+  const command = require(path.join(__dirname, 'commands', file));
+  commands.push(command);
+}
+
 module.exports = async(sock, m, store) => {
 	try {
 		sock = client(sock)
@@ -39,29 +52,16 @@ module.exports = async(sock, m, store) => {
 		const isQuotedSticker = m.quoted ? (m.quoted.type === 'stickerMessage') : false
 		const isQuotedAudio = m.quoted ? (m.quoted.type === 'audioMessage') : false
 		
-        const commands = [];
-        
-        // Mueve la función getCommandInfo aquí, antes de usarla
-        function getCommandInfo(commandName) {
-          return commands.find(cmd => cmd.name === commandName || (cmd.aliases && cmd.aliases.includes(commandName)));
+
+        const hasCommandPrefix = prefixes.some(prefix => m.body.toLowerCase().startsWith(prefix.toLowerCase()));
+        const commandBody = hasCommandPrefix ? m.body.slice(prefixes.find(prefix => m.body.toLowerCase().startsWith(prefix.toLowerCase())).length).trim() : m.body.trim();
+        const [commandName, ...commandArgs] = commandBody.split(/ +/);
+    
+        const commandInfo = getCommandInfo(commandName.toLowerCase());
+        if (commandInfo) {
+          await commandInfo.execute(sock, m, commandArgs);
+          return;
         }
-        
-        const commandFiles = fs.readdirSync(path.join(__dirname, 'commands')).filter(file => file.endsWith('.js'));
-        
-        for (const file of commandFiles) {
-          const command = require(path.join(__dirname, 'commands', file));
-          commands.push(command);
-        
-          const allAliases = [command.name, ...(command.aliases || [])];
-          if (allAliases.includes(commandName)) {
-            // Ejecuta el comando correspondiente
-            await command.execute(sock, m);
-            return;
-          }
-        }
-
-
-
         
         
 		switch (command) {
