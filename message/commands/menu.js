@@ -15,7 +15,7 @@ module.exports = {
         const minutes = Math.floor((uptimeSeconds % (60 * 60)) / 60);
         const seconds = uptimeSeconds % 60;
 
-        await v.reply(`*Hola @${user} 🍥*
+        await sock.sendMessage(`*Hola @${user} 🍥*
 ᳃ "Es momento de levantarse y dar pasos largos para lograr nuestros objetivos"
 
 *Prefijo:* ${prefixList} 
