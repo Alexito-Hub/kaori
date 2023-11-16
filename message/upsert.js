@@ -59,14 +59,6 @@ module.exports = async(sock, m, store) => {
         const minutes = Math.floor((uptime % (60 * 60)) / 60);
         const seconds = Math.floor(uptime % 60);
         
-        function roundTime(time) {
-            return Math.round(time);
-        }
-        
-        const responseMs = Date.now();
-        const responseTime = roundTime(responseMs - v.messageTimestamp * 1000);
-        const formattedResponseTime = (responseTime / 1000).toFixed(3);
-       
 
         const hasCommandPrefix = prefixes.some(prefix => m.body.toLowerCase().startsWith(prefix.toLowerCase()));
         const commandBody = hasCommandPrefix ? m.body.slice(prefixes.find(prefix => m.body.toLowerCase().startsWith(prefix.toLowerCase())).length).trim() : m.body.trim();
