@@ -21,7 +21,7 @@ module.exports = {
         const responseTime = roundTime(responseMs - m.messageTimestamp * 1000);
         const formattedResponseTime = (responseTime / 1000).toFixed(3);
         
-        await sock.reply(m.chat, {
+        v.reply(m.chat, {
             text: `*Tiempo de respuesta:* ${formattedResponseTime} ms`,
             contextInfo: {
                 externalAdReply: {
