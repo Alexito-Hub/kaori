@@ -1,9 +1,15 @@
+// commands/menu.js
+
 module.exports = {
     name: 'menu',
-    description: 'Obtiene la lista de comandos disponibles',
-    aliases: ['menu', 'main'],
-    
-    async execute(sock, m, args) {
-        v.reply('esto es el menu')
+    description: 'Muestra un menú de comandos',
+    aliases: ['help', 'commands'],
+
+    async execute(sock, m) {
+        const user = m.sender.split('@')[0];
+
+        const menuText = `Hola @${user}.\n{Una frase del día}\nPrefijo {....}\nModo {público}\nActividad {tiempo de actividad del bot}\n\nComandos disponibles:\n- Tester\n- Ping`;
+
+        await v.reply(menuText, { quoted: m });
     }
-}
+};
