@@ -15,7 +15,8 @@ module.exports = {
         const minutes = Math.floor((uptimeSeconds % (60 * 60)) / 60);
         const seconds = uptimeSeconds % 60;
 
-        await sock.sendMessage(`*Hola @${user} 🍥*
+        await v.reply(m, {
+            text: `*Hola @${user} 🍥*
 ᳃ "Es momento de levantarse y dar pasos largos para lograr nuestros objetivos"
 
 *Prefijo:* ${prefixList} 
@@ -26,7 +27,7 @@ Para obtener información de algún comando usa "Help <command>"
 
 Comandos disponibles:
 - Test
-- Ping`, {
+- Ping`,
             contextInfo: {
                 mentionedJid: [m.sender],
                 externalAdReply: {
