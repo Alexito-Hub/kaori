@@ -4,7 +4,7 @@ module.exports = {
     aliases: ['prom', 'promote'],
     
     async execute(sock, m) {
-        await sock.sendMessage(m, {
+        await sock.sendMessage(m.chat, {
             text: 'promovido',
             contextInfo: {
                 mentionedJid: [m.sender],
