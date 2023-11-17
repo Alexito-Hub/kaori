@@ -3,7 +3,7 @@ module.export = {
     description: 'Muestra el tiempo de actividad',
     aliases: ['time', 'run'],
     
-    async execute(sock, m, formattedTime) {
-        await v.reply(`*[ ${formattedTime} ]*`)
+    async execute(sock, m, formattedTimeShort) {
+        await v.reply(`*[ ${formattedTimeShort} ]*`)
     }
 }

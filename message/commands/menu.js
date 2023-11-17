@@ -5,9 +5,8 @@ module.exports = {
     description: 'Muestra un menú de comandos',
     aliases: ['menu', 'commands'],
 
-    async execute(sock, m, runTime) {
+    async execute(sock, m, formattedTime, user) {
         try {
-            const user = m.sender.split('@')[0];
             const prefixList = global.prefix.map(p => `[ ${p} ]`).join(' ');
 
             await sock.sendMessage(m.chat, {
@@ -16,7 +15,7 @@ module.exports = {
 
   *Prefijo:* ${prefixList} 
   *Modo:* Público
-  *Actividad:* ${runTime}
+  *Actividad:* ${formattedTime}
 
 Para obtener información de algún comando usa "Help <command>"
 
