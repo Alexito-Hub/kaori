@@ -5,7 +5,7 @@ module.exports = {
     description: 'Muestra un menú de comandos',
     aliases: ['menu', 'commands'],
 
-    async execute(sock, m) {
+    async execute(sock, m, runTime) {
         try {
             const user = m.sender.split('@')[0];
             const prefixList = global.prefix.map(p => `[ ${p} ]`).join(' ');
@@ -16,7 +16,7 @@ module.exports = {
 
   *Prefijo:* ${prefixList} 
   *Modo:* Público
-  *Actividad:* ${days > 0 ? `${days}d ` : ''}${hours}h ${minutes}m ${seconds}s
+  *Actividad:* ${runTime}
 
 Para obtener información de algún comando usa "Help <command>"
 

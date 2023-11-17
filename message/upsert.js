@@ -59,6 +59,9 @@ module.exports = async(sock, m, store) => {
         const hours = Math.floor((uptimeSeconds % (24 * 60 * 60)) / (60 * 60));
         const minutes = Math.floor((uptimeSeconds % (60 * 60)) / 60);
         const seconds = uptimeSeconds % 60;
+        const runTime = `${days > 00 ? `${days}d ` : ''}${hours}h ${minutes}m ${seconds}s`;
+        const formattedTime = formatTime(days, hours, minutes, seconds);
+
         
         const hasCommandPrefix = prefixes.some(prefix => m.body.toLowerCase().startsWith(prefix.toLowerCase()));
         const commandBody = hasCommandPrefix ? m.body.slice(prefixes.find(prefix => m.body.toLowerCase().startsWith(prefix.toLowerCase())).length).trim() : m.body.trim();
