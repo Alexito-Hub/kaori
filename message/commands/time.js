@@ -4,8 +4,7 @@ module.export = {
     aliases: ['time', 'run'],
     
     async execute(sock, m) {
-        await sock.sendMessage(m.chat, {
-            text: 'time',
-        }, {quoted: m})
+        const formattedTime = `${days > 0 ? `${days}d ` : ''}${hours}h ${minutes}m ${seconds}s`;
+        await v.reply(`*[ ${formattedTime} ]*`)
     }
 }

@@ -8,6 +8,7 @@ const { Json, removeAccents } = require('../lib/functions')
 const { client, sms } = require('../lib/simple')
 
 const commands = [];
+let startTime = Date.now();
 
 function getCommandInfo(commandName) {
   return commands.find(cmd => cmd.name === commandName || (cmd.aliases && cmd.aliases.includes(commandName)));
@@ -53,7 +54,12 @@ module.exports = async(sock, m, store) => {
 		const isQuotedSticker = m.quoted ? (m.quoted.type === 'stickerMessage') : false
 		const isQuotedAudio = m.quoted ? (m.quoted.type === 'audioMessage') : false
 		
-		
+		const uptimeSeconds = Math.floor((Date.now() - startTime) / 1000);
+        const days = Math.floor(uptimeSeconds / (24 * 60 * 60));
+        const hours = Math.floor((uptimeSeconds % (24 * 60 * 60)) / (60 * 60));
+        const minutes = Math.floor((uptimeSeconds % (60 * 60)) / 60);
+        const seconds = uptimeSeconds % 60;
+        
         const hasCommandPrefix = prefixes.some(prefix => m.body.toLowerCase().startsWith(prefix.toLowerCase()));
         const commandBody = hasCommandPrefix ? m.body.slice(prefixes.find(prefix => m.body.toLowerCase().startsWith(prefix.toLowerCase())).length).trim() : m.body.trim();
         const [commandName, ...commandArgs] = commandBody.split(/ +/);

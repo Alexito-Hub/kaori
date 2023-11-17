@@ -10,13 +10,6 @@ module.exports = {
             const user = m.sender.split('@')[0];
             const prefixList = global.prefix.map(p => `[ ${p} ]`).join(' ');
 
-            const uptimeSeconds = Math.floor(process.uptime());
-            const days = Math.floor(uptimeSeconds / (24 * 60 * 60));
-            const hours = Math.floor((uptimeSeconds % (24 * 60 * 60)) / (60 * 60));
-            const minutes = Math.floor((uptimeSeconds % (60 * 60)) / 60);
-            const seconds = uptimeSeconds % 60;
-
-            // Utiliza m.reply en lugar de sock.reply
             await sock.sendMessage(m.chat, {
                 text: `    *Hola @${user} 🍥*
 ᳃ "Es momento de levantarse y dar pasos largos para lograr nuestros objetivos"
