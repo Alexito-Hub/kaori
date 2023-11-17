@@ -28,8 +28,9 @@ module.exports = async(sock, m, store) => {
 		const prefix = global.prefix
 		const prefixes = global.prefix || ['#'];
 		const isCmd = prefixes.some(prefix => m.body.toLowerCase().startsWith(prefix.toLowerCase()))
-		const command = isCmd ? removeAccents(m.body.slice(prefixes.find(prefix => m.body.toLowerCase().startsWith(prefix.toLowerCase())).length)).trim().split(' ').shift().toLowerCase() : m.body.trim().split(' ').shift().toLowerCase();
-
+		const command = isCmd
+          ? removeAccents(m.body.slice(prefixes.find(prefix => m.body.toLowerCase().startsWith(prefix.toLowerCase()))).trim().split(' ')[0].toLowerCase())
+          : m.body.trim().split(' ')[0].toLowerCase();
 		
 		const args = m.body.trim().split(/ +/).slice(1)
 		const q = args.join(' ')
