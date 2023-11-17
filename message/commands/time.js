@@ -5,7 +5,7 @@ module.export = {
     
     async execute(sock, m) {
         await sock.sendMessage(m.chat, {
-            text: 'time'
-        })
+            text: 'time',
+        }, {quoted: m})
     }
 }
