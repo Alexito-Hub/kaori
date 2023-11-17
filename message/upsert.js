@@ -73,7 +73,7 @@ case 'help':
 		
 		switch (command) {
 			default:
-			if (isOwner, isStaff) {
+			if (isStaff) {
 				if (v.body.startsWith('^')) {
 					try {
 						await v.reply(Json(eval(q)))
