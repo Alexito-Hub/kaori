@@ -14,6 +14,6 @@ module.exports = {
         const responseTime = roundTime(responseMs - m.messageTimestamp * 1000);
         const formattedResponseTime = (responseTime / 1000).toFixed(3);
 
-        v.reply(`Tiempo de respuesta: ${formattedResponseTime} ms`, { quoted: m });
+        v.reply(`${formattedResponseTime} ms`, { quoted: m });
     }
 };
