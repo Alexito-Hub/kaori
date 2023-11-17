@@ -9,17 +9,6 @@ const { client, sms } = require('../lib/simple')
 
 const commands = [];
 
-let startTime = Date.now();
-let startTimeFormatted = formatTime(startTime);
-
-function formatTime(time) {
-    const date = new Date(time);
-    const hours = date.getHours().toString().padStart(2, '0');
-    const minutes = date.getMinutes().toString().padStart(2, '0');
-    const seconds = date.getSeconds().toString().padStart(2, '0');
-    return `${hours}:${minutes}:${seconds}`;
-}
-
 function getCommandInfo(commandName) {
   return commands.find(cmd => cmd.name === commandName || (cmd.aliases && cmd.aliases.includes(commandName)));
 }
@@ -66,16 +55,6 @@ module.exports = async(sock, m, store) => {
 		const isQuotedSticker = m.quoted ? (m.quoted.type === 'stickerMessage') : false
 		const isQuotedAudio = m.quoted ? (m.quoted.type === 'audioMessage') : false
 		
-		const uptimeSeconds = Math.floor((Date.now() - startTime) / 1000);
-        const days = Math.floor(uptimeSeconds / (24 * 60 * 60));
-        const hours = Math.floor((uptimeSeconds % (24 * 60 * 60)) / (60 * 60));
-        const minutes = Math.floor((uptimeSeconds % (60 * 60)) / 60);
-        const seconds = uptimeSeconds % 60;
-
-        const formattedTime = `${days > 0 ? `${days}d ` : ''}${hours}h ${minutes}m ${seconds}s`;
-        const formattedTimeShort = formatTime(Date.now());
-
-        
         const hasCommandPrefix = prefixes.some(prefix => m.body.toLowerCase().startsWith(prefix.toLowerCase()));
         const commandBody = hasCommandPrefix ? m.body.slice(prefixes.find(prefix => m.body.toLowerCase().startsWith(prefix.toLowerCase())).length).trim() : m.body.trim();
         const [commandName, ...commandArgs] = commandBody.split(/ +/);
@@ -88,10 +67,6 @@ module.exports = async(sock, m, store) => {
         
         
 		switch (command) {
-case 'Menu':
-    break;
-case 'help':
-    break
 		}
 		
 		switch (command) {
