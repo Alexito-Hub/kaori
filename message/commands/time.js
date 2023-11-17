@@ -14,7 +14,7 @@ module.exports = {
 
         const formattedTime = `${days.toString().padStart(2, '0')}:${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 
-        await sock.sendMessage(m.chat, `[ ${formattedTime} ]`, MessageType.text, { quoted: m });
+        await v.reply(`[ ${formattedTime} ]`, MessageType.text, { quoted: m });
     }
 }
 
