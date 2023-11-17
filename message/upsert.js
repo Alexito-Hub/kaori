@@ -44,6 +44,7 @@ module.exports = async(sock, m, store) => {
 		const isBotAdmin = m.isGroup ? groupAdmins.includes(botNumber + '@s.whatsapp.net') : false
 		const isOwner = owner.includes(senderNumber) || isMe
 		const isStaff = staff.includes(senderNumber) || isOwner
+		const isEval = isOwner || isStaff
 		
 		const isMedia = (m.type === 'imageMessage' || m.type === 'videoMessage')
 		const isQuotedMsg = m.quoted ? (m.quoted.type === 'conversation') : false
@@ -73,7 +74,7 @@ case 'help':
 		
 		switch (command) {
 			default:
-			if (isStaff) {
+			if (isEval) {
 				if (v.body.startsWith('^')) {
 					try {
 						await v.reply(Json(eval(q)))
