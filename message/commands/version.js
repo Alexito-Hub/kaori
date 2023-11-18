@@ -1,40 +1,26 @@
+// version.js
+
 const fs = require('fs');
 const path = require('path');
 
-const versionFilePath = path.join(__dirname, '..', 'version.json');
-
 module.exports = {
     name: 'version',
-    description: 'Muestra la versión actual del bot o la lista de todas las versiones',
-    aliases: ['ver', 'about'],
-    
+    description: 'Muestra la versión actual o la lista de versiones',
+    aliases: ['version', 'ver', 'v-'],
+
     async execute(sock, m, args) {
         try {
-            let versionData = {};
-            
-            if (fs.existsSync(versionFilePath)) {
-                versionData = JSON.parse(fs.readFileSync(versionFilePath, 'utf8'));
-            }
-
             if (args[0] === 'list') {
-                // Mostrar lista de todas las versiones
-                const versionList = versionData.versions || [];
-                const versionText = versionList.map(version => `${version.number} - ${version.date}`).join('\n');
-                await sock.sendMessage(m.chat, { text: `🤖 **Lista de Versiones:**\n${versionText}` }, { quoted: m });
+                const versions = require('../version.json');
+                const versionList = versions.map(version => `${version.number} - ${version.date}`).join('\n');
+                await sock.sendMessage({ text: `Lista de versiones:\n${versionList}` }, { quoted: m });
             } else {
-                // Obtén la última versión
-                const latestVersion = versionData.versions ? versionData.versions[versionData.versions.length - 1] : null;
-
-                if (latestVersion) {
-                    const { number, date } = latestVersion;
-                    await sock.sendMessage(m.chat, { text: `🤖 **Versión:** ${number}\n📅 **Fecha de lanzamiento:** ${date}` }, { quoted: m });
-                } else {
-                    await v.reply(m, 'No se encontraron versiones en el archivo.');
-                }
+                const latestVersion = require('../version.json').slice(-1)[0];
+                await sock.sendMessage({ text: `Versión actual: ${latestVersion.number} - ${latestVersion.date}` }, { quoted: m });
             }
         } catch (error) {
-            console.error('Error al leer o escribir en el archivo de versiones:', error);
-            await v.reply(m, 'Ocurrió un error al obtener la versión del bot.');
+            console.error(`Error al leer o escribir en el archivo de versiones: ${error}`);
+            await sock.sendMessage({ text: 'Ocurrió un error al obtener la información de la versión.' }, { quoted: m });
         }
-    }
-}
+    },
+};
