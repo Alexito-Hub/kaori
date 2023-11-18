@@ -1,5 +1,3 @@
-// ... (tu código anterior)
-
 module.exports = {
     name: 'time',
     description: 'Muestra el tiempo de actividad',
@@ -17,5 +15,3 @@ module.exports = {
         await v.reply(`*[ ${formattedTime} ]*`, { quoted: m });
     }
 }
-
-// ... (tu código posterior)

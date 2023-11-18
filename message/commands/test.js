@@ -6,6 +6,9 @@ module.exports = {
   description: 'Comando de prueba',
 
   async execute(sock, m, args) {
-    v.reply('¡Este es un mensaje de prueba desde el comando test!');
+    await sock.sendMessage(m.chat, {
+        text: ''
+        
+    })
   },
 };

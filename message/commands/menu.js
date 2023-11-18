@@ -1,5 +1,3 @@
-// commands/menu.js
-
 module.exports = {
     name: 'menu',
     description: 'Muestra un menú de comandos',
