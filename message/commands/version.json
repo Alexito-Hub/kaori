@@ -1,16 +1,20 @@
 {
-  "versions": [
-    {
-      "number": "v0.1",
-      "date": "2023-11-17"
-    },
-    {
-      "number": "v0.1 tester",
-      "date": "2023-11-16"
-    },
-    {
-      "number": "v0.x",
-      "date": "2023-10-13"
+    "versions": {
+        "new": [
+            {
+                "version": "v0.1",
+                "date": "2023-11-17"
+            }
+        ],
+        "ancient": [
+            {
+                "version": "v0.1 tester",
+                "date": "2023-11-17"
+            },
+            {
+                "version": "v0.x",
+                "date": "2023-11-17"
+            }
+        ]
     }
-  ]
 }
