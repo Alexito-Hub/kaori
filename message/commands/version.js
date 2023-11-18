@@ -15,12 +15,12 @@ module.exports = {
             const latestVersion = response.data.tag_name;
             const releaseNotes = response.data.body;
 
-            await sock.sendMessage(m.chat, `Nueva versión: ${latestVersion}
+            await sock.sendMessage(m.chat, { text:`Nueva versión: ${latestVersion}
 Notas de la versión:
-${releaseNotes}`, { quoted: m });
+${releaseNotes}`}, { quoted: m });
         } catch (error) {
             console.error(error);
-            await sock.sendMessage(m.chat, 'Parece que hubo un error', { quoted: m });
+            await sock.sendMessage(m.chat, {text:'Parece que hubo un error'}, { quoted: m });
         }
     }
 }
