@@ -1,12 +1,12 @@
 {
     "versions": {
-        "new": [
+        "newdate": [
             {
                 "version": "v0.1",
                 "date": "2023-11-17"
             }
         ],
-        "ancient": [
+        "ancientdate": [
             {
                 "version": "v0.1 tester",
                 "date": "2023-11-17"
