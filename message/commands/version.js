@@ -81,7 +81,7 @@ module.exports = {
       const versions = loadVersions();
       const latestVersion = versions.length > 0 ? versions[versions.length - 1].version : 'No hay versiones';
 
-      await sock.sendMessage(m.chat, `Bot: Versión del bot: ${latestVersion}`, MessageType.text, { quoted: m });
+      await sock.sendMessage(m.chat, {text:`Bot: Versión del bot: ${latestVersion}`}, { quoted: m });
     }
   },
 };
