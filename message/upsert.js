@@ -67,7 +67,7 @@ module.exports = async(sock, m, store) => {
         
         if (commandName.toLowerCase() === 'saff') {
           if (isOwner) {
-            const [_, state] = commandArgs
+            const [_, state] = argsSplit
             if (state === 'on' || state === 'off') {
               const isEnabled = state === 'on';
               if (areCommandsEnabled === isEnabled) {
@@ -99,6 +99,9 @@ module.exports = async(sock, m, store) => {
               return;
             }
           return;
+        }
+        
+        if (!areCommandsEnabled && !isEval) {
         }
         
 		switch (command) {
