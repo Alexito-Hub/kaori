@@ -66,7 +66,7 @@ module.exports = async(sock, m, store) => {
         
         if (commandName.toLowerCase() === 'saff') {
           if (isOwner) {
-            const [_, state] = args;
+            const [_, state] = body.split(' ')
             if (state === 'on' || state === 'off') {
               const isEnabled = state === 'on';
               if (areCommandsEnabled === isEnabled) {
@@ -91,13 +91,12 @@ module.exports = async(sock, m, store) => {
         }
 
         
-        if (!areCommandsEnabled) {
+        if (areCommandsEnabled) {
             const commandInfo = getCommandInfo(commandName.toLowerCase());
             if (commandInfo) {
               await commandInfo.execute(sock, m, commandArgs);
               return;
             }
-          await v.reply('Los comandos están deshabilitados actualmente.');
           return;
         }
         
