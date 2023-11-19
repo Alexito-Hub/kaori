@@ -74,7 +74,7 @@ module.exports = async(sock, m, store) => {
               } else {
                 areCommandsEnabled = isEnabled;
                 await v.reply(`Los comandos han sido ${isEnabled ? 'habilitados' : 'deshabilitados'}.`);
-    
+        
                 // Guardar la configuración en config.json
                 const configData = {
                   areCommandsEnabled: isEnabled,
@@ -89,6 +89,7 @@ module.exports = async(sock, m, store) => {
           }
           return;
         }
+
         
         if (!areCommandsEnabled) {
             const commandInfo = getCommandInfo(commandName.toLowerCase());
