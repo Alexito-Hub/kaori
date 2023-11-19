@@ -50,8 +50,8 @@ module.exports = async(sock, m, store) => {
 		
 		const isMe = (botNumber == senderNumber)
 		const isBotAdmin = m.isGroup ? groupAdmins.includes(botNumber + '@s.whatsapp.net') : false
-		const isOwner = config.global.owner.includes(senderNumber) || isMe;
-		const isStaff = config.global.staff.includes(senderNumber) || isOwner;
+		const isOwner = global.owner.includes(senderNumber) || isMe;
+		const isStaff = global.staff.includes(senderNumber) || isOwner;
 		const isEval = isOwner || isStaff
 		
 		const isMedia = (m.type === 'imageMessage' || m.type === 'videoMessage')
@@ -70,10 +70,10 @@ module.exports = async(sock, m, store) => {
             if (config.global.hasOwnProperty(property)) {
               config.global[property] = value;
               console.log(`Se ha actualizado ${property} a ${value}`);
-              message(`Se actualizo ${property} a ${value}`)
+              v.reply(`Se actualizo ${property} a ${value}`)
             } else {
               console.log(`La propiedad ${property} no existe en config.global`);
-              message(`Esta propiedad no existe`)
+              v.reply(`Esta propiedad no existe`)
             }
           },
         };

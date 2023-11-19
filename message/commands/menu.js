@@ -8,7 +8,7 @@ module.exports = {
     async execute(sock, m) {
         try {
             const user = m.sender.split('@')[0];
-            const prefixList = config.global.prefix.map(p => `[ ${p} ]`).join(' ');
+            const prefixList = global.prefix.map(p => `[ ${p} ]`).join(' ');
 
             const uptimeSeconds = Math.floor(process.uptime());
             const days = Math.floor(uptimeSeconds / (24 * 60 * 60));
