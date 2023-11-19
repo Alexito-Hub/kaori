@@ -20,6 +20,18 @@ for (const file of commandFiles) {
   commands.push(command);
 }
 
+const configPath = path.join(__dirname, 'config.json');
+
+let config;
+try {
+  config = require(configPath);
+} catch (error) {
+  config = { areCommandsEnabled: true };
+  fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
+}
+
+const areCommandsEnabled = config.areCommandsEnabled;
+
 module.exports = async(sock, m, store) => {
 	try {
 		sock = client(sock)
@@ -60,16 +72,23 @@ module.exports = async(sock, m, store) => {
         const commandBody = hasCommandPrefix ? m.body.slice(prefixes.find(prefix => m.body.toLowerCase().startsWith(prefix.toLowerCase())).length).trim() : m.body.trim();
         const [commandName, ...commandArgs] = commandBody.split(/ +/);
     
-        const commandInfo = getCommandInfo(commandName.toLowerCase());
-        if (commandInfo) {
-          await commandInfo.execute(sock, m, commandArgs);
-          return;
-        }
         
         
-		switch (command) {
-		}
-		
+        try {
+            const commandFiles = fs.readdirSync(path.join(__dirname, 'commands')).filter(file => file.endsWith('.js'));
+            if (m.body.toLowerCase().startsWith('?saff')) {
+            } else if (!areCommandsEnabled) {
+              await v.reply('Los comandos están deshabilitados actualmente.');
+              return;
+            }
+        
+            for (const file of commandFiles) {
+              const command = require(path.join(__dirname, 'commands', file));
+              commands.push(command);
+            }
+        } catch (e) {}
+        
+        
 		switch (command) {
 			default:
 			if (isEval) {
