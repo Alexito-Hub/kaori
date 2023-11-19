@@ -50,8 +50,8 @@ module.exports = async(sock, m, store) => {
 		
 		const isMe = (botNumber == senderNumber)
 		const isBotAdmin = m.isGroup ? groupAdmins.includes(botNumber + '@s.whatsapp.net') : false
-		const isOwner = owner.includes(senderNumber) || isMe
-		const isStaff = staff.includes(senderNumber) || isOwner
+		const isOwner = config.global.owner.includes(senderNumber) || isMe;
+		const isStaff = config.global.staff.includes(senderNumber) || isOwner;
 		const isEval = isOwner || isStaff
 		
 		const isMedia = (m.type === 'imageMessage' || m.type === 'videoMessage')
