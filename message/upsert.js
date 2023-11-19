@@ -70,10 +70,10 @@ module.exports = async(sock, m, store) => {
             if (config.global.hasOwnProperty(property)) {
               config.global[property] = value;
               console.log(`Se ha actualizado ${property} a ${value}`);
-              v.reply(`Se actualizo ${property} a ${value}`)
+              message(`Se actualizo ${property} a ${value}`)
             } else {
               console.log(`La propiedad ${property} no existe en config.global`);
-              v.reply(`Esta propiedad no existe`)
+              message(`Esta propiedad no existe`)
             }
           },
         };
