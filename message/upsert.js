@@ -8,6 +8,8 @@ const configFile = path.join(__dirname, 'config.json');
 const { Json, removeAccents } = require('../lib/functions')
 const { client, sms } = require('../lib/simple')
 
+let areCommandsEnabled = true;
+
 const commands = [];
 
 function getCommandInfo(commandName) {
