@@ -101,7 +101,9 @@ module.exports = async(sock, m, store) => {
           return;
         }
         
-        if (!areCommandsEnabled && !isEval) {
+        if (!areCommandsEnabled && commandName.toLowerCase() !== 'saff') {
+          await v.reply('Los comandos están deshabilitados actualmente.');
+          return;
         }
         
 		switch (command) {
