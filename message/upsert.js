@@ -65,6 +65,19 @@ module.exports = async(sock, m, store) => {
         const commandBody = hasCommandPrefix ? m.body.slice(prefixes.find(prefix => m.body.toLowerCase().startsWith(prefix.toLowerCase())).length).trim() : m.body.trim();
         const [commandName, ...commandArgs] = commandBody.split(/ +/);
         
+        const s = {
+          set: (property, value) => {
+            if (config.global.hasOwnProperty(property)) {
+              config.global[property] = value;
+              console.log(`Se ha actualizado ${property} a ${value}`);
+              v.reply(`Se actualizo ${property} a ${value}`)
+            } else {
+              console.log(`La propiedad ${property} no existe en config.global`);
+              v.reply(`Esta propiedad no existe`)
+            }
+          },
+        };
+        
         switch (command) {
 			default:
 			if (isEval) {
