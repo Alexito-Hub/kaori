@@ -3,6 +3,7 @@ require('../config')
 const fs = require('fs')
 const path = require('path');
 const util = require('util')
+const configFile = path.join(__dirname, 'config.json');
 
 const { Json, removeAccents } = require('../lib/functions')
 const { client, sms } = require('../lib/simple')
@@ -20,17 +21,7 @@ for (const file of commandFiles) {
   commands.push(command);
 }
 
-const configPath = path.join(__dirname, 'config.json');
 
-let config;
-try {
-  config = require(configPath);
-} catch (error) {
-  config = { areCommandsEnabled: true };
-  fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
-}
-
-const areCommandsEnabled = config.areCommandsEnabled;
 
 module.exports = async(sock, m, store) => {
 	try {
@@ -40,11 +31,10 @@ module.exports = async(sock, m, store) => {
 		const prefix = global.prefix
 		const prefixes = global.prefix || ['#'];
 		const isCmd = prefixes.some(prefix => m.body.toLowerCase().startsWith(prefix.toLowerCase()))
-		const command = isCmd
-          ? removeAccents(m.body.slice(prefixes.find(prefix => m.body.toLowerCase().startsWith(prefix.toLowerCase()))).trim().split(' ')[0].toLowerCase())
-          : m.body.trim().split(' ')[0].toLowerCase();
 		
-		const args = m.body.trim().split(/ +/).slice(1)
+		const command = isCmd ? removeAccents(m.body.slice(prefixes.find(prefix => m.body.toLowerCase().startsWith(prefix.toLowerCase())).length)).trim().split(' ').shift().toLowerCase() : m.body.trim().split(' ').shift().toLowerCase();
+        const args = m.body.trim().split(/ +/).slice(1);
+
 		const q = args.join(' ')
 		const senderNumber = m.sender.split('@')[0]
 		const botNumber = sock.user.id.split(':')[0]
@@ -71,23 +61,42 @@ module.exports = async(sock, m, store) => {
         const hasCommandPrefix = prefixes.some(prefix => m.body.toLowerCase().startsWith(prefix.toLowerCase()));
         const commandBody = hasCommandPrefix ? m.body.slice(prefixes.find(prefix => m.body.toLowerCase().startsWith(prefix.toLowerCase())).length).trim() : m.body.trim();
         const [commandName, ...commandArgs] = commandBody.split(/ +/);
+        
+        if (commandName.toLowerCase() === 'saff') {
+          if (isOwner) {
+            const [_, state] = args;
+            if (state === 'on' || state === 'off') {
+              const isEnabled = state === 'on';
+              if (areCommandsEnabled === isEnabled) {
+                await v.reply(`Los comandos ya están ${isEnabled ? 'habilitados' : 'deshabilitados'}.`);
+              } else {
+                areCommandsEnabled = isEnabled;
+                await v.reply(`Los comandos han sido ${isEnabled ? 'habilitados' : 'deshabilitados'}.`);
     
+                // Guardar la configuración en config.json
+                const configData = {
+                  areCommandsEnabled: isEnabled,
+                };
+                fs.writeFileSync(configFile, JSON.stringify(configData, null, 2));
+              }
+            } else {
+              await v.reply('Comando no válido. Use "on" o "off" para habilitar o deshabilitar comandos.');
+            }
+          } else {
+            await v.reply('No tienes permisos para ejecutar este comando.');
+          }
+          return;
+        }
         
-        
-        try {
-            const commandFiles = fs.readdirSync(path.join(__dirname, 'commands')).filter(file => file.endsWith('.js'));
-            if (m.body.toLowerCase().startsWith('?saff')) {
-            } else if (!areCommandsEnabled) {
-              await v.reply('Los comandos están deshabilitados actualmente.');
+        if (!areCommandsEnabled) {
+            const commandInfo = getCommandInfo(commandName.toLowerCase());
+            if (commandInfo) {
+              await commandInfo.execute(sock, m, commandArgs);
               return;
             }
-        
-            for (const file of commandFiles) {
-              const command = require(path.join(__dirname, 'commands', file));
-              commands.push(command);
-            }
-        } catch (e) {}
-        
+          await v.reply('Los comandos están deshabilitados actualmente.');
+          return;
+        }
         
 		switch (command) {
 			default:
