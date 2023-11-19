@@ -36,6 +36,7 @@ module.exports = async(sock, m, store) => {
 		
 		const command = isCmd ? removeAccents(m.body.slice(prefixes.find(prefix => m.body.toLowerCase().startsWith(prefix.toLowerCase())).length)).trim().split(' ').shift().toLowerCase() : m.body.trim().split(' ').shift().toLowerCase();
         const args = m.body.trim().split(/ +/).slice(1);
+        const argsSplit = m.body.trim().split(/ +/)
 
 		const q = args.join(' ')
 		const senderNumber = m.sender.split('@')[0]
@@ -66,7 +67,7 @@ module.exports = async(sock, m, store) => {
         
         if (commandName.toLowerCase() === 'saff') {
           if (isOwner) {
-            const [_, state] = commandArgs
+            const [_, state] = argsSplit
             if (state === 'on' || state === 'off') {
               const isEnabled = state === 'on';
               if (areCommandsEnabled === isEnabled) {
