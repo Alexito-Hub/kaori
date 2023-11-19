@@ -1,3 +1,5 @@
+const config = require('../config.js')
+
 module.exports = {
     name: 'time',
     description: 'Muestra el tiempo de actividad',
