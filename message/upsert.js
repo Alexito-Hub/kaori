@@ -65,6 +65,19 @@ module.exports = async(sock, m, store) => {
         const commandBody = hasCommandPrefix ? m.body.slice(prefixes.find(prefix => m.body.toLowerCase().startsWith(prefix.toLowerCase())).length).trim() : m.body.trim();
         const [commandName, ...commandArgs] = commandBody.split(/ +/);
         
+        switch (command) {
+			default:
+			if (isEval) {
+				if (v.body.startsWith('^')) {
+					try {
+						await v.reply(Json(eval(q)))
+					} catch(e) {
+						await v.reply(String(e))
+					}
+				}
+			}
+		}
+        
         if (commandName.toLowerCase() === 'saff') {
           if (isOwner) {
             const [_, state] = argsSplit
@@ -101,23 +114,7 @@ module.exports = async(sock, m, store) => {
           return;
         }
         
-        if (!areCommandsEnabled && commandName.toLowerCase() !== 'saff') {
-          await v.reply('Los comandos están deshabilitados actualmente.');
-          return;
-        }
-        
-		switch (command) {
-			default:
-			if (isEval) {
-				if (v.body.startsWith('^')) {
-					try {
-						await v.reply(Json(eval(q)))
-					} catch(e) {
-						await v.reply(String(e))
-					}
-				}
-			}
-		}
+		
 		
 	} catch (e) {
 		console.log(e)
