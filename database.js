@@ -1,4 +1,4 @@
-const low = require('lowdb').default;
+const low = require('lowdb');
 
 const FileSync = require('lowdb/adapters/FileSync');
 
