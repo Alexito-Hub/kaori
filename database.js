@@ -1,4 +1,4 @@
-import { default as low } from 'lowdb';
+const low = require('lowdb').default;
 
 const FileSync = require('lowdb/adapters/FileSync');
 
