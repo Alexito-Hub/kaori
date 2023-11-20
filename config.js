@@ -1,4 +1,7 @@
-global.prefix = ['#', '!', '?', '/', '.']
+const db = require('./database');
 
-global.owner = ['51968374620']
-global.staff = ['595985902159', '5213113240456', '51901843440', '13476665855']
+global.prefix = db.get('prefixes').value();
+global.owner = db.get('owner').value();
+global.staff = db.get('staff').value();
+global.areCommandsEnabled = db.get('areCommandsEnabled').value();
+global.versions = db.get('versions').value();

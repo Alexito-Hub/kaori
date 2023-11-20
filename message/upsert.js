@@ -3,6 +3,7 @@ const config = require('../config');
 const fs = require('fs')
 const path = require('path');
 const util = require('util')
+
 const configFile = path.join(__dirname, 'config.json');
 
 const { Json, removeAccents } = require('../lib/functions')
@@ -12,6 +13,9 @@ let areCommandsEnabled = true;
 
 const commands = [];
 
+function saveConfig(data) {
+  fs.writeFileSync(configFile, JSON.stringify(data, null, 2));
+}
 function getCommandInfo(commandName) {
   return commands.find(cmd => cmd.name === commandName || (cmd.aliases && cmd.aliases.includes(commandName)));
 }
@@ -22,8 +26,6 @@ for (const file of commandFiles) {
   const command = require(path.join(__dirname, 'commands', file));
   commands.push(command);
 }
-
-
 
 module.exports = async(sock, m, store) => {
 	try {
