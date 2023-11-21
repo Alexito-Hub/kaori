@@ -8,9 +8,8 @@ const configData = {
     }
 }
 
-async (sock) => {
-    const db = await JSONPreset('db.json', configData)
-    await db.write()
-}
+
+const db = async (sock) =>  await JSONPreset('db.json', configData)
+async (sock) => await db.write()
 
 module.exports = db;
