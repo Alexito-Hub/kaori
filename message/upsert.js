@@ -1,4 +1,5 @@
-const config = require('../config');
+require('../config');
+require('../database')
 
 const fs = require('fs')
 const path = require('path');
