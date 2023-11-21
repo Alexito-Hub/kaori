@@ -1,5 +1,4 @@
-const { Low, JSONFile } = require('lowdb')
-const FileSync = require('lowdb/adapters/FileSync')
+import { Low, JSONFile } from 'lowdb'
 
 type Data = {
   config: { prefixes: string, owner: string, staff: string }[]
