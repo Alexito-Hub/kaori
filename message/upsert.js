@@ -1,9 +1,8 @@
+require('../config');
+
 const fs = require('fs')
 const path = require('path');
 const util = require('util')
-require('../config');
-require('../database');
-
 
 
 const { Json, removeAccents } = require('../lib/functions')
