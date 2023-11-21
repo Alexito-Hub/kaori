@@ -2,7 +2,6 @@
   "scripts": {
     "start": "node index.js"
   },
-  "type": "module",
   "dependencies": {
     "@whiskeysockets/baileys": "^6.4.0",
     "axios": "^1.6.2",
