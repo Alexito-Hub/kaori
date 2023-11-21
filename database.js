@@ -15,4 +15,4 @@
     async () => await db.write()
 
     module.exports = db;
-})
+})()

@@ -1,4 +1,4 @@
-require('../database');
+require('./database');
 
 const fs = require('fs')
 const path = require('path');
