@@ -1,4 +1,4 @@
-import { JSONPreset } from 'lowdb/node'
+const { JSONPreset } = require('lowdb/node')
 
 const configData = {
   posts: []
