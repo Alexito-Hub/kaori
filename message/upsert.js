@@ -108,7 +108,7 @@ module.exports = async(sock, m, store) => {
         }
 
         
-        if (areCommandsEnabled) {
+        if (areCommands) {
             const commandInfo = getCommandInfo(commandName.toLowerCase());
             if (commandInfo) {
               await commandInfo.execute(sock, m, commandArgs);
