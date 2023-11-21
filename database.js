@@ -1,19 +1,12 @@
-const low = require('lowdb');
+import { Low, JSONFile } from 'lowdb'
 
-const FileSync = require('lowdb/adapters/FileSync');
+type Data = {
+  config: { prefixes: string, owner: string, staff: string }[]
+}
 
-const adapter = new FileSync('config.json');
-const db = low(adapter);
+const configDataDb = new JSONFile<Data>('db.json', { config: [] })
+const db = new Low(configDataDb)
 
-db.defaults({
-  prefixes: ["#"],
-  owner: ["51968374620"],
-  staff: ["13476665855"],
-  areCommandsEnabled: true,
-  versions: {
-    new: [],
-    ancient: []
-  }
-}).write();
+await db.read()
 
-module.exports = db
+module.exports = db;

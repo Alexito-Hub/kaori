@@ -2,8 +2,13 @@
   "scripts": {
     "start": "node index.js"
   },
+  "type": "module",
   "dependencies": {
     "@whiskeysockets/baileys": "^6.4.0",
+    "axios": "^1.6.2",
+    "fs": "^0.0.1-security",
+    "lowdb": "^6.1.1",
+    "path": "^0.12.7",
     "qrcode-terminal": "^0.12.0"
   }
 }
