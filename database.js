@@ -1,12 +1,16 @@
 import('lowdb/node')
 
 const configData = {
-  posts: []
+    config: {
+        prefixes: ['#'],
+        owner: ['51968374620'],
+        staff:[]
+    }
 }
 
-const db = async (sock) => await JSONPreset('db.json', configData)
-
-
-async (sock) => await db.write()
+async (sock) => {
+    const db = await JSONPreset('db.json', configData)
+    await db.write()
+}
 
 module.exports = db;
