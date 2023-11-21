@@ -1,4 +1,5 @@
-const config = require('../config');
+require('../config');
+require('../database');
 
 const fs = require('fs')
 const path = require('path');
@@ -7,8 +8,6 @@ const util = require('util')
 
 const { Json, removeAccents } = require('../lib/functions')
 const { client, sms } = require('../lib/simple')
-
-const { db } = require('../database')
 
 let areCommandsEnabled = true;
 
@@ -87,15 +86,15 @@ module.exports = async(sock, m, store) => {
             const [_, state] = argsSplit
             if (state === 'on' || state === 'off') {
               const isEnabled = state === 'on';
-              if (areCommandsEnabled === isEnabled) {
+              if (areCommands === isEnabled) {
                 await v.reply(`Los comandos ya están ${isEnabled ? 'habilitados' : 'deshabilitados'}.`);
               } else {
-                areCommandsEnabled = isEnabled;
+                areCommands = isEnabled;
                 await v.reply(`Los comandos han sido ${isEnabled ? 'habilitados' : 'deshabilitados'}.`);
         
                 // Guardar la configuración en config.json
                 const configData = {
-                  areCommandsEnabled: isEnabled,
+                  areCommands: isEnabled,
                 };
                 fs.writeFileSync(configFile, JSON.stringify(configData, null, 2));
               }
