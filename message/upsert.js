@@ -1,9 +1,9 @@
 require('../config');
-require('../database')
 
 const fs = require('fs')
 const path = require('path');
 const util = require('util')
+const db = require('../database')
 
 const configFile = path.join(__dirname, 'config.json');
 
