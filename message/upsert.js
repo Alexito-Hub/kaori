@@ -1,4 +1,4 @@
-require('../config');
+const config = require('../config');
 
 const fs = require('fs')
 const path = require('path');
@@ -8,7 +8,7 @@ const util = require('util')
 const { Json, removeAccents } = require('../lib/functions')
 const { client, sms } = require('../lib/simple')
 
-require('../database')
+const { db } = require('../database')
 
 let areCommandsEnabled = true;
 
