@@ -1,4 +1,4 @@
-require('../config.js')
+require('../config')
 
 module.exports = {
     name: 'menu',

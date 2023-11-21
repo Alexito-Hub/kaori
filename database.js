@@ -1,5 +1,7 @@
 ;( async () => {
     const JSONPreset = await import("lowdb/node")
+    const fs = require('fs')
+    const path = require('path');
     
     const configData = {
         config: {

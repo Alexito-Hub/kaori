@@ -1,5 +1,5 @@
-require('../config.js');
-require('../database.js')
+require('../config');
+require('../database')
 
 const fs = require('fs')
 const path = require('path');
