@@ -1,10 +1,11 @@
-const { Low, JSONFile } = require('lowdb')
-const FileSync = require('lowdb/adapters/FileSync')
+import { JSONPreset } from 'lowdb/node'
 
-const adapter = new JSONFile('db.json', { users: [] })
+const configData = {
+  posts: []
+}
 
-const db = new Low(configDataDb)
+const db = await JSONPreset('db.json', configData)
 
-await db.read()
+db.data.posts.push({ id: 1, title: 'lowdb es genial' })
 
-module.exports = db;
+await db.write()
