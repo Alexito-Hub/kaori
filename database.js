@@ -1,7 +1,7 @@
 ;(async () => {
     
     try {
-        const JSONPreset = await import("lowdb/node");
+        const JSONPreset = await import("lowdb/node").default;
         const fs = require("fs");
         const path = require("path");
     
