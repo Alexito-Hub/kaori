@@ -11,8 +11,8 @@
         }
     }
     
-    const db = async (sock) =>  await JSONPreset('db.json', configData)
-    async (sock) => await db.write()
+    const db = async () =>  await JSONPreset('db.json', configData)
+    async () => await db.write()
 
     module.exports = db;
 })
