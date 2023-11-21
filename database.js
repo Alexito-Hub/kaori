@@ -7,4 +7,4 @@ const configData = {
 const db = async (sock) => await JSONPreset('db.json', configData)
 
 
-await db.write()
+async (sock) => await db.write()
