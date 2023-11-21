@@ -1,4 +1,4 @@
-const db = require('./database');
+const { db } = require('../database');
 
 global.prefix = ['#']
 global.owner = ['51968374620']
