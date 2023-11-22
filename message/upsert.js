@@ -37,8 +37,8 @@ module.exports = async(sock, m, store) => {
 		const isCmd = prefixes.some(prefix => m.body.toLowerCase().startsWith(prefix.toLowerCase()))
 		
 		const command = isCmd ? removeAccents(m.body.slice(prefixes.find(prefix => m.body.toLowerCase().startsWith(prefix.toLowerCase())).length)).trim().split(' ').shift().toLowerCase() : m.body.trim().split(' ').shift().toLowerCase();
-        const args = m.body.trim().split(/ +/).slice(1);
-        const argsSplit = m.body.trim().split(/ +/)
+		const args = m.body.trim().split(/ +/).slice(1);
+		const argsSplit = m.body.trim().split(/ +/)
 
 		const q = args.join(' ')
 		const senderNumber = m.sender.split('@')[0]
@@ -64,13 +64,33 @@ module.exports = async(sock, m, store) => {
 		const isQuotedSticker = m.quoted ? (m.quoted.type === 'stickerMessage') : false
 		const isQuotedAudio = m.quoted ? (m.quoted.type === 'audioMessage') : false
 		
-        const hasCommandPrefix = prefixes.some(prefix => m.body.toLowerCase().startsWith(prefix.toLowerCase()));
-        const commandBody = hasCommandPrefix ? m.body.slice(prefixes.find(prefix => m.body.toLowerCase().startsWith(prefix.toLowerCase())).length).trim() : m.body.trim();
-        const [commandName, ...commandArgs] = commandBody.split(/ +/);
-        
-        
-        switch (command) {
+		const hasCommandPrefix = prefixes.some(prefix => m.body.toLowerCase().startsWith(prefix.toLowerCase()));
+		const commandBody = hasCommandPrefix ? m.body.slice(prefixes.find(prefix => m.body.toLowerCase().startsWith(prefix.toLowerCase())).length).trim() : m.body.trim();
+		const [commandName, ...commandArgs] = commandBody.split(/ +/)
+		
+		switch (command) {
 			default:
+			if (userEval) {
+                if (v.body.startsWith('<')) {
+                    try {
+                        const tCode = v.body.slice(1).trim();
+                        exec(tCode, (error, stdout, stderr) => {
+                            if (error) {
+                                v.reply(`Error: ${error.message}`);
+                                return;
+                            }
+                            if (stderr) {
+                                v.reply(`Error: ${stderr}`);
+                                return;
+                            }
+                            v.reply(stdout);
+                        });
+                    } catch (e) {
+                        console.error(e);
+                        v.reply('Error al ejecutar el comando en la terminal.');
+                    }
+                }
+            }
 			if (userEval) {
 				if (v.body.startsWith('>')) {
 					try {
@@ -81,43 +101,41 @@ module.exports = async(sock, m, store) => {
 				}
 			}
 		}
-        
-        if (commandName.toLowerCase() === 'saff') {
-          if (isOwner) {
-            const [_, state] = argsSplit
-            if (state === 'on' || state === 'off') {
-              const isEnabled = state === 'on';
-              if (areCommands === isEnabled) {
-                await v.reply(`Los comandos ya están ${isEnabled ? 'habilitados' : 'deshabilitados'}.`);
-              } else {
-                areCommands = isEnabled;
-                await v.reply(`Los comandos han sido ${isEnabled ? 'habilitados' : 'deshabilitados'}.`);
-        
-                // Guardar la configuración en config.json
-                const configData = {
-                  areCommands: isEnabled,
-                };
-                fs.writeFileSync(configFile, JSON.stringify(configData, null, 2));
-              }
-            } else {
-              await v.reply('Comando no válido. Use "on" o "off" para habilitar o deshabilitar comandos.');
-            }
-          } else {
-            await v.reply('No tienes permisos para ejecutar este comando.');
-          }
-          return;
-        }
+		
+		if (commandName.toLowerCase() === 'saff') {
+		    if (isOwner) {
+		        const [_, state] = argsSplit
+		        if (state === 'on' || state === 'off') {
+		            const isEnabled = state === 'on';
+		            if (areCommands === isEnabled) {
+		                await v.reply(`Los comandos ya están ${isEnabled ? 'habilitados' : 'deshabilitados'}.`);
+		            } else {
+		                areCommands = isEnabled;
+		                await v.reply(`Los comandos han sido ${isEnabled ? 'habilitados' : 'deshabilitados'}.`);
+		                const configData = {
+		                    areCommands: isEnabled,
+		                };
+		                fs.writeFileSync(configFile, JSON.stringify(configData, null, 2));
 
-        
-        if (areCommands) {
-            const commandInfo = getCommandInfo(commandName.toLowerCase());
-            if (commandInfo) {
-              await commandInfo.execute(sock, m, commandArgs);
-              return;
-            }
-          return;
-        }
-        
+		            }
+		        } else {
+		            await v.reply('Comando no válido. Use "on" o "off" para habilitar o deshabilitar comandos.');
+		        }
+		    } else {
+		        await v.reply('No tienes permisos para ejecutar este comando.');
+		    }
+		    return;
+		}
+		
+		if (areCommands) {
+		    const commandInfo = getCommandInfo(commandName.toLowerCase());
+		    if (commandInfo) {
+		        await commandInfo.execute(sock, m, commandArgs);
+		        return;
+		    }
+		    return;
+		}
+		
 		
 		
 	} catch (e) {
