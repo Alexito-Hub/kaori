@@ -4,7 +4,7 @@ const osUtils = require('os-utils');
 module.exports = {
     name: 'systeminfo',
     description: 'Muestra información del sistema.',
-    aliases: ['sistema', 'system', 'info']
+    aliases: ['sistema', 'system', 'info'],
     async execute(sock, m) => {
         const totalMemory = (os.totalmem() / 1e9).toFixed(2);
         const freeMemory = (os.freemem() / 1e9).toFixed(2);
