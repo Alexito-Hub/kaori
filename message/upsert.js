@@ -4,7 +4,7 @@ const fs = require('fs')
 const path = require('path');
 const util = require('util')
 
-const { db} = require('../database')
+const { db } = require('../database')
 
 const { Json, removeAccents } = require('../lib/functions')
 const { client, sms } = require('../lib/simple')
@@ -54,7 +54,7 @@ module.exports = async(sock, m, store) => {
 		const isBotAdmin = m.isGroup ? groupAdmins.includes(botNumber + '@s.whatsapp.net') : false
 		const isOwner = owner.includes(senderNumber) || isMe
 		const isStaff = staff.includes(senderNumber) || isOwner
-		const isEval = eval.includes(senderNumber) || isStaff
+		const isEval = evaluate.includes(senderNumber) || isStaff
 		const userEval = isEval
 		
 		const isMedia = (m.type === 'imageMessage' || m.type === 'videoMessage')
