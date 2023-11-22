@@ -5,7 +5,7 @@ module.exports = {
     name: 'systeminfo',
     description: 'Muestra información del sistema.',
     aliases: ['sistema', 'system', 'info']
-    execute: async (sock, m) => {
+    async execute(sock, m) => {
         const totalMemory = (os.totalmem() / 1e9).toFixed(2);
         const freeMemory = (os.freemem() / 1e9).toFixed(2);
         const usedMemory = (totalMemory - freeMemory).toFixed(2);
