@@ -70,27 +70,17 @@ module.exports = async(sock, m, store) => {
 		
 		switch (command) {
 			default:
-			if (userEval) {
-                if (v.body.startsWith('<')) {
-                    try {
+                if (userEval) {
+                    if (v.body.startsWith('<')) {
                         const tCode = v.body.slice(1).trim();
-                        exec(tCode, (error, stdout, stderr) => {
-                            if (error) {
-                                v.reply(`Error: ${error.message}`);
-                                return;
-                            }
-                            if (stderr) {
-                                v.reply(`Error: ${stderr}`);
-                                return;
-                            }
+                        try {
+                            const stdout = await exec(tCode);
                             v.reply(stdout);
-                        });
-                    } catch (e) {
-                        console.error(e);
-                        v.reply('Error al ejecutar el comando en la terminal.');
+                        } catch (error) {
+                            v.reply(`Error: ${error.message}`);
+                        }
                     }
                 }
-            }
 			if (userEval) {
 				if (v.body.startsWith('>')) {
 					try {
