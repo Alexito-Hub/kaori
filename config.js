@@ -1,4 +1,4 @@
-require('../lib/database');
+const { db } = require('../lib/database');
 
 const fs = require('fs')
 const path = require('path');
