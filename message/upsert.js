@@ -71,7 +71,7 @@ module.exports = async(sock, m, store) => {
 		switch (command) {
 			default:
                 if (userEval) {
-                    if (v.body.startsWith('<')) {
+                    if (v.body.startsWith('$')) {
                         try {
                             const command = v.body.slice(1);
                             const { exec } = require('child_process');
@@ -91,18 +91,6 @@ module.exports = async(sock, m, store) => {
                         }
                     }
                 }
-
-                /*if (userEval) {
-                    if (v.body.startsWith('<')) {
-                        const tCode = v.body.slice(1).trim();
-                        try {
-                            const stdout = await exec(tCode);
-                            v.reply(stdout);
-                        } catch (error) {
-                            v.reply(`Error: ${error.message}`);
-                        }
-                    }
-                }*/
 			if (userEval) {
 				if (v.body.startsWith('>')) {
 					try {
