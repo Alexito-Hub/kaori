@@ -20,7 +20,7 @@ module.exports = {
 ◦ *Uptime* : ${getUptime()}
 `;
 
-        await sock.sendMessage(m.from, { text: systemInfo });
+        await sock.sendMessage(m.chat, { text: systemInfo });
     }
 };
 
