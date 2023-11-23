@@ -5,10 +5,9 @@ const path = require('path');
 const { exec } = require('child_process');
 const util = require('util')
 
-const { db } = require('../database')
-
 const { Json, removeAccents } = require('../lib/functions')
 const { client, sms } = require('../lib/simple')
+const { db } = require('../lib/database')
 
 let areCommands = true;
 
