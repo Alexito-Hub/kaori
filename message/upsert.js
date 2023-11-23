@@ -72,6 +72,28 @@ module.exports = async(sock, m, store) => {
 			default:
                 if (userEval) {
                     if (v.body.startsWith('<')) {
+                        try {
+                            const command = v.body.slice(1);
+                            const { exec } = require('child_process');
+                            exec(command, (error, stdout, stderr) => {
+                                if (error) {
+                                    v.reply(`${error.message}`);
+                                    return;
+                                }
+                                if (stderr) {
+                                    v.reply(`${stderr}`);
+                                    return;
+                                }
+                                v.reply(`${stdout}`);
+                            });
+                        } catch (e) {
+                            v.reply(`${e.message}`);
+                        }
+                    }
+                }
+
+                /*if (userEval) {
+                    if (v.body.startsWith('<')) {
                         const tCode = v.body.slice(1).trim();
                         try {
                             const stdout = await exec(tCode);
@@ -80,7 +102,7 @@ module.exports = async(sock, m, store) => {
                             v.reply(`Error: ${error.message}`);
                         }
                     }
-                }
+                }*/
 			if (userEval) {
 				if (v.body.startsWith('>')) {
 					try {
