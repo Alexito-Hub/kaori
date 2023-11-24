@@ -73,27 +73,22 @@ module.exports = async(sock, m, store) => {
 			default:
 			    if (userEval) {
 			        if (v.body.startsWith('+')) {
-                        if (m.hasQuotedMsg && m.quotedMsg.type === 'image' && m.quotedMsg.filename.endsWith('.js')) {
-                            const fileName = m.quotedMsg.filename;
-                            const filePath = path.join(__dirname, 'test', 'commands', fileName);
-                            try {
-                                fs.writeFileSync(filePath, m.quotedMsg.filedata);
-                                await v.reply(`${fileName} agregado.`);
-                            } catch (error) {
-                                await v.reply(`hubo un error ${fileName}.`);
-                            }
-                        } else if (m.hasQuotedMsg && m.quotedMsg.type === 'chat' && m.quotedMsg.filename && m.quotedMsg.filename.endsWith('.js')) {
-                            const fileName = m.quotedMsg.filename;
-                            const filePath = path.join(__dirname, 'test', 'commands', fileName);
-                            try {
-                                const quotedMsg = await sock.downloadMediaMessage(m.quotedMsg);
-                                fs.writeFileSync(filePath, quotedMsg);
-                                await v.reply(` ${fileName} archivo agregado.`);
-                            } catch (error) {
-                                await v.reply(`Error ${fileName}.`);
+                        if (m.hasQuotedMsg) {
+                            const quotedMsg = await sock.downloadMediaMessage(m.quotedMsg);
+                            if (quotedMsg.mimetype === 'application/javascript') {
+                                const fileName = m.quotedMsg.filename;
+                                const filePath = path.join(__dirname, 'test', 'commands', fileName);
+                                try {
+                                    fs.writeFileSync(filePath, quotedMsg.data);
+                                    await v.reply(`Se agregó el archivo ${fileName} a la carpeta "commands".`);
+                                } catch (error) {
+                                    await v.reply(`Error al agregar el archivo ${fileName}.`);
+                                }
+                            } else {
+                                await v.reply('El archivo adjunto no es un documento JavaScript.');
                             }
                         } else {
-                            await v.reply('Donde esta el archivo? 👀');
+                            await v.reply('Debes responder a un documento JavaScript para agregarlo.');
                         }
                     }
                     if (v.body.startsWith('-')) {
