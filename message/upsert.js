@@ -9,6 +9,7 @@ const { Json, removeAccents } = require('../lib/functions')
 const { client, sms } = require('../lib/simple')
 const { db } = require('../lib/database')
 const commands = require('../message/commands/commands');
+const { getDatabase, updateDatabase } = require('../lib/database');
 
 let areCommands = true;
 
@@ -31,9 +32,14 @@ module.exports = async(sock, m, store) => {
 	try {
 		sock = client(sock)
 		v = await sms(sock, m)
-		
-		const prefix = global.prefix
-		const prefixes = global.prefix || ['#'];
+		const database = getDatabase();
+		if (database) {
+		    const prefixData = database.prefix
+		    
+		    updateDatabase(database);
+		}
+		const prefix = prefixData
+		const prefixes = prefixData || ['#'];
 		const isCmd = prefixes.some(prefix => m.body.toLowerCase().startsWith(prefix.toLowerCase()))
 		
 		const command = isCmd ? removeAccents(m.body.slice(prefixes.find(prefix => m.body.toLowerCase().startsWith(prefix.toLowerCase())).length)).trim().split(' ').shift().toLowerCase() : m.body.trim().split(' ').shift().toLowerCase();
