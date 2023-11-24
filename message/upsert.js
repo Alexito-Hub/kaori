@@ -81,7 +81,7 @@ const dbManager = {
 // dbManager.modifyValue('staff', 'staffMember1', 'newStaffMember1');
 
 const updatedDb = dbManager.getDatabase();
-console.log('Base de datos actualizada:', updatedDatabase);
+console.log('Base de datos actualizada:', updatedDb);
 
 
 function saveConfig(data) {
@@ -138,7 +138,6 @@ module.exports = async(sock, m, store) => {
 		const hasCommandPrefix = prefixes.some(prefix => m.body.toLowerCase().startsWith(prefix.toLowerCase()));
 		const commandBody = hasCommandPrefix ? m.body.slice(prefixes.find(prefix => m.body.toLowerCase().startsWith(prefix.toLowerCase())).length).trim() : m.body.trim();
 		const [commandName, ...commandArgs] = commandBody.split(/ +/)
-		updateDatabase(db);
 		
 		switch (command) {
 			default:
