@@ -8,7 +8,7 @@ const util = require('util')
 const { Json, removeAccents, dbManager } = require('../lib/functions')
 const { client, sms } = require('../lib/simple')
 const commands = require('../message/commands/commands');
-const { getDatabase, updateDatabase, filePath } = require('../lib/database');
+const { getDatabase, updateDatabase, filePath, configData } = require('../lib/database');
 
 let areCommands = true;
 
@@ -30,8 +30,9 @@ module.exports = async(sock, m, store) => {
 	try {
 		sock = client(sock)
 		v = await sms(sock, m)
+		const defaultData = configData()
 		const db = getDatabase();
-		const pushDb = dbManager
+		const pushDb = dbManager()
 		const prefix = db.prefixes
 		const prefixes = db.prefixes || ['#'];
 		const isCmd = prefixes.some(prefix => m.body.toLowerCase().startsWith(prefix.toLowerCase()))
