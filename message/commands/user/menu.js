@@ -1,4 +1,4 @@
-require('../../config')
+require('../../../config')
 
 module.exports = {
     name: 'menu',
