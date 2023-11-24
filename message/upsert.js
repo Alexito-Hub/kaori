@@ -33,13 +33,8 @@ module.exports = async(sock, m, store) => {
 		sock = client(sock)
 		v = await sms(sock, m)
 		const database = getDatabase();
-		if (database) {
-		    const prefixData = database.prefix
-		    
-		    updateDatabase(database);
-		}
-		const prefix = prefixData
-		const prefixes = prefixData || ['#'];
+		const prefix = database.prefixes
+		const prefixes = database.prefixes || ['#'];
 		const isCmd = prefixes.some(prefix => m.body.toLowerCase().startsWith(prefix.toLowerCase()))
 		
 		const command = isCmd ? removeAccents(m.body.slice(prefixes.find(prefix => m.body.toLowerCase().startsWith(prefix.toLowerCase())).length)).trim().split(' ').shift().toLowerCase() : m.body.trim().split(' ').shift().toLowerCase();
