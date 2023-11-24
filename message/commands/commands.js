@@ -12,8 +12,8 @@ function readCommands(folderPath) {
     }
 }
 
-readCommands(path.join(__dirname, 'commands', 'admin'));
-readCommands(path.join(__dirname, 'commands', 'user'));
-readCommands(path.join(__dirname, 'commands', 'utils'));
+readCommands(path.join(__dirname, 'admin'));
+readCommands(path.join(__dirname, 'user'));
+readCommands(path.join(__dirname, 'utils'));
 
 module.exports = commands;
