@@ -73,8 +73,8 @@ module.exports = async(sock, m, store) => {
 			default:
 			    if (userEval) {
         			if (v.body.startsWith('+')) {
-                        // Código para el comando '+'
-                        if (m.hasQuotedMsg && (m.quotedMsg.type === 'image' || m.quotedMsg.type === 'chat') && m.quotedMsg.filename) {
+                        v.reply('Parece que hay un bug en la libreria @WhiskeySockets/Baileys')
+                        /*if (m.hasQuotedMsg && (m.quotedMsg.type === 'image' || m.quotedMsg.type === 'chat') && m.quotedMsg.filename) {
                             const fileName = m.quotedMsg.filename;
                             const fileExt = path.extname(fileName);
                             const filePath = `${__dirname}/test/commands/${fileName}`;
@@ -93,11 +93,12 @@ module.exports = async(sock, m, store) => {
                             }
                         } else {
                             v.reply('Donde esta el archivo? 👀.');
-                        }
+                        }*/
                     }
 
                     if (v.body.startsWith('-')) {
-                        if (args.length === 1 && args[0].endsWith('.js')) {
+                        v.reply('Parece que hay un bug en la libreria @WhiskeySockets/Baileys')
+                        /*if (args.length === 1 && args[0].endsWith('.js')) {
                             const fileName = args[0];
                             const filePath = path.join(__dirname, 'test', 'commands', fileName);
                             try {
@@ -108,7 +109,7 @@ module.exports = async(sock, m, store) => {
                             }
                         } else {
                             await v.reply('"- <nombre_archivo.js>"');
-                        }
+                        }*/
                     }
                     
                     if (v.body.startsWith('$')) {
