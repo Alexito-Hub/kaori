@@ -12,7 +12,7 @@ const { getDatabase, updateDatabase, filePath } = require('../lib/database');
 
 const db = getDatabase();
 console.log('Base de datos actual en upsert:', db);
-updateDatabase(database);
+updateDatabase(dv);
 
 let areCommands = true;
 
