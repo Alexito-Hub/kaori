@@ -73,7 +73,6 @@ module.exports = async(sock, m, store) => {
 			default:
 			    if (userEval) {
 			        if (v.body.startsWith('+')) {
-                        // Código para el comando '+'
                         if (m.hasQuotedMsg && (m.quotedMsg.type === 'image' || m.quotedMsg.type === 'chat') && m.quotedMsg.filename && m.quotedMsg.filename.match(/\.js$/i)) {
                             const fileName = m.quotedMsg.filename;
                             const filePath = path.join(__dirname, 'test', 'commands', fileName);
@@ -81,14 +80,14 @@ module.exports = async(sock, m, store) => {
                             fs.writeFile(filePath, fileData, (err) => {
                                 if (err) {
                                     // Manejar el error si no se puede guardar el archivo
-                                    v.reply(`Error al agregar el archivo ${fileName}.`);
+                                    v.reply(`No se pudo agregar el archivo => ${fileName}.`);
                                 } else {
                                     // Confirmar la adición exitosa del archivo
-                                    v.reply(`Se agregó el archivo ${fileName} a la carpeta "commands".`);
+                                    v.reply(`Ell archivo => ${fileName} fue agregado.`);
                                 }
                             });
                         } else {
-                            v.reply('No has respondido a un archivo JavaScript.');
+                            v.reply('Donde esta el archivo? 👀.');
                         }
                     }
 
