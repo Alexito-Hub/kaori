@@ -11,7 +11,7 @@ const commands = require('../message/commands/commands');
 const { getDatabase, updateDatabase, filePath } = require('../lib/database');
 
 const db = getDatabase();
-console.log('Base de datos actual en upsert:', database);
+console.log('Base de datos actual en upsert:', db);
 updateDatabase(database);
 
 let areCommands = true;
