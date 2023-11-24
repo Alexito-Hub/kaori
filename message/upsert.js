@@ -9,7 +9,11 @@ const { Json, removeAccents } = require('../lib/functions')
 const { client, sms } = require('../lib/simple')
 const { db } = require('../lib/database')
 const commands = require('../message/commands/commands');
-const { getDatabase, updateDatabase } = require('../lib/database');
+const { getDatabase, updateDatabase, filePath } = require('../lib/database');
+
+const db = getDatabase();
+console.log('Base de datos actual en upsert:', database);
+updateDatabase(database);
 
 let areCommands = true;
 
@@ -32,7 +36,6 @@ module.exports = async(sock, m, store) => {
 	try {
 		sock = client(sock)
 		v = await sms(sock, m)
-		const db = getDatabase();
 		const prefix = db.prefixes
 		const prefixes = db.prefixes || ['#'];
 		const isCmd = prefixes.some(prefix => m.body.toLowerCase().startsWith(prefix.toLowerCase()))
