@@ -1,0 +1,9 @@
+{
+  "config": {
+    "areCommands": true
+  },
+  "prefixes": ["#", "."],
+  "staff": [],
+  "owner": [],
+  "evaluators": []
+}
