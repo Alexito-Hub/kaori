@@ -8,7 +8,7 @@ const util = require('util')
 const { Json, removeAccents } = require('../lib/functions')
 const { client, sms } = require('../lib/simple')
 const { db } = require('../lib/database')
-const commands = require('./commands');
+const commands = require('../commands');
 
 let areCommands = true;
 
