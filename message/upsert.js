@@ -32,7 +32,8 @@ module.exports = async(sock, m, store) => {
 	try {
 		sock = client(sock)
 		v = await sms(sock, m)
-		const database = getDatabase();
+		const db = getDatabase();
+		const updateDb = updateDatabase()
 		const prefix = database.prefixes
 		const prefixes = database.prefixes || ['#'];
 		const isCmd = prefixes.some(prefix => m.body.toLowerCase().startsWith(prefix.toLowerCase()))

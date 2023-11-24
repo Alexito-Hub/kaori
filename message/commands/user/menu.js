@@ -1,5 +1,5 @@
-require('../../../config')
-
+const { getDatabase, updateDatabase } = require('../lib/database');
+const db = getDatabase()
 module.exports = {
     name: 'menu',
     description: 'Muestra un menú de comandos',
@@ -8,7 +8,7 @@ module.exports = {
     async execute(sock, m) {
         try {
             const user = m.sender.split('@')[0];
-            const prefixList = global.prefix.map(p => `[ ${p} ]`).join(' ');
+            const prefixList = db.prefixes.map(p => `[ ${p} ]`).join(' ');
 
             const uptimeSeconds = Math.floor(process.uptime());
             const days = Math.floor(uptimeSeconds / (24 * 60 * 60));
