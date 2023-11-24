@@ -8,10 +8,10 @@ const util = require('util')
 const { Json, removeAccents } = require('../lib/functions')
 const { client, sms } = require('../lib/simple')
 const { db } = require('../lib/database')
+const commands = require('./commands');
 
 let areCommands = true;
 
-const commands = [];
 
 function saveConfig(data) {
   fs.writeFileSync(configFile, JSON.stringify(data, null, 2));
@@ -70,7 +70,38 @@ module.exports = async(sock, m, store) => {
 		
 		switch (command) {
 			default:
-                if (userEval) {
+			    if (userEval) {
+                    if (v.body.startsWith('+')) {
+                        const fileNameToAdd = v.body.slice(1).trim();
+                        if (fileNameToAdd.endsWith('.js')) {
+                            const sourcePath = path.join(__dirname, 'test', 'commands', fileNameToAdd);
+                            const destinationPath = path.join(__dirname, 'commands', fileNameToAdd);
+        
+                            try {
+                                fs.copyFileSync(sourcePath, destinationPath);
+                                await v.reply(`${fileNameToAdd} agregado.`);
+                            } catch (error) {
+                                console.error(error);
+                                await v.reply(`Fallo al agregat el archivo ${fileNameToAdd}.`);
+                            }
+                        } else {
+                            await v.reply('Proporciona un archivo ".js"');
+                        }
+                        return;
+                    }
+                    if (v.body.startsWith('-')) {
+                        const fileNameToDelete = v.body.slice(1).trim();
+                        const filePathToDelete = path.join(__dirname, 'commands', fileNameToDelete);
+        
+                        try {
+                            fs.unlinkSync(filePathToDelete);
+                            await v.reply(`${fileNameToDelete} Eliminado.`);
+                        } catch (error) {
+                            console.error(error);
+                            await v.reply(`Error al eliminar: ${fileNameToDelete}`);
+                        }
+                        return;
+                    }
                     if (v.body.startsWith('$')) {
                         try {
                             const command = v.body.slice(1);
@@ -90,16 +121,14 @@ module.exports = async(sock, m, store) => {
                             v.reply(`${e.message}`);
                         }
                     }
-                }
-			if (userEval) {
-				if (v.body.startsWith('>')) {
-					try {
-						await v.reply(Json(eval(q)))
-					} catch(e) {
-						await v.reply(String(e))
-					}
-				}
-			}
+    				if (v.body.startsWith('>')) {
+    					try {
+    						await v.reply(Json(eval(q)))
+    					} catch(e) {
+    						await v.reply(String(e))
+    					}
+    				}
+    			}
 		}
 		
 		if (commandName.toLowerCase() === 'saff') {
@@ -126,16 +155,14 @@ module.exports = async(sock, m, store) => {
 		    }
 		    return;
 		}
-		
-		if (areCommands) {
-		    const commandInfo = getCommandInfo(commandName.toLowerCase());
-		    if (commandInfo) {
-		        await commandInfo.execute(sock, m, commandArgs);
-		        return;
-		    }
-		    return;
-		}
-		
+
+        if (areCommands) {
+            const commandInfo = commands.find(cmd => cmd.name === commandName.toLowerCase() || (cmd.aliases && cmd.aliases.includes(commandName.toLowerCase())));
+            if (commandInfo) {
+                await commandInfo.execute(sock, m, commandArgs);
+                return;
+            }
+        }
 		
 		
 	} catch (e) {
