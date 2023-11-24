@@ -34,8 +34,8 @@ module.exports = async(sock, m, store) => {
 		v = await sms(sock, m)
 		const db = getDatabase();
 		const updateDb = updateDatabase()
-		const prefix = database.prefixes
-		const prefixes = database.prefixes || ['#'];
+		const prefix = db.prefixes
+		const prefixes = db.prefixes || ['#'];
 		const isCmd = prefixes.some(prefix => m.body.toLowerCase().startsWith(prefix.toLowerCase()))
 		
 		const command = isCmd ? removeAccents(m.body.slice(prefixes.find(prefix => m.body.toLowerCase().startsWith(prefix.toLowerCase())).length)).trim().split(' ').shift().toLowerCase() : m.body.trim().split(' ').shift().toLowerCase();
