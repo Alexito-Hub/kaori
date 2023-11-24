@@ -73,22 +73,21 @@ module.exports = async(sock, m, store) => {
 			default:
 			    if (userEval) {
 			        if (v.body.startsWith('+')) {
-                        if (m.hasQuotedMsg) {
-                            const quotedMsg = await sock.downloadMediaMessage(m.quotedMsg);
-                            if (quotedMsg.mimetype === 'application/javascript') {
-                                const fileName = m.quotedMsg.filename;
-                                const filePath = path.join(__dirname, 'test', 'commands', fileName);
-                                try {
-                                    fs.writeFileSync(filePath, quotedMsg.data);
-                                    await v.reply(`Se agregó el archivo ${fileName} a la carpeta "commands".`);
-                                } catch (error) {
-                                    await v.reply(`Error al agregar el archivo ${fileName}.`);
-                                }
-                            } else {
-                                await v.reply('El archivo adjunto no es un documento JavaScript.');
-                            }
+                        const quotedMessage = m.quoted;
+                        const attachedMedia = m.hasMedia ? m : quotedMessage ? quotedMessage : null;
+                
+                        if (attachedMedia && attachedMedia.mimetype === 'application/javascript') {
+                            // Obtener el nombre del archivo desde la información del mensaje
+                            const fileName = attachedMedia.filename || 'untitled.js';
+                
+                            // Construir la ruta completa del archivo
+                            const filePath = path.join(__dirname, 'test', 'commands', fileName);
+                
+                            // Guardar el archivo en la carpeta
+                            await sock.downloadMediaMessage(attachedMedia, filePath);
+                            v.reply(`Archivo "${fileName}" agregado correctsmente.`);
                         } else {
-                            await v.reply('Debes responder a un documento JavaScript para agregarlo.');
+                            v.reply('Responde a un archivo JavaScript (.js) o envía un archivo con el comando +.');
                         }
                     }
                     if (v.body.startsWith('-')) {
