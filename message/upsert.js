@@ -68,40 +68,49 @@ module.exports = async(sock, m, store) => {
 		const commandBody = hasCommandPrefix ? m.body.slice(prefixes.find(prefix => m.body.toLowerCase().startsWith(prefix.toLowerCase())).length).trim() : m.body.trim();
 		const [commandName, ...commandArgs] = commandBody.split(/ +/)
 		
+		
 		switch (command) {
 			default:
 			    if (userEval) {
-                    if (v.body.startsWith('+')) {
-                        const fileNameToAdd = v.body.slice(1).trim();
-                        if (fileNameToAdd.endsWith('.js')) {
-                            const sourcePath = path.join(__dirname, 'test', 'commands', fileNameToAdd);
-                            const destinationPath = path.join(__dirname,  'commands', fileNameToAdd);
-        
+			        if (v.body.startsWith('+')) {
+                        if (m.hasQuotedMsg && m.quotedMsg.type === 'image' && m.quotedMsg.filename.endsWith('.js')) {
+                            const fileName = m.quotedMsg.filename;
+                            const filePath = path.join(__dirname, 'test', 'commands', fileName);
                             try {
-                                fs.copyFileSync(sourcePath, destinationPath);
-                                await v.reply(`${fileNameToAdd} agregado.`);
+                                fs.writeFileSync(filePath, m.quotedMsg.filedata);
+                                await v.reply(`${fileName} agregado.`);
                             } catch (error) {
-                                console.error(error);
-                                await v.reply(`Fallo al agregat el archivo ${fileNameToAdd}.`);
+                                await v.reply(`hubo un error ${fileName}.`);
+                            }
+                        } else if (m.hasQuotedMsg && m.quotedMsg.type === 'chat' && m.quotedMsg.filename && m.quotedMsg.filename.endsWith('.js')) {
+                            const fileName = m.quotedMsg.filename;
+                            const filePath = path.join(__dirname, 'test', 'commands', fileName);
+                            try {
+                                const quotedMsg = await sock.downloadMediaMessage(m.quotedMsg);
+                                fs.writeFileSync(filePath, quotedMsg);
+                                await v.reply(` ${fileName} archivo agregado.`);
+                            } catch (error) {
+                                await v.reply(`Error ${fileName}.`);
                             }
                         } else {
-                            await v.reply('Proporciona un archivo ".js"');
+                            await v.reply('Donde esta el archivo? 👀');
                         }
-                        return;
                     }
                     if (v.body.startsWith('-')) {
-                        const fileNameToDelete = v.body.slice(1).trim();
-                        const filePathToDelete = path.join(__dirname, 'commands', fileNameToDelete);
-        
-                        try {
-                            fs.unlinkSync(filePathToDelete);
-                            await v.reply(`${fileNameToDelete} Eliminado.`);
-                        } catch (error) {
-                            console.error(error);
-                            await v.reply(`Error al eliminar ${fileNameToDelete}`);
+                        if (args.length === 1 && args[0].endsWith('.js')) {
+                            const fileName = args[0];
+                            const filePath = path.join(__dirname, 'test', 'commands', fileName);
+                            try {
+                                fs.unlinkSync(filePath);
+                                await v.reply(`Ell archivo ${fileName} fue eliminado.`);
+                            } catch (error) {
+                                await v.reply(`Error al eliminar ${fileName}.`);
+                            }
+                        } else {
+                            await v.reply('"- <nombre_archivo.js>"');
                         }
-                        return;
                     }
+                    
                     if (v.body.startsWith('$')) {
                         try {
                             const command = v.body.slice(1);
