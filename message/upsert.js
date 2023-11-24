@@ -72,20 +72,25 @@ module.exports = async(sock, m, store) => {
 		switch (command) {
 			default:
 			    if (userEval) {
-			        if (v.body.startsWith('+')) {
-                        if (m.hasQuotedMsg && (m.quotedMsg.type === 'image' || m.quotedMsg.type === 'chat') && m.quotedMsg.filename && m.quotedMsg.filename.match(/\.js$/i)) {
+        			if (v.body.startsWith('+')) {
+                        // Código para el comando '+'
+                        if (m.hasQuotedMsg && (m.quotedMsg.type === 'image' || m.quotedMsg.type === 'chat') && m.quotedMsg.filename) {
                             const fileName = m.quotedMsg.filename;
-                            const filePath = path.join(__dirname, 'test', 'commands', fileName);
+                            const fileExt = path.extname(fileName);
+                            const filePath = `${__dirname}/test/commands/${fileName}`;
                             const fileData = m.quotedMsg.type === 'image' ? m.quotedMsg.filedata : await sock.downloadMediaMessage(m.quotedMsg);
-                            fs.writeFile(filePath, fileData, (err) => {
-                                if (err) {
+                            if (fileExt.match(/\.js$/i)) {
+                                try {
+                                    await fs.promises.writeFile(filePath, fileData);
+                                    // Confirmar la adición exitosa del archivo
+                                    v.reply(`El archivo => ${fileName} fue agregado`);
+                                } catch (err) {
                                     // Manejar el error si no se puede guardar el archivo
                                     v.reply(`No se pudo agregar el archivo => ${fileName}.`);
-                                } else {
-                                    // Confirmar la adición exitosa del archivo
-                                    v.reply(`Ell archivo => ${fileName} fue agregado.`);
                                 }
-                            });
+                            } else {
+                                v.reply('Este no es un archivo Javascript.');
+                            }
                         } else {
                             v.reply('Donde esta el archivo? 👀.');
                         }
