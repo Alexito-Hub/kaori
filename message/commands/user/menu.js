@@ -1,4 +1,4 @@
-const { getDatabase, updateDatabase } = require('../lib/database');
+const { getDatabase, updateDatabase } = require('../../../lib/database');
 const db = getDatabase()
 module.exports = {
     name: 'menu',
