@@ -10,12 +10,7 @@ const { client, sms } = require('../lib/simple')
 const commands = require('../message/commands/commands');
 const { getDatabase, updateDatabase, filePath } = require('../lib/database');
 
-const db = getDatabase();
-console.log('Base de datos actual en upsert:', db);
-updateDatabase(db);
-
 let areCommands = true;
-
 
 function saveConfig(data) {
   fs.writeFileSync(configFile, JSON.stringify(data, null, 2));
@@ -35,6 +30,7 @@ module.exports = async(sock, m, store) => {
 	try {
 		sock = client(sock)
 		v = await sms(sock, m)
+		const db = getDatabase();
 		const prefix = db.prefixes
 		const prefixes = db.prefixes || ['#'];
 		const isCmd = prefixes.some(prefix => m.body.toLowerCase().startsWith(prefix.toLowerCase()))
@@ -70,7 +66,7 @@ module.exports = async(sock, m, store) => {
 		const hasCommandPrefix = prefixes.some(prefix => m.body.toLowerCase().startsWith(prefix.toLowerCase()));
 		const commandBody = hasCommandPrefix ? m.body.slice(prefixes.find(prefix => m.body.toLowerCase().startsWith(prefix.toLowerCase())).length).trim() : m.body.trim();
 		const [commandName, ...commandArgs] = commandBody.split(/ +/)
-		
+		updateDatabase(db);
 		
 		switch (command) {
 			default:
