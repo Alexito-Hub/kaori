@@ -7,7 +7,6 @@ const util = require('util')
 
 const { Json, removeAccents } = require('../lib/functions')
 const { client, sms } = require('../lib/simple')
-const { db } = require('../lib/database')
 const commands = require('../message/commands/commands');
 const { getDatabase, updateDatabase, filePath } = require('../lib/database');
 
