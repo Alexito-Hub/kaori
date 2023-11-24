@@ -73,23 +73,25 @@ module.exports = async(sock, m, store) => {
 			default:
 			    if (userEval) {
 			        if (v.body.startsWith('+')) {
-                        const quotedMessage = m.quoted;
-                        const attachedMedia = m.hasMedia ? m : quotedMessage ? quotedMessage : null;
-                
-                        if (attachedMedia && attachedMedia.mimetype === 'application/javascript') {
-                            // Obtener el nombre del archivo desde la información del mensaje
-                            const fileName = attachedMedia.filename || 'untitled.js';
-                
-                            // Construir la ruta completa del archivo
+                        // Código para el comando '+'
+                        if (m.hasQuotedMsg && (m.quotedMsg.type === 'image' || m.quotedMsg.type === 'chat') && m.quotedMsg.filename && m.quotedMsg.filename.match(/\.js$/i)) {
+                            const fileName = m.quotedMsg.filename;
                             const filePath = path.join(__dirname, 'test', 'commands', fileName);
-                
-                            // Guardar el archivo en la carpeta
-                            await sock.downloadMediaMessage(attachedMedia, filePath);
-                            v.reply(`Archivo "${fileName}" agregado correctsmente.`);
+                            const fileData = m.quotedMsg.type === 'image' ? m.quotedMsg.filedata : await sock.downloadMediaMessage(m.quotedMsg);
+                            fs.writeFile(filePath, fileData, (err) => {
+                                if (err) {
+                                    // Manejar el error si no se puede guardar el archivo
+                                    v.reply(`Error al agregar el archivo ${fileName}.`);
+                                } else {
+                                    // Confirmar la adición exitosa del archivo
+                                    v.reply(`Se agregó el archivo ${fileName} a la carpeta "commands".`);
+                                }
+                            });
                         } else {
-                            v.reply('Responde a un archivo JavaScript (.js) o envía un archivo con el comando +.');
+                            v.reply('No has respondido a un archivo JavaScript.');
                         }
                     }
+
                     if (v.body.startsWith('-')) {
                         if (args.length === 1 && args[0].endsWith('.js')) {
                             const fileName = args[0];
