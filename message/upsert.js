@@ -12,78 +12,6 @@ const { getDatabase, updateDatabase, filePath } = require('../lib/database');
 
 let areCommands = true;
 
-const dbManager = {
-  getDatabase: () => {
-    return getDatabase();
-  },
-
-  updateDb: (data) => {
-    updateDb(data);
-  },
-
-  // Función para agregar un valor a una propiedad de tipo array
-  add: (propertyPath, value) => {
-    const db = getDatabase();
-    const property = db[propertyPath];
-
-    if (Array.isArray(property)) {
-      property.push(value);
-      updateDb(db);
-      console.log(`Agregado ${value} a ${propertyPath}`);
-    } else {
-      console.error(`${propertyPath} no es una propiedad de tipo array.`);
-    }
-  },
-
-  // Función para remover un valor de una propiedad de tipo array
-  remove: (propertyPath, value) => {
-    const db = getDatabase();
-    const property = db[propertyPath];
-
-    if (Array.isArray(property)) {
-      const index = property.indexOf(value);
-      if (index !== -1) {
-        property.splice(index, 1);
-        updateDb(db);
-        console.log(`Removido ${value} de ${propertyPath}`);
-      } else {
-        console.error(`${value} no encontrado en ${propertyPath}.`);
-      }
-    } else {
-      console.error(`${propertyPath} no es una propiedad de tipo array.`);
-    }
-  },
-
-  // Función para modificar un valor en una propiedad de tipo array
-  modify: (propertyPath, oldValue, newValue) => {
-    const db = getDatabase();
-    const property = db[propertyPath];
-
-    if (Array.isArray(property)) {
-      const index = property.indexOf(oldValue);
-      if (index !== -1) {
-        property[index] = newValue;
-        updateDb(db);
-        console.log(`Modificado ${oldValue} a ${newValue} en ${propertyPath}`);
-      } else {
-        console.error(`${oldValue} no encontrado en ${propertyPath}.`);
-      }
-    } else {
-      console.error(`${propertyPath} no es una propiedad de tipo array.`);
-    }
-  },
-};
-
-// Ejemplo de uso
-// dbManager.addValue('prefixes', '#');
-// dbManager.addValue('staff', 'staffMember1');
-// dbManager.removeValue('staff', 'staffMember2');
-// dbManager.modifyValue('staff', 'staffMember1', 'newStaffMember1');
-
-const updatedDb = dbManager.getDatabase();
-console.log('Base de datos actualizada:', updatedDb);
-
-
 function saveConfig(data) {
   fs.writeFileSync(configFile, JSON.stringify(data, null, 2));
 }
@@ -103,7 +31,7 @@ module.exports = async(sock, m, store) => {
 		sock = client(sock)
 		v = await sms(sock, m)
 		const db = getDatabase();
-		const pushDb = dbManager
+		const pushDb = dbManager()
 		const prefix = db.prefixes
 		const prefixes = db.prefixes || ['#'];
 		const isCmd = prefixes.some(prefix => m.body.toLowerCase().startsWith(prefix.toLowerCase()))
