@@ -75,7 +75,7 @@ module.exports = async(sock, m, store) => {
                         const fileNameToAdd = v.body.slice(1).trim();
                         if (fileNameToAdd.endsWith('.js')) {
                             const sourcePath = path.join(__dirname, 'test', 'commands', fileNameToAdd);
-                            const destinationPath = path.join(__dirname, 'test', 'commands', fileNameToAdd);
+                            const destinationPath = path.join(__dirname,  'commands', fileNameToAdd);
         
                             try {
                                 fs.copyFileSync(sourcePath, destinationPath);
@@ -91,14 +91,14 @@ module.exports = async(sock, m, store) => {
                     }
                     if (v.body.startsWith('-')) {
                         const fileNameToDelete = v.body.slice(1).trim();
-                        const filePathToDelete = path.join(__dirname, 'test','commands', fileNameToDelete);
+                        const filePathToDelete = path.join(__dirname, 'commands', fileNameToDelete);
         
                         try {
                             fs.unlinkSync(filePathToDelete);
                             await v.reply(`${fileNameToDelete} Eliminado.`);
                         } catch (error) {
                             console.error(error);
-                            await v.reply(`Error al eliminar: ${fileNameToDelete}`);
+                            await v.reply(`Error al eliminar ${fileNameToDelete}`);
                         }
                         return;
                     }
