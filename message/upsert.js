@@ -22,7 +22,7 @@ const dbManager = {
   },
 
   // Función para agregar un valor a una propiedad de tipo array
-  addDb: (propertyPath, value) => {
+  add: (propertyPath, value) => {
     const db = getDatabase();
     const property = db[propertyPath];
 
@@ -36,7 +36,7 @@ const dbManager = {
   },
 
   // Función para remover un valor de una propiedad de tipo array
-  removeDb: (propertyPath, value) => {
+  remove: (propertyPath, value) => {
     const db = getDatabase();
     const property = db[propertyPath];
 
@@ -55,7 +55,7 @@ const dbManager = {
   },
 
   // Función para modificar un valor en una propiedad de tipo array
-  modifyDb: (propertyPath, oldValue, newValue) => {
+  modify: (propertyPath, oldValue, newValue) => {
     const db = getDatabase();
     const property = db[propertyPath];
 
@@ -103,6 +103,7 @@ module.exports = async(sock, m, store) => {
 		sock = client(sock)
 		v = await sms(sock, m)
 		const db = getDatabase();
+		const pushDb = dbManager
 		const prefix = db.prefixes
 		const prefixes = db.prefixes || ['#'];
 		const isCmd = prefixes.some(prefix => m.body.toLowerCase().startsWith(prefix.toLowerCase()))
