@@ -3,7 +3,7 @@ const { db } = require('./lib/database');
 const fs = require('fs')
 const path = require('path');
 
-global.prefix = ['#', '/', '.', '!', '?']
+//global.prefix = ['#', '/', '.', '!', '?']
 
 global.owner = ['51968374620']
 global.staff = ['5213113240456']
