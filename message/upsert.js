@@ -30,7 +30,8 @@ module.exports = async(sock, m, store) => {
 	try {
 		sock = client(sock)
 		v = await sms(sock, m)
-		const db = getDatabase() || updateDatabase()
+		const db = getDatabase()
+		const updateDb = updateDatabase()
 		const push = dbManager
 		const defaultData = configData()
 		const prefixes = db.prefixes || ['#'];
