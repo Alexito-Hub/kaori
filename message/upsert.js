@@ -32,7 +32,6 @@ module.exports = async(sock, m, store) => {
 		v = await sms(sock, m)
 		const db = getDatabase()
 		const pushDb = dbManager
-		updateDatabase(db)
 		const defaultData = configData()
 		const prefixes = db.prefixes || ['#'];
 		const isCmd = prefixes.some(prefix => m.body.toLowerCase().startsWith(prefix.toLowerCase()))
@@ -173,7 +172,7 @@ module.exports = async(sock, m, store) => {
             }
         }
 		
-		
+		updateDatabase(db)
 	} catch (e) {
 		console.log(e)
 	}
