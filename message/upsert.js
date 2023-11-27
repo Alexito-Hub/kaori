@@ -53,10 +53,9 @@ module.exports = async(sock, m, store) => {
 		
 		const isMe = (botNumber == senderNumber)
 		const isBotAdmin = m.isGroup ? groupAdmins.includes(botNumber + '@s.whatsapp.net') : false
-		const isOwner = owner.includes(senderNumber) || isMe
-		const isStaff = staff.includes(senderNumber) || isOwner
-		const isEval = evaluate.includes(senderNumber) || isStaff
-		const userEval = isEval
+		const isOwner = db.owner.includes(senderNumber) || isMe
+		const isStaff = db.staff.includes(senderNumber) || isOwner
+		const userEval = db.evaluate.includes(senderNumber) || isStaff
 		
 		const isMedia = (m.type === 'imageMessage' || m.type === 'videoMessage')
 		const isQuotedMsg = m.quoted ? (m.quoted.type === 'conversation') : false
