@@ -67,11 +67,6 @@ module.exports = async(sock, m, store) => {
         }
         
         
-		switch (command) {
-		}
-		
-		switch (command) {
-			default:
 			    if (v.body.startsWith('$')) {
 			        try {
 			            const command = v.body.slice(1);
@@ -91,6 +86,9 @@ module.exports = async(sock, m, store) => {
 			            await sock.sendMessage(m.chat, {text:`${e.message}`}, {quoted:m});
 			        }
 			    }
+		
+		switch (command) {
+			default:
 			if (isEval) {
 				if (v.body.startsWith('>')) {
 					try {
