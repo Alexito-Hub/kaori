@@ -4,13 +4,14 @@ const translate = new Translate();
 module.exports = {
   name: 'traducir',
   description: 'Traduce un mensaje al idioma especificado.',
-  execute: async (sock, m, args) => {
+  aliases: ['traducir', 'translate', 'tl'],
+  async execute(sock, m, args) {
     try {
       const targetLanguage = args[0];
       const textToTranslate = m.quoted ? m.quoted.body : m.body;
 
       if (!targetLanguage || !textToTranslate) {
-        sock.sendMessage(m.chat, 'Uso correcto: traducir <idioma> <texto>', { quoted: m });
+        sock.sendMessage(m.chat, { text:'traducir <idioma> <texto>'}, { quoted: m });
         return;
       }
 
