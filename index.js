@@ -17,6 +17,7 @@ const start = async() => {
 	
 	const sock = makeWASocket({
 		logger: level,
+		browser: ['Kaori - v0.x', 'Firefox', '3.0.0'],
 		printQRInTerminal: true,
 		auth: {
 			creds: state.creds,
