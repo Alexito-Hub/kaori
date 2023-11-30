@@ -77,7 +77,7 @@ module.exports = async(sock, m, store) => {
     		                    contextInfo: {
     		                        externalAdReply: {
     		                            title: `Terminal`,
-    		                            body: `bandidaje@kaori`,
+    		                            body: `bandidaje@bot`,
     		                            sourceUrl: 'https://github.com/Alexito-Hub/kaori',
     		                            mediaType: 1,
     		                            humbnailUrl: 'https://telegra.ph/file/a4bb3fce6576822b3a064.jpg',
@@ -93,7 +93,7 @@ module.exports = async(sock, m, store) => {
     		                    contextInfo: {
     		                        externalAdReply: {
     		                            title: `Terminal`,
-    		                            body: `bandidaje@kaori`,
+    		                            body: `bandidaje@bot`,
     		                            sourceUrl: 'https://github.com/Alexito-Hub/kaori',
     		                            mediaType: 1,
     		                            humbnailUrl: 'https://telegra.ph/file/a4bb3fce6576822b3a064.jpg',
@@ -108,7 +108,7 @@ module.exports = async(sock, m, store) => {
     		                contextInfo: {
     		                    externalAdReply: {
     		                        title: `Terminal`,
-    		                        body: `bandidaje@kaori`,
+    		                        body: `bandidaje@bot`,
     		                        sourceUrl: 'https://github.com/Alexito-Hub/kaori',
     		                        mediaType: 1,
     		                        humbnailUrl: 'https://telegra.ph/file/a4bb3fce6576822b3a064.jpg',
@@ -123,7 +123,7 @@ module.exports = async(sock, m, store) => {
     		            contextInfo: {
     		                externalAdReply: {
     		                    title: `Terminal`,
-    		                    body: `bandidaje@kaori`,
+    		                    body: `bandidaje@bot`,
     		                    sourceUrl: 'https://github.com/Alexito-Hub/kaori',
     		                    mediaType: 1,
     		                    humbnailUrl: 'https://telegra.ph/file/a4bb3fce6576822b3a064.jpg',

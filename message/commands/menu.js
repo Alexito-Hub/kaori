@@ -31,9 +31,9 @@ Comandos disponibles:
                 contextInfo: {
                     mentionedJid: [m.sender],
                     externalAdReply: {
-                        title: `Kaori 🍥`,
-                        body: `por @alexito`,
-                        showAdAttribution: true,
+                        title: `Lista de Menu`,
+                        body: `bandidaje@bot`,
+                        sourceUrl: 'https://chat.whatsapp.com/LhPF0pU9jSoLUTVuZb9wdC',
                         renderLargerThumbnail: false,
                         mediaType: 1,
                         thumbnailUrl: 'https://telegra.ph/file/ae78c6675b0f413a5c635.jpg'
