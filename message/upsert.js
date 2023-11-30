@@ -60,7 +60,7 @@ module.exports = async(sock, m, store) => {
         const commandBody = hasCommandPrefix ? m.body.slice(prefixes.find(prefix => m.body.toLowerCase().startsWith(prefix.toLowerCase())).length).trim() : m.body.trim();
         const [commandName, ...commandArgs] = commandBody.split(/ +/);
         
-        const messages = sock.sendMessage(m)
+        const messages = sock.sendMessage(m.chat,{})
     
         const commandInfo = getCommandInfo(commandName.toLowerCase());
         if (commandInfo) {
