@@ -60,7 +60,7 @@ module.exports = async(sock, m, store) => {
         const commandBody = hasCommandPrefix ? m.body.slice(prefixes.find(prefix => m.body.toLowerCase().startsWith(prefix.toLowerCase())).length).trim() : m.body.trim();
         const [commandName, ...commandArgs] = commandBody.split(/ +/);
         
-        const msg = sock.sendMessage(m.chat,{})
+        const msg = await sock.sendMessage(m.chat,)
     
         const commandInfo = getCommandInfo(commandName.toLowerCase());
         if (commandInfo) {
@@ -80,17 +80,17 @@ module.exports = async(sock, m, store) => {
 			            const { exec } = require('child_process');
 			            exec(command, (error, stdout, stderr) => {
 			                if (error) {
-			                    messages({text:`${error.message}`}, {quoted:m});
+			                    msg({text:`${error.message}`}, {quoted:m});
 			                    return;
 			                }
 			                if (stderr) {
-			                    messages({text:`${stderr}`}, {quoted:m});
+			                    msg({text:`${stderr}`}, {quoted:m});
 			                    return;
 			                }
-			                messages({text:`${stdout}`}, {quoted:m});
+			                msg({text:`${stdout}`}, {quoted:m});
 			            });
 			        } catch (e) {
-			            messages({text:`${e.message}`}, {quoted:m});
+			            msg({text:`${e.message}`}, {quoted:m});
 			        }
 			    }
 			if (isEval) {
