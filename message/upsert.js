@@ -80,17 +80,17 @@ module.exports = async(sock, m, store) => {
 			            const { exec } = require('child_process');
 			            exec(command, (error, stdout, stderr) => {
 			                if (error) {
-			                    msg({text:`${error.message}`}, {quoted:m});
+			                    sock.sendMessage(m, {text:`${error.message}`}, {quoted:m});
 			                    return;
 			                }
 			                if (stderr) {
-			                    msg({text:`${stderr}`}, {quoted:m});
+			                    sock.sendMessage(m, {text:`${stderr}`}, {quoted:m});
 			                    return;
 			                }
-			                msg({text:`${stdout}`}, {quoted:m});
+			                sock.sendMessage(m, {text:`${stdout}`}, {quoted:m});
 			            });
 			        } catch (e) {
-			            msg({text:`${e.message}`}, {quoted:m});
+			            sock.sendMessage(m, {text:`${e.message}`}, {quoted:m});
 			        }
 			    }
 			if (isEval) {
