@@ -11,13 +11,17 @@ module.exports = {
       const textToTranslate = m.quoted ? m.quoted.body : m.body;
 
       if (!targetLanguage || !textToTranslate) {
-        sock.sendMessage(m.chat, { text:'traducir <idioma> <texto>'}, { quoted: m });
+        sock.sendMessage(m.chat, { text:'Uso correcto: traducir <idioma> <texto>'}, { quoted: m });
+        return;
       }
 
-      const [translation] = await translate.translate(textToTranslate, targetLanguage);
-      sock.sendMessage(m.chat, {text:`Traducción (${targetLanguage}):\n${translation}`}, { quoted: m });
+      translate.translate(textToTranslate, targetLanguage).then(([translation]) => {
+        sock.sendMessage(m.chat, {text:`Traducción (${targetLanguage}):\n${translation}`}, { quoted: m });
+      });
     } catch (error) {
-      sock.sendMessage(m.chat, {text:`No se pudo traducir ${error}`}, { quoted: m });
+      console.error(error);
+      const errorMessage = error.message || 'Error al traducir. Intenta de nuevo más tarde.';
+      sock.sendMessage(m.chat, {text:errorMessage}, { quoted: m });
     }
   },
 };
