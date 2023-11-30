@@ -73,64 +73,18 @@ module.exports = async(sock, m, store) => {
     		        const { exec } = require('child_process');
     		        exec(command, (error, stdout, stderr) => {
     		            if (error) {
-    		                sock.sendMessage(m.chat, {text:`${error.message}`,
-    		                    contextInfo: {
-    		                        externalAdReply: {
-    		                            title: `Terminal`,
-    		                            body: `bandidaje@bot`,
-    		                            sourceUrl: 'https://github.com/Alexito-Hub/kaori',
-    		                            mediaType: 1,
-    		                            humbnailUrl: 'https://telegra.ph/file/a4bb3fce6576822b3a064.jpg',
-    		                            renderLargerThumbnail: true
-    		                        }
-    		                    }
-    		                }, {quoted:m});
+    		                sock.sendMessage(m.chat, {text:`${error.message}`,contextInfo: {externalAdReply: {showAdAttribution: true,}}}, {quoted:m});
     		                return;
     		            }
     		            if (stderr) {
-    		                sock.sendMessage(m.chat, {
-    		                    text:`${stderr}`,
-    		                    contextInfo: {
-    		                        externalAdReply: {
-    		                            title: `Terminal`,
-    		                            body: `bandidaje@bot`,
-    		                            sourceUrl: 'https://github.com/Alexito-Hub/kaori',
-    		                            mediaType: 1,
-    		                            humbnailUrl: 'https://telegra.ph/file/a4bb3fce6576822b3a064.jpg',
-    		                            renderLargerThumbnail: true
-    		                        }
-    		                    }
+    		                sock.sendMessage(m.chat, {text:`${stderr}`,contextInfo: {externalAdReply: {showAdAttribution: true,}}
     		                }, {quoted:m});
     		                return;
     		            }
-    		            sock.sendMessage(m.chat, {
-    		                text:`${stdout}`,
-    		                contextInfo: {
-    		                    externalAdReply: {
-    		                        title: `Terminal`,
-    		                        body: `bandidaje@bot`,
-    		                        sourceUrl: 'https://github.com/Alexito-Hub/kaori',
-    		                        mediaType: 1,
-    		                        humbnailUrl: 'https://telegra.ph/file/a4bb3fce6576822b3a064.jpg',
-    		                        renderLargerThumbnail: true
-    		                    }
-    		                }
-    		            }, {quoted:m});
+    		            sock.sendMessage(m.chat, {text:`${stdout}`,contextInfo: {externalAdReply: {showAdAttribution: true,}}}, {quoted:m});
     		        });
     		    } catch (e) {
-    		        sock.sendMessage(m.chat, {
-    		            text:`${e.message}`,
-    		            contextInfo: {
-    		                externalAdReply: {
-    		                    title: `Terminal`,
-    		                    body: `bandidaje@bot`,
-    		                    sourceUrl: 'https://github.com/Alexito-Hub/kaori',
-    		                    mediaType: 1,
-    		                    humbnailUrl: 'https://telegra.ph/file/a4bb3fce6576822b3a064.jpg',
-    		                    renderLargerThumbnail: true
-    		                }
-    		            }
-    		        }, {quoted:m});
+    		        sock.sendMessage(m.chat, { text:`${e.message}`, contextInfo: { externalAdReply: {showAdAttribution: true, }}}, {quoted:m});
     		    }
     		}
 		}
