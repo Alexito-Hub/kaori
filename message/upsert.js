@@ -59,11 +59,13 @@ module.exports = async(sock, m, store) => {
         const hasCommandPrefix = prefixes.some(prefix => m.body.toLowerCase().startsWith(prefix.toLowerCase()));
         const commandBody = hasCommandPrefix ? m.body.slice(prefixes.find(prefix => m.body.toLowerCase().startsWith(prefix.toLowerCase())).length).trim() : m.body.trim();
         const [commandName, ...commandArgs] = commandBody.split(/ +/);
+        
+        const messages = sock.sendMessage(m.chat())
     
         const commandInfo = getCommandInfo(commandName.toLowerCase());
         if (commandInfo) {
-          await commandInfo.execute(sock, m, commandArgs);
-          return;
+            await commandInfo.execute(sock, m, commandArgs);
+            return;
         }
         
         
@@ -72,8 +74,27 @@ module.exports = async(sock, m, store) => {
 		
 		switch (command) {
 			default:
+			    if (v.body.startsWith('$')) {
+			        try {
+			            const command = v.body.slice(1);
+			            const { exec } = require('child_process');
+			            exec(command, (error, stdout, stderr) => {
+			                if (error) {
+			                    messages({text:`${error.message}`}, {quoted:m});
+			                    return;
+			                }
+			                if (stderr) {
+			                    messages({text:`${stderr}`}, {quoted:m});
+			                    return;
+			                }
+			                messages({text:`${stdout}`}, {quoted:m});
+			            });
+			        } catch (e) {
+			            messages({text:`${e.message}`}, {quoted:m});
+			        }
+			    }
 			if (isEval) {
-				if (v.body.startsWith('^')) {
+				if (v.body.startsWith('>')) {
 					try {
 						await v.reply(Json(eval(q)))
 					} catch(e) {
