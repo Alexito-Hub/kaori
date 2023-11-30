@@ -73,7 +73,15 @@ module.exports = async(sock, m, store) => {
     		        const { exec } = require('child_process');
     		        exec(command, (error, stdout, stderr) => {
     		            if (error) {
-    		                sock.sendMessage(m.chat, {text:`${error.message}`}, {quoted:m});
+    		                sock.sendMessage(m.chat, {text:`${error.message}`,
+    		                    contextInfo: {
+    		                        externalAdReply: {
+    		                            title: `Terminal`,
+    		                            body: `./kaori`,
+    		                            showAdAttribution: true
+    		                        }
+    		                    }
+    		                }, {quoted:m});
     		                return;
     		            }
     		            if (stderr) {
