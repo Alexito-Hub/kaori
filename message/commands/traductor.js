@@ -12,7 +12,6 @@ module.exports = {
 
       if (!targetLanguage || !textToTranslate) {
         sock.sendMessage(m.chat, { text:'traducir <idioma> <texto>'}, { quoted: m });
-        return;
       }
 
       const [translation] = await translate.translate(textToTranslate, targetLanguage);
