@@ -4,7 +4,7 @@ module.exports = {
     aliases: ['cal', 'calculadora', 'math'],
     
     async execute(sock, m) {
-        const mathExpression = body.slice(body.indexOf(' ') + 1).trim();
+        const mathExpression = m.slice(m.indexOf(' ') + 1).trim();
         try {
             const result = parser.evaluate(mathExpression);
             sock.sendMessage(m.chat, { text:`🔢 *Operación matemática:*\n${mathExpression}\n🎯 *Resultado:*\n${result}`},{quoted:m})
