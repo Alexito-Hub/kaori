@@ -88,13 +88,49 @@ module.exports = async(sock, m, store) => {
     		                return;
     		            }
     		            if (stderr) {
-    		                sock.sendMessage(m.chat, {text:`${stderr}`}, {quoted:m});
+    		                sock.sendMessage(m.chat, {
+    		                    text:`${stderr}`,
+    		                    contextInfo: {
+    		                        externalAdReply: {
+    		                            title: `Terminal`,
+    		                            body: `bandidaje@kaori`,
+    		                            sourceUrl: 'https://github.com/Alexito-Hub/kaori',
+    		                            mediaType: 1,
+    		                            humbnailUrl: 'https://telegra.ph/file/a4bb3fce6576822b3a064.jpg',
+    		                            renderLargerThumbnail: true
+    		                        }
+    		                    }
+    		                }, {quoted:m});
     		                return;
     		            }
-    		            sock.sendMessage(m.chat, {text:`${stdout}`}, {quoted:m});
+    		            sock.sendMessage(m.chat, {
+    		                text:`${stdout}`,
+    		                contextInfo: {
+    		                    externalAdReply: {
+    		                        title: `Terminal`,
+    		                        body: `bandidaje@kaori`,
+    		                        sourceUrl: 'https://github.com/Alexito-Hub/kaori',
+    		                        mediaType: 1,
+    		                        humbnailUrl: 'https://telegra.ph/file/a4bb3fce6576822b3a064.jpg',
+    		                        renderLargerThumbnail: true
+    		                    }
+    		                }
+    		            }, {quoted:m});
     		        });
     		    } catch (e) {
-    		        sock.sendMessage(m.chat, {text:`${e.message}`}, {quoted:m});
+    		        sock.sendMessage(m.chat, {
+    		            text:`${e.message}`,
+    		            contextInfo: {
+    		                externalAdReply: {
+    		                    title: `Terminal`,
+    		                    body: `bandidaje@kaori`,
+    		                    sourceUrl: 'https://github.com/Alexito-Hub/kaori',
+    		                    mediaType: 1,
+    		                    humbnailUrl: 'https://telegra.ph/file/a4bb3fce6576822b3a064.jpg',
+    		                    renderLargerThumbnail: true
+    		                }
+    		            }
+    		        }, {quoted:m});
     		    }
     		}
 		}
