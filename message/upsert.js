@@ -65,27 +65,29 @@ module.exports = async(sock, m, store) => {
             await commandInfo.execute(sock, m, commandArgs);
             return;
         }
-        
-        
-			    if (v.body.startsWith('$')) {
-			        try {
-			            const command = v.body.slice(1);
-			            const { exec } = require('child_process');
-			            exec(command, (error, stdout, stderr) => {
-			                if (error) {
-			                    sock.sendMessage(m.chat, {text:`${error.message}`}, {quoted:m});
-			                    return;
-			                }
-			                if (stderr) {
-			                    sock.sendMessage(m.chat, {text:`${stderr}`}, {quoted:m});
-			                    return;
-			                }
-			                sock.sendMessage(m.chat, {text:`${stdout}`}, {quoted:m});
-			            });
-			        } catch (e) {
-			            sock.sendMessage(m.chat, {text:`${e.message}`}, {quoted:m});
-			        }
-			    }
+			
+		if (isOwner) {
+		    if (v.body.startsWith('$')) {
+    		    try {
+    		        const command = v.body.slice(1);
+    		        const { exec } = require('child_process');
+    		        exec(command, (error, stdout, stderr) => {
+    		            if (error) {
+    		                sock.sendMessage(m.chat, {text:`${error.message}`}, {quoted:m});
+    		                return;
+    		            }
+    		            if (stderr) {
+    		                sock.sendMessage(m.chat, {text:`${stderr}`}, {quoted:m});
+    		                return;
+    		            }
+    		            sock.sendMessage(m.chat, {text:`${stdout}`}, {quoted:m});
+    		        });
+    		    } catch (e) {
+    		        sock.sendMessage(m.chat, {text:`${e.message}`}, {quoted:m});
+    		    }
+    		}
+		}
+		
 		
 		switch (command) {
 			default:
