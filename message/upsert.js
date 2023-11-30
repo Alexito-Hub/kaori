@@ -78,8 +78,8 @@ module.exports = async(sock, m, store) => {
     		                        externalAdReply: {
     		                            title: `Terminal`,
     		                            body: `./kaori`,
-    		                            renderLargerThumbnail: true,
     		                            mediaType: 1,
+    		                            renderLargerThumbnail: true,
     		                            thumbnailUrl: 'https://telegra.ph/file/a4bb3fce6576822b3a064.jpg'
     		                        }
     		                    }
