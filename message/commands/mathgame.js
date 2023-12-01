@@ -19,7 +19,7 @@ module.exports = {
             correctAnswer = evaluate(expression);
         } catch (error) {
             console.error(error);
-            await sock.sendMessage(m.chat, 'Hubo un error al generar la pregunta. Inténtalo de nuevo.', { quoted: m });
+            await sock.sendMessage(m.chat, {text:'Hubo un error al generar la pregunta. Inténtalo de nuevo.'}, { quoted: m });
             return;
         }
 
@@ -39,17 +39,17 @@ module.exports = {
 
                 // Verifica la respuesta del usuario
                 if (!isNaN(userAnswer) && userAnswer === correctAnswer) {
-                    await sock.sendMessage(m.chat, `🎉 ¡Correcto! La respuesta es ${correctAnswer}. ¡Bien hecho!`, { quoted: m });
+                    await sock.sendMessage(m.chat, {text:`🎉 ¡Correcto! La respuesta es ${correctAnswer}. ¡Bien hecho!`}, { quoted: m });
                 } else {
-                    await sock.sendMessage(m.chat, `❌ Incorrecto. La respuesta correcta era ${correctAnswer}. ¡Inténtalo de nuevo!`, { quoted: m });
+                    await sock.sendMessage(m.chat, {text:`❌ Incorrecto. La respuesta correcta era ${correctAnswer}. ¡Inténtalo de nuevo!`}, { quoted: m });
                 }
             } else {
                 // El usuario no respondió a tiempo
-                await sock.sendMessage(m.chat, '⌛ ¡Se acabó el tiempo! Inténtalo de nuevo.', { quoted: m });
+                await sock.sendMessage(m.chat, {text:'⌛ ¡Se acabó el tiempo! Inténtalo de nuevo.'}, { quoted: m });
             }
         } catch (error) {
             console.error(error);
-            await sock.sendMessage(m.chat, 'Hubo un error al procesar el juego. Inténtalo nuevamente más tarde.', { quoted: m });
+            await sock.sendMessage(m.chat, {text:'Hubo un error al procesar el juego. Inténtalo nuevamente más tarde.'}, { quoted: m });
         }
     }
 };
