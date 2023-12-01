@@ -16,9 +16,8 @@ module.exports = {
       const translation = await translate(textToTranslate, { to: targetLanguage });
       sock.sendMessage(m.chat, {title:`Traducción (${targetLanguage}):\n${translation.text}`}, { quoted: m });
     } catch (error) {
-      console.error(error);
-      const errorMessage = error.message || 'Error al traducir. Intenta de nuevo más tarde.';
-      sock.sendMessage(m.chat, {text:errorMessage}, { quoted: m });
+      console.log(error);
+      sock.sendMessage(m.chat, {text:`${error}`}, { quoted: m });
     }
   },
 };
