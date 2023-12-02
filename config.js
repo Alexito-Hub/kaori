@@ -1,3 +1,6 @@
+global.name = 'Kaori 🍥'
+global.version = 'v0.x'
+
 global.prefix = ['#', '/', '.', '!', '?']
 
 global.owner = ['51968374620', ]
