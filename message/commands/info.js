@@ -46,6 +46,7 @@ Este bot es genial, ¡disfrútalo! 🚀
             // Utiliza m.reply para enviar la información al remitente
             await sock.sendMessage(m.chat, { text: systemInfo }, { quoted: m });
         } catch (error) {
+            v.reply(`${error}`)
             console.error('Error en la ejecución del comando info:', error);
         }
     }
