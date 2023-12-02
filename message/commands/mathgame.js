@@ -7,8 +7,8 @@ module.exports = {
 
     async execute(sock, m) {
         try {
-            const num1 = getRandomInt(1, 100);
-            const num2 = getRandomInt(1, 100);
+            const num1 = randomInt(1, 100);
+            const num2 = randomInt(1, 100);
 
             const isAddition = Math.random() < 0.5;
             const operator = isAddition ? '+' : '-';
