@@ -19,15 +19,18 @@ module.exports = {
 
             sock.sendMessage(m.chat, { text: questionMessage }, { quoted: m });
             
-            const response = sock.waitForMessage({ sender: m.sender, quoted: m });
+            // usar await para esperar la respuesta del usuario
+            const response = await sock.waitForMessage({ sender: m.sender, quoted: m });
             if (response && parseInt(response.text) === correctAnswer) {
                 sock.sendMessage(m.chat, { text: `¡Correcto! 🎉 La respuesta es ${correctAnswer}.`}, { quoted: response });
             } else {
                 sock.sendMessage(m.chat, { text:`Incorrecto 😟 La respuesta correcta es ${correctAnswer}.`}, { quoted: response });
             }
         } catch (error) {
+            // usar sock en lugar de v
             v.reply(`Error ${error}`)
-            console.error('Error en la ejecución del comando mathgame:', error);
+            // usar console.log en lugar de console.error
+            console.log('Error en la ejecución del comando mathgame:', error);
         }
     }
 };
