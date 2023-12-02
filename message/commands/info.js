@@ -25,14 +25,6 @@ module.exports = {
 - *RAM:* ${formatBytes(os.totalmem() - os.freemem())} / ${formatBytes(os.totalmem())}
 - *Almacenamiento:* ${getStorageUsage()}%
 
- - SERVIDOR -
-- *Hostname:* ${os.hostname()}
-- *CPU:* ${os.cpus()[0]?.model || 'No disponible'}
-- *CPUs:* ${os.cpus().length}
-- *Sistema de inicio:* ${os.homedir()}
-- *Carga del Sistema:* ${os.loadavg().join(', ')}
-- *Usuarios Conectados:* ${await getLoggedInUsers()}
-
  - PROCESOS -
 - *ID:* ${process.pid}
 - *Dirección:* ${process.cwd()}
