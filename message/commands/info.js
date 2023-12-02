@@ -16,7 +16,7 @@ module.exports = {
 - *Versión del Bot:* ${global.version}
 - *Descripción:* ${botDescription}
 - *Propietario:* ${global.owner.join(', ')}
-- *Prefijo de Comandos:* ${global.prefix.map(p => `\`${p}\``).join(', ')}
+- *Prefijo de Comandos:* ${global.prefix.map(p => `[ ${p} ]`).join(', ')}
 
 ℹ️ *Información del Sistema* ℹ️
 - *Sistema Operativo:* ${os.platform()} ${os.arch()}
