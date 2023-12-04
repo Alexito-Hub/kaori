@@ -15,6 +15,9 @@ module.exports = {
             const minutes = Math.floor((uptimeSeconds % (60 * 60)) / 60);
             const seconds = uptimeSeconds % 60;
             const formattedTime = `${days.toString().padStart(2, '0')}:${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            function roundTime(time) {
+                return Math.round(time);
+            }
             const responseMs = Date.now();
             const responseTime = roundTime(responseMs - m.messageTimestamp * 1000);
             const formattedResponseTime = (responseTime / 1000).toFixed(3);
