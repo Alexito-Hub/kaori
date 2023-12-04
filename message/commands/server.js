@@ -33,7 +33,7 @@ module.exports = {
             };
 
             // Construir y enviar el mensaje de información
-            const infoMessage = `🤖 **𝑺𝒆𝒓𝒗𝒆𝒓 𝑺𝒕𝒂𝒕𝒖𝒔**\n\n${formatInfo(serverInfo)}`;
+            const infoMessage = `🤖 **𝑺𝒆𝒓𝒗𝒆𝒓 𝑺𝒕𝒂𝒕𝒖𝒔**\n\n╭╶╴╴╴╴╴╴╴╴╴╴╴╴╮\n${formatInfo(serverInfo)}`;
 
             sock.sendMessage(m.chat, { text: infoMessage }, { quoted: m });
         } catch (error) {
