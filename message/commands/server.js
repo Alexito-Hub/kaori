@@ -62,7 +62,7 @@ async function getStorageInfo() {
     return new Promise((resolve, reject) => {
         exec('df -h --output=pcent /', (error, stdout) => {
             if (!error) {
-                const storagePercent = stdout.trim().split('\n')[0] || 'No disponible';
+                const storagePercent = stdout.trim().split(' ')[1] || 'No disponible';
                 resolve(storagePercent);
             } else {
                 reject(error);
