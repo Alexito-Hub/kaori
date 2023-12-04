@@ -9,13 +9,24 @@ module.exports = {
 
     async execute(sock, m) {
         try {
-            // Información del servidor
+            const uptimeSeconds = Math.floor(process.uptime());
+            const days = Math.floor(uptimeSeconds / (24 * 60 * 60));
+            const hours = Math.floor((uptimeSeconds % (24 * 60 * 60)) / (60 * 60));
+            const minutes = Math.floor((uptimeSeconds % (60 * 60)) / 60);
+            const seconds = uptimeSeconds % 60;
+            const formattedTime = `${days.toString().padStart(2, '0')}:${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            const responseMs = Date.now();
+            const responseTime = roundTime(responseMs - m.messageTimestamp * 1000);
+            const formattedResponseTime = (responseTime / 1000).toFixed(3);
+            
             const serverInfo = {
                 '𝙾𝚂': `*${os.type()}*`,
-                '𝙰𝚛𝚚𝚞𝚒𝚝𝚎𝚌𝚝𝚞𝚛𝚊': `*${os.arch()}*`,
-                '𝚁𝚞𝚗𝚝𝚒𝚖𝚎': `*[ ${formatTime(process.uptime())} ]*`,
-                '𝙰𝚕𝚖𝚊𝚌𝚎𝚗𝚊𝚖𝚒𝚎𝚗𝚝𝚘': `*${await getStorageInfo()}*`,
-                '𝚁𝙰𝙼': `*${await getRamUsage()}*`
+                '𝙰𝚛𝚌𝚑𝚞𝚝𝚎𝚌𝚝𝚞𝚛𝚎': `*${os.arch()}*`,
+                '𝚂𝚝𝚘𝚛𝚊𝚐𝚎': `*${await getStorageInfo()}*`,
+                '𝚁𝙰𝙼': `*${await getRamUsage()}*`,
+                '𝙽𝚘𝚍𝚎 𝚓𝚜': `*${process.version}*`,
+                '𝚁𝚞𝚗𝚝𝚒𝚖𝚎': `*[ ${formattedTime} ]*`,
+                '𝚂𝚙𝚎𝚎𝚍': `${formattedResponseTime} ms`
             };
 
             // Construir y enviar el mensaje de información
@@ -33,16 +44,6 @@ function formatInfo(infoObj) {
     return Object.entries(infoObj)
         .map(([key, value]) => `│ *${key}:*\n│ㅤ ${value}`)
         .join('\n├╶╴╴╴╴╴╴╴╴╴╴╴╴┤\n') + '\n╰╶╴╴╴╴╴╴╴╴╴╴╴╴╯';
-}
-
-// Función para formatear el tiempo de actividad (uptime)
-function formatTime(uptimeSeconds) {
-    const days = Math.floor(uptimeSeconds / (24 * 60 * 60));
-    const hours = Math.floor((uptimeSeconds % (24 * 60 * 60)) / (60 * 60));
-    const minutes = Math.floor((uptimeSeconds % (60 * 60)) / 60);
-    const seconds = uptimeSeconds % 60;
-
-    return `${days > 0 ? `${days}d ` : ''}${hours}h ${minutes}m ${seconds}s`;
 }
 
 // Función para obtener información del almacenamiento
