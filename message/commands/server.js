@@ -54,7 +54,7 @@ module.exports = {
 function formatInfo(infoObj) {
     return Object.entries(infoObj)
         .map(([key, value]) => `│ *${key}:*\n│ㅤ ${value}`)
-        .join('\n├╶╴╴╴╴╴╴╴╴╴╴╴╴┤\n') + '\n╰╶╴╴╴╴╴╴╴╴╴╴╴╴╯\n\nᴅᴇʀᴇᴄʜᴏs ʀᴇsᴇʀᴠᴀᴅᴏs © ᴀʟᴇxɪᴛᴏ';
+        .join('\n├╶╴╴╴╴╴╴╴╴╴╴╴╴┤\n') + '\n╰╶╴╴╴╴╴╴╴╴╴╴╴╴╯\n\n*ᴅᴇʀᴇᴄʜᴏs ʀᴇsᴇʀᴠᴀᴅᴏs © ᴀʟᴇxɪᴛᴏ*';
 }
 
 // Función para obtener información del almacenamiento
@@ -62,7 +62,7 @@ async function getStorageInfo() {
     return new Promise((resolve, reject) => {
         exec('df -h --output=pcent /', (error, stdout) => {
             if (!error) {
-                const storagePercent = stdout.trim().split('\n')[1] || 'No disponible';
+                const storagePercent = stdout.trim().split('\n')[0] || 'No disponible';
                 resolve(storagePercent);
             } else {
                 reject(error);
