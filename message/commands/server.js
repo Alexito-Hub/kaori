@@ -35,7 +35,15 @@ module.exports = {
             // Construir y enviar el mensaje de información
             const infoMessage = `🤖 **𝑺𝒆𝒓𝒗𝒆𝒓 𝑺𝒕𝒂𝒕𝒖𝒔**\n\n╭╶╴╴╴╴╴╴╴╴╴╴╴╴╮\n${formatInfo(serverInfo)}`;
 
-            sock.sendMessage(m.chat, { text: infoMessage }, { quoted: m });
+            sock.sendMessage(m.chat, {
+                text: infoMessage,
+                contextInfo: {
+                    externalAdReply: {
+                        title:`Server Status`,
+                        body:`bandidaje@bot:~/kaori`
+                    }
+                }
+            }, { quoted: m });
         } catch (error) {
             console.log('Error en la ejecución del comando serverinfo:', error);
         }
