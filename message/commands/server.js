@@ -36,7 +36,7 @@ module.exports = {
             };
 
             // Construir y enviar el mensaje de información
-            const infoMessage = `ㅤ *𝑲𝒂𝒐𝒓𝒊 𝑺𝒕𝒂𝒕𝒖𝒔*\n\n╭╶╴╴╴╴╴╴╴╴╴╴╴╴╮\n${formatInfo(serverInfo)}`;
+            const infoMessage = `ㅤᣞ᙮ ∘ *𝑲𝒂𝒐𝒓𝒊 𝑺𝒕𝒂𝒕𝒖𝒔 🍥*\n\n╭╶╴╴╴╴╴╴╴╴╴╴╴╴╮\n${formatInfo(serverInfo)}`;
 
             sock.sendMessage(m.chat, {
                 text: infoMessage,
