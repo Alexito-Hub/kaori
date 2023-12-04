@@ -37,7 +37,7 @@ module.exports = {
 
             sock.sendMessage(m.chat, { text: infoMessage }, { quoted: m });
         } catch (error) {
-            console.error('Error en la ejecución del comando serverinfo:', error);
+            console.log('Error en la ejecución del comando serverinfo:', error);
         }
     }
 };
@@ -46,7 +46,7 @@ module.exports = {
 function formatInfo(infoObj) {
     return Object.entries(infoObj)
         .map(([key, value]) => `│ *${key}:*\n│ㅤ ${value}`)
-        .join('\n├╶╴╴╴╴╴╴╴╴╴╴╴╴┤\n') + '\n╰╶╴╴╴╴╴╴╴╴╴╴╴╴╯';
+        .join('\n├╶╴╴╴╴╴╴╴╴╴╴╴╴┤\n') + '\n╰╶╴╴╴╴╴╴╴╴╴╴╴╴╯\n\nᴅᴇʀᴇᴄʜᴏs ʀᴇsᴇʀᴠᴀᴅᴏs © ᴀʟᴇxɪᴛᴏ';
 }
 
 // Función para obtener información del almacenamiento
