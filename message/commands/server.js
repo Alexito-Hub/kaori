@@ -43,7 +43,8 @@ module.exports = {
                 contextInfo: {
                     externalAdReply: {
                         title:`Server Status`,
-                        body:`${process.cwd()}`
+                        body:`${process.cwd()}`,
+                        thumbnailUrl: `https://telegra.ph/file/ae78c6675b0f413a5c635.jpg`
                         
                     }
                 }
