@@ -31,7 +31,7 @@ module.exports = {
 // Función para formatear la información en un objeto
 function formatInfo(infoObj) {
     return Object.entries(infoObj)
-        .map(([key, value]) => `│ *${key}:*\n${value}`)
+        .map(([key, value]) => `│ *${key}:*\n│ㅤ ${value}`)
         .join('\n├╶╴╴╴╴╴╴╴╴╴╴╴╴┤\n') + '\n╰╶╴╴╴╴╴╴╴╴╴╴╴╴╯';
 }
 
