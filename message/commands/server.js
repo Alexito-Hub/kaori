@@ -21,7 +21,8 @@ module.exports = {
             const botInfo = {
                 'Versión de Node.js': process.version,
                 'Uptime del Bot': formatUptime(process.uptime()),
-                'Número de Usuarios': Object.keys(sock.chats).length
+                'Número de Usuarios': (sock.chats && typeof sock.chats === 'object') ? Object.keys(sock.chats).length : 'No disponible'
+
             };
 
             // Ejecutar el comando "git rev-parse --short HEAD" para obtener la versión del código (hash corto)
