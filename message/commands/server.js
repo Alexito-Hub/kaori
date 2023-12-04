@@ -23,24 +23,28 @@ module.exports = {
             const formattedResponseTime = (responseTime / 1000).toFixed(3);
             
             const serverInfo = {
+                '𝙸𝙳': `${process.pid}`,
                 '𝙾𝚂': `*${os.type()}*`,
                 '𝙰𝚛𝚌𝚑𝚞𝚝𝚎𝚌𝚝𝚞𝚛𝚎': `*${os.arch()}*`,
                 '𝚂𝚝𝚘𝚛𝚊𝚐𝚎': `*${await getStorageInfo()}*`,
                 '𝚁𝙰𝙼': `*${await getRamUsage()}*`,
                 '𝙽𝚘𝚍𝚎 𝚓𝚜': `*${process.version}*`,
                 '𝚁𝚞𝚗𝚝𝚒𝚖𝚎': `*[ ${formattedTime} ]*`,
-                '𝚂𝚙𝚎𝚎𝚍': `${formattedResponseTime} ms`
+                '𝚂𝚙𝚎𝚎𝚍': `${formattedResponseTime} ms`,
+                '𝙾𝚠𝚗𝚎𝚛': `ziooo_zip`
+                
             };
 
             // Construir y enviar el mensaje de información
-            const infoMessage = `🤖 **𝑺𝒆𝒓𝒗𝒆𝒓 𝑺𝒕𝒂𝒕𝒖𝒔**\n\n╭╶╴╴╴╴╴╴╴╴╴╴╴╴╮\n${formatInfo(serverInfo)}`;
+            const infoMessage = ` **\n\n╭╶╴╴╴╴╴╴╴╴╴╴╴╴╮\n${formatInfo(serverInfo)}`;
 
             sock.sendMessage(m.chat, {
                 text: infoMessage,
                 contextInfo: {
                     externalAdReply: {
                         title:`Server Status`,
-                        body:`bandidaje@bot:~/kaori`
+                        body:`${process.cwd()}`
+                        
                     }
                 }
             }, { quoted: m });
