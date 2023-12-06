@@ -1,52 +1,48 @@
-const { fetchJson } = require('../../lib/utils');
+// Importa las funciones necesarias
+const fetchJson = require('../utils').fetchJson; // Ajusta la ruta según la ubicación de tu función fetchJson
 
-const lastDownloads = new Map();
-
+// Define el comando
 module.exports = {
   name: 'tiktok',
-  description: 'Descarga un video de TikTok sin marca de agua',
-  aliases: ['tiktokdownload', 'tt'],
+  description: 'Descarga videos e imágenes de TikTok',
+  aliases: ['tiktok', 'tt'],
 
-  async execute(sock, m) {
+  async execute(sock, m, args) {
     try {
-      if (m.quoted && m.quoted.text) {
-        const tiktokUrl = m.quoted.text.trim();
-        await tiktokDownloader(sock, m, tiktokUrl);
-      } else if (m.body && m.body.split(' ')[1]) {
-        const tiktokUrl = m.body.split(' ')[1].trim();
-        await tiktokDownloader(sock, m, tiktokUrl);
+      if (!args[0]) {
+        v.reply('*tiktok <url>*');
+        return;
+      }
+
+      const tiktokUrl = args[0];
+      const response = await fetchJson(`https://star-apis.teamfx.repl.co/api/downloader/tiktok?url=${tiktokUrl}&apikey=StarAPI`);
+
+      if (response && response.result) {
+        const result = response.result;
+
+        if (result.type === 'video') {
+          // Si es un video, envía el video sin marca de agua
+          sock.sendMessage(m.chat, {
+            video: { url: result.video.noWatermark },
+            mimetype: 'video/mp4',
+            caption: 'Descargado desde Kaori'
+          }, { quoted: m });
+        } else if (result.type === 'images') {
+          // Si son imágenes, envía cada imagen sin marca de agua
+          for (const image of result.images) {
+            sock.sendMessage(m.chat, {
+              image: { url: image.url.url, mimetype: 'image/jpeg' },
+              caption: 'Descargado desde Kaori'
+            }, { quoted: m });
+          }
+        }
       } else {
-        v.reply('Por favor, proporciona un enlace de TikTok para descargar el video.', { quoted: m });
+        console.log('Error al obtener información de TikTok');
+        v.reply('Parece que hubo un problema, inténtalo de nuevo');
       }
     } catch (error) {
-      console.log('Error en la ejecución del comando tiktok:', error);
+      console.log('Error:', error);
+      v.reply('Error');
     }
-  }
-};
-
-const tiktokDownloader = async (sock, m, tiktokUrl) => {
-  try {
-    if (lastDownloads.has(m.chat)) {
-      v.reply('Espera un momento antes de realizar otra descarga.', { quoted: m });
-      return;
-    }
-    lastDownloads.set(m.chat, Date.now());
-
-    const apiUrl = `https://star-apis.teamfx.repl.co/api/downloader/tiktok?url=${tiktokUrl}&apikey=StarAPI`;
-    const response = await fetchJson(apiUrl);
-
-    if (response && response.result && response.result.video && response.result.video.noWatermark) {
-      sock.sendMessage(m.chat, {
-        video: { url: response.result.video.noWatermark },
-        mimetype: 'video/mp4',
-        caption: 'Descargado desde Kaori'
-      }, { quoted: m });
-    } else {
-      console.log('Error obteniendo información del video de TikTok');
-      v.reply('Error al obtener información del video de TikTok.', { quoted: m });
-    }
-  } catch (error) {
-    console.error('Error en la función tiktokDownloader:', error);
-    v.reply('Error al procesar la solicitud. Intenta de nuevo más tarde.', { quoted: m });
-  }
+  },
 };
