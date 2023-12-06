@@ -16,7 +16,7 @@ module.exports = {
         const tiktokUrl = m.body.split(' ')[1].trim();
         await tiktokDownloader(sock, m, tiktokUrl);
       } else {
-        sock.reply(m.chat, {text: 'Por favor, proporciona un enlace de TikTok para descargar el video.'}, { quoted: m });
+        v.reply(m.chat, {text: 'Por favor, proporciona un enlace de TikTok para descargar el video.'}, { quoted: m });
       }
     } catch (error) {
       console.log('Error en la ejecución del comando tiktok:', error);
@@ -27,7 +27,7 @@ module.exports = {
 const tiktokDownloader = async (sock, m, tiktokUrl) => {
   try {
     if (lastDownloads.has(m.chat)) {
-      sock.reply(m.chat, {text:'Espera un momento antes de realizar otra descarga.'}, { quoted: m });
+      v.reply(m.chat, {text:'Espera un momento antes de realizar otra descarga.'}, { quoted: m });
       return;
     }
     lastDownloads.set(m.chat, Date.now());
@@ -43,10 +43,10 @@ const tiktokDownloader = async (sock, m, tiktokUrl) => {
       }, { quoted: m });
     } else {
       console.log('Error obteniendo información del video de TikTok');
-      sock.reply(m.chat, {text:'Error al obtener información del video de TikTok.'}, { quoted: m });
+      v.reply(m.chat, {text:'Error al obtener información del video de TikTok.'}, { quoted: m });
     }
   } catch (error) {
     console.error('Error en la función tiktokDownloader:', error);
-    sock.reply(m.chat, {text:'Error al procesar la solicitud. Intenta de nuevo más tarde.'}, { quoted: m });
+    v.reply(m.chat, {text:'Error al procesar la solicitud. Intenta de nuevo más tarde.'}, { quoted: m });
   }
 };
