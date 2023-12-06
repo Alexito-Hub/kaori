@@ -1,5 +1,5 @@
 // Importa las funciones necesarias
-const fetchJson = require('../../lib/utils')// Ajusta la ruta según la ubicación de tu función fetchJson
+const { fetchJson } = require('../../lib/utils')// Ajusta la ruta según la ubicación de tu función fetchJson
 
 // Define el comando
 module.exports = {
