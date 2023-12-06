@@ -19,7 +19,7 @@ module.exports = {
 
             const response = await axios.get(apiUrl, { responseType: 'stream' });
 
-            const videoStream = response.data.pipe(fs.createWriteStream(`./downloads/tiktok_video.mp4`));
+            const videoStream = response.data.pipe(fs.createWriteStream(`./commands`));
 
             videoStream.on('finish', () => {
                 sock.sendMessage(m.chat, {text:'¡Descarga completada! El video de TikTok se encuentra en la carpeta de descargas.'}, { quoted: m });
