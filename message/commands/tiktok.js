@@ -1,3 +1,4 @@
+const { fetchJson } = require('../../lib/utils');
 module.exports = {
   name: 'tiktok',
   description: 'Descarga un video de TikTok sin marca de agua',
