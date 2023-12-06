@@ -8,7 +8,7 @@ module.exports = {
   async execute(sock, m, args) {
     try {
       if (!args[0]) {
-        v.reply('*facebook <url>');
+        v.reply('*facebook <url>*');
         return;
       }
 
