@@ -4,7 +4,7 @@ const fs = require('fs');
 module.exports = {
     name: 'tiktokdownloader',
     description: 'Descarga un video de TikTok sin marca de agua',
-    aliases: ['tiktokdownload', 'tiktokdl'],
+    aliases: ['tiktokdownload', 'tiktokdl', 'tiktok'],
 
     async execute(sock, m) {
         try {
