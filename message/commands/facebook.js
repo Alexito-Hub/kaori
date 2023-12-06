@@ -1,4 +1,4 @@
-const { fetchJson } = require('../utils')
+const { fetchJson } = require('../../lib/utils')
 
 module.exports = {
   name: 'facebook',
