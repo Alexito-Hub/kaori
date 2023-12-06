@@ -1,4 +1,7 @@
 const { fetchJson } = require('../../lib/utils');
+
+const lastDownloads = new Map();
+
 module.exports = {
   name: 'tiktok',
   description: 'Descarga un video de TikTok sin marca de agua',
@@ -13,7 +16,7 @@ module.exports = {
         const tiktokUrl = m.body.split(' ')[1].trim();
         await tiktokDownloader(sock, m, tiktokUrl);
       } else {
-        v.reply(m.chat, {text:'Por favor, proporciona un enlace de TikTok para descargar el video.'}, { quoted: m });
+        sock.reply(m.chat, {text: 'Por favor, proporciona un enlace de TikTok para descargar el video.'}, { quoted: m });
       }
     } catch (error) {
       console.log('Error en la ejecución del comando tiktok:', error);
@@ -21,9 +24,14 @@ module.exports = {
   }
 };
 
-// Función para descargar videos de TikTok sin marca de agua
 const tiktokDownloader = async (sock, m, tiktokUrl) => {
   try {
+    if (lastDownloads.has(m.chat)) {
+      sock.reply(m.chat, {text:'Espera un momento antes de realizar otra descarga.'}, { quoted: m });
+      return;
+    }
+    lastDownloads.set(m.chat, Date.now());
+
     const apiUrl = `https://star-apis.teamfx.repl.co/api/downloader/tiktok?url=${tiktokUrl}&apikey=StarAPI`;
     const response = await fetchJson(apiUrl);
 
@@ -31,14 +39,14 @@ const tiktokDownloader = async (sock, m, tiktokUrl) => {
       sock.sendMessage(m.chat, {
         video: { url: response.result.video.noWatermark },
         mimetype: 'video/mp4',
-        caption: 'Video descargado por Kaori'
+        caption: 'Descargado desde Kaori'
       }, { quoted: m });
     } else {
       console.log('Error obteniendo información del video de TikTok');
       sock.reply(m.chat, {text:'Error al obtener información del video de TikTok.'}, { quoted: m });
     }
   } catch (error) {
-    console.log('Error en la función tiktokDownloader:', error);
-    v.reply(m.chat, {text:'Error al procesar la solicitud. Intenta de nuevo más tarde.'}, { quoted: m });
+    console.error('Error en la función tiktokDownloader:', error);
+    sock.reply(m.chat, {text:'Error al procesar la solicitud. Intenta de nuevo más tarde.'}, { quoted: m });
   }
 };
