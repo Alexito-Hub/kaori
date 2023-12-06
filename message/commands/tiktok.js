@@ -11,7 +11,7 @@ module.exports = {
             const tiktokUrl = m.body.split(' ')[1];
 
             if (!tiktokUrl) {
-                sock.sendMessage(m.chat, 'Por favor, proporciona una URL válida de TikTok.', { quoted: m });
+                sock.sendMessage(m.chat, {text:'Por favor, proporciona una URL válida de TikTok.'}, { quoted: m });
                 return;
             }
 
@@ -36,11 +36,11 @@ module.exports = {
                 // Opcional: Puedes eliminar el archivo después de enviarlo si lo deseas
                 fs.unlinkSync(fileName);
             } else {
-                sock.sendMessage(m.chat, 'No se pudo obtener el vídeo de TikTok. Asegúrate de que la URL sea válida.', { quoted: m });
+                sock.sendMessage(m.chat, {text:'No se pudo obtener el vídeo de TikTok. Asegúrate de que la URL sea válida.'}, { quoted: m });
             }
         } catch (error) {
-            console.error('Error en la ejecución del comando tiktokdownloader:', error);
-            sock.sendMessage(m.chat, 'Ocurrió un error al intentar descargar el vídeo de TikTok.', { quoted: m });
+            console.log('Error en la ejecución del comando tiktokdownloader:', error);
+            sock.sendMessage(m.chat, {text:'Ocurrió un error al intentar descargar el vídeo de TikTok.'}, { quoted: m });
         }
     }
 };
