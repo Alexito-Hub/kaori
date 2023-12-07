@@ -13,6 +13,6 @@ module.exports = {
         const replyMsg = args.join(' ');
 
         // Envía el mensaje de vuelta al mismo chat
-        sock.sendMessage(m.chat, replyMsg, { quoted: m });
+        sock.sendMessage(m.chat, { text:replyMsg }, { quoted: m });
     }
 };
