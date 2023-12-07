@@ -6,28 +6,26 @@ module.exports = {
     async execute(sock, m) {
         try {
 
-            const message = m.body.slice(m.body.indexOf(' ') + 1);
-            const url = m.msg.contextInfo
+            const text = m.body.slice(m.body.indexOf(' ') + 1);
             
-            if (url && url.quotedMessage) {
-                const media = url.quotedMessage
-                if (media.type === 'videoMessage') {
+            if (m) {
+                if (message.type === 'videoMessage') {
                     sock.sendMessage(m.chat, {
-                        video: { url: media.videoMessage },
+                        video: { url: message.videoMessage.url },
                         mimetype: 'video/mp4',
-                        caption: `${message}`
+                        caption: `${text}`
                     }, { quoted: m });
-                } else if (media.type === 'imageMessage') {
-                    for (const image of media.imageMessage) {
+                } else if (message.type === 'imageMessage') {
+                    for (const image of message.imageMessage) {
                         sock.sendMessage(m.chat, {
-                            image: { url: media.imageMessage,
+                            image: { url: message.imageMessage.url,
                             mimetype: 'image/jpeg' },
-                            caption: `${message}`
+                            caption: `${text}`
                         }, { quoted: m })
                     }
                 }
             } else {
-                sock.sendMessage(m.chat, {text: message})
+                sock.sendMessage(m.chat, {text: text})
             }
         } catch(e) {
             console.log(e)
