@@ -6,7 +6,7 @@ module.exports = {
 
     async execute(sock, m) {
         try {
-            const message = m.body.slice(m.body.indexOf(' ') + 1);
+            const message = args.join(' ');
 
             // Verifica si el mensaje tiene contenido multimedia
             if (m.hasMedia) {
