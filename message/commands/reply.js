@@ -34,7 +34,7 @@ module.exports = {
             }
         } catch (error) {
             console.error('Error en la ejecución del comando tag:', error);
-            sock.reply(`Se produjo un error al ejecutar el comando tag.`);
+            v.reply(`Se produjo un error al ejecutar el comando tag.`);
         }
     }
 };
