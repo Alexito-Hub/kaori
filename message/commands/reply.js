@@ -7,18 +7,19 @@ module.exports = {
         try {
 
             const text = m.body.slice(m.body.indexOf(' ') + 1);
-            
-            if (m) {
-                if (message.type === 'videoMessage') {
+
+            if (m && m.message) {
+                const media = m.message
+                if (media.type === 'videoMessage') {
                     sock.sendMessage(m.chat, {
-                        video: { url: message.videoMessage.url },
+                        video: { url: media.videoMessage.url },
                         mimetype: 'video/mp4',
                         caption: `${text}`
                     }, { quoted: m });
                 } else if (message.type === 'imageMessage') {
-                    for (const image of message.imageMessage) {
+                    for (const image of media.imageMessage) {
                         sock.sendMessage(m.chat, {
-                            image: { url: message.imageMessage.url,
+                            image: { url: media.imageMessage.url,
                             mimetype: 'image/jpeg' },
                             caption: `${text}`
                         }, { quoted: m })
