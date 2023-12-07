@@ -16,7 +16,7 @@ module.exports = {
                         mimetype: 'video/mp4',
                         caption: `${text}`
                     }, { quoted: m });
-                } else if (message.type === 'imageMessage') {
+                } else if (media.type === 'imageMessage') {
                     for (const image of media.imageMessage) {
                         sock.sendMessage(m.chat, {
                             image: { url: media.imageMessage.url,
