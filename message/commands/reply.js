@@ -11,9 +11,10 @@ module.exports = {
 
             // Verifica si el mensaje tiene contenido multimedia (audio, video o imagen)
             if (m.hasMedia) {
-                const mediaData = await sock.downloadMediaMessage(m);
+                // Descarga y obtiene el enlace del archivo multimedia
+                const mediaData = await sock.downloadMediaMessage(m, 'buffer');
                 // Reenvía el contenido multimedia junto con el mensaje
-                await sock.sendMessage(m.chat, { text: commandBody, media: mediaData }, m);
+                await sock.sendMessage(m.chat, { text: commandBody, media: { url: mediaData } }, m);
             } else {
                 // Reenvía el mensaje de texto si no hay contenido multimedia
                 await sock.sendMessage(m.chat, { text: commandBody }, m);
