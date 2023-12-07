@@ -51,6 +51,7 @@ Comandos disponibles:
                     externalAdReply: {
                         title: `Lista de Menu`,
                         body: `bandidaje@bot`,
+                        sourceUrl: `https://whatsapp.com/channel/0029VaBQgoGLdQehR6vmiY42`,
                         renderLargerThumbnail: false,
                         mediaType: 1,
                         thumbnailUrl: 'https://telegra.ph/file/ae78c6675b0f413a5c635.jpg'
