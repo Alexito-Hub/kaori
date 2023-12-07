@@ -8,9 +8,11 @@ module.exports = {
         try {
             const message = m.body.slice(m.body.indexOf(' ') + 1);
             
+            // Verifica si el mensaje tiene contenido multimedia
             if (m.hasMedia) {
                 const media = m.message;
                 
+                // Maneja mensajes de video
                 if (media.type === 'videoMessage') {
                     sock.sendMessage(m.chat, {
                         video: { url: media.videoMessage.url },
@@ -18,6 +20,7 @@ module.exports = {
                         caption: `${message}`
                     }, { quoted: m });
                 } 
+                // Maneja mensajes de imagen
                 else if (media.type === 'imageMessage') {
                     sock.sendMessage(m.chat, {
                         image: { url: media.imageMessage.url, mimetype: 'image/jpeg' },
@@ -25,12 +28,13 @@ module.exports = {
                     }, { quoted: m });
                 }
             } 
+            // Si no hay contenido multimedia, reenvía solo el mensaje de texto
             else {
-                sock.sendMessage(m.chat, { text: message }, m);
+                sock.sendMessage(m.chat, { text: message }, { quoted: m });
             }
         } catch (error) {
             console.error('Error en la ejecución del comando tag:', error);
-            v.reply(`Se produjo un error al ejecutar el comando tag.`);
+            sock.reply(`Se produjo un error al ejecutar el comando tag.`);
         }
     }
 };
