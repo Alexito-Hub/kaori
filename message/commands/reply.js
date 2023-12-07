@@ -7,6 +7,7 @@ module.exports = {
     async execute(sock, m) {
         try {
             const message = args.join(' ');
+            if (!text) return v.reply('¿falta de palabras?')
 
             // Verifica si el mensaje tiene contenido multimedia
             if (m.hasMedia) {
