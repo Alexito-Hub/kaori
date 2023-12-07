@@ -11,20 +11,20 @@ module.exports = {
 
             // Verifica si el mensaje tiene contenido multimedia
             if (m.hasMedia) {
-                const media = m.message;
+                const media = m.quotedMsgObj;
 
                 // Maneja mensajes de video
-                if (media.type === 'videoMessage') {
+                if (media.isVideo) {
                     sock.sendMessage(m.chat, {
-                        video: { url: media.videoMessage.url },
+                        video: { url: media.body },
                         mimetype: 'video/mp4',
                         caption: `${message}`
                     }, { quoted: m });
                 } 
                 // Maneja mensajes de imagen
-                else if (media.type === 'imageMessage') {
+                else if (media.isImage) {
                     sock.sendMessage(m.chat, {
-                        image: { url: media.imageMessage.url, mimetype: 'image/jpeg' },
+                        image: { url: media.body },
                         caption: `${message}`
                     }, { quoted: m });
                 }
