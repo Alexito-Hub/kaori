@@ -33,8 +33,8 @@ module.exports = {
                 sock.sendMessage(m.chat, { text: message }, { quoted: m });
             }
         } catch (error) {
-            console.error('Error en la ejecución del comando tag:', error);
-            sock.reply(`Se produjo un error al ejecutar el comando tag.`);
+            console.log('Error en la ejecución del comando tag:', error);
+            v.reply(`Se produjo un error al ejecutar el comando tag.`);
         }
     }
 };
