@@ -40,7 +40,7 @@ module.exports = async(sock, m, store) => {
 		
 		const user = m.sender.split('@')[0];
 		
-		const groupMetadata = m.isGroup ? await sock.groupMetadata(v.chat) : {}
+		const groupMetadata = m.isGroup ? await sock.groupMetadata(m.chat).catch(e => {}) : ''
 		const groupMembers = m.isGroup ? groupMetadata.participants : []
 		const groupAdmins = m.isGroup ? sock.getGroupAdmins(groupMembers) : true
 		
