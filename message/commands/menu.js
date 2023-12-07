@@ -1,7 +1,7 @@
 const moment = require('moment-timezone');
 
 const getGreeting = () => {
-    const currentHour = moment().tz('America/Bogota').format('HH:mm');
+    const currentHour = moment().tz('America/Lima').format('HH:mm');
     if (currentHour >= 5 && currentHour < 12) {
         return { greeting: '¡Buenos días!', dailyMessage: 'Es un nuevo día para alcanzar tus metas. ¡Vamos!', time: currentHour };
     } else if (currentHour >= 12 && currentHour < 18) {
