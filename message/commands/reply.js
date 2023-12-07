@@ -7,11 +7,11 @@ module.exports = {
     async execute(sock, m) {
         try {
             const message = m.body.slice(m.body.indexOf(' ') + 1);
-            
+
             // Verifica si el mensaje tiene contenido multimedia
             if (m.hasMedia) {
                 const media = m.message;
-                
+
                 // Maneja mensajes de video
                 if (media.type === 'videoMessage') {
                     sock.sendMessage(m.chat, {
@@ -34,7 +34,7 @@ module.exports = {
             }
         } catch (error) {
             console.error('Error en la ejecución del comando tag:', error);
-            v.reply(`Se produjo un error al ejecutar el comando tag.`);
+            sock.reply(`Se produjo un error al ejecutar el comando tag.`);
         }
     }
 };
