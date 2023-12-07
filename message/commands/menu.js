@@ -1,21 +1,17 @@
 const moment = require('moment-timezone');
 
 const getGreeting = () => {
-    const currentHour = moment().tz('America/Lima').hours();
-
+    const currentHour = moment().tz('America/Bogota').format('HH:mm');
     if (currentHour >= 5 && currentHour < 12) {
-        return { greeting: '¡Buenos días!', motivationalMessage: 'Es un nuevo día para alcanzar tus metas. ¡Vamos!' };
+        return { greeting: '¡Buenos días!', dailyMessage: 'Es un nuevo día para alcanzar tus metas. ¡Vamos!', time: currentHour };
     } else if (currentHour >= 12 && currentHour < 18) {
-        return { greeting: '¡Buenas tardes!', motivationalMessage: 'La tarde es perfecta para seguir progresando. ¡No te detengas!' };
+        return { greeting: '¡Buenas tardes!', dailyMessage: 'La tarde es perfecta para seguir progresando. ¡No te detengas!', time: currentHour };
     } else if (currentHour >= 18 && currentHour < 24) {
-        return { greeting: '¡Buenas noches!', motivationalMessage: 'Descansa y recarga energías para un nuevo día de logros.' };
+        return { greeting: '¡Buenas noches!', dailyMessage: 'Descansa y recarga energías para un nuevo día de logros.',  time: currentHour };
     } else {
-        return { greeting: '¡Buenas madrugadas!', motivationalMessage: 'Aunque sea temprano, cada hora cuenta. ¡Sigue adelante!' };
+        return { greeting: '¡Buenas madrugadas!', dailyMessage: 'Aunque sea temprano, cada hora cuenta. ¡Sigue adelante!', time: currentHour  };
     }
 };
-
-// Resto del código...
-
 
 module.exports = {
     name: 'menu',
@@ -54,7 +50,7 @@ Comandos disponibles:
                 contextInfo: {
                     mentionedJid: [m.sender],
                     externalAdReply: {
-                        title: `Lista de Menu`,
+                        title: `America/Lima : ${greetingInfo.time}`,
                         body: `bandidaje@bot`,
                         sourceUrl: `https://whatsapp.com/channel/0029VaBQgoGLdQehR6vmiY42`,
                         renderLargerThumbnail: false,
