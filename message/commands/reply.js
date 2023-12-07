@@ -1,4 +1,3 @@
-// Comando Tag mejorado para reenviar mensajes con o sin contenido multimedia
 module.exports = {
     name: 'tag',
     description: 'Reenvía el mensaje, incluyendo texto, audio o video.',
@@ -6,22 +5,32 @@ module.exports = {
 
     async execute(sock, m) {
         try {
-            // Extrae el mensaje del comando (sin el prefijo y nombre del comando)
-            const commandBody = m.body.slice(m.body.indexOf(' ') + 1);
 
-            // Verifica si el mensaje tiene contenido multimedia (audio, video o imagen)
-            if (m.hasMedia) {
-                // Descarga y obtiene el enlace del archivo multimedia
-                const mediaData = await sock.downloadMediaMessage(m, 'buffer');
-                // Reenvía el contenido multimedia junto con el mensaje
-                await sock.sendMessage(m.chat, { text: commandBody, media: { url: mediaData } }, m);
+            const message = m.body.slice(m.body.indexOf(' ') + 1);
+            const url = m.msg.contextInfo
+            
+            if (url && url.quotedMessage) {
+                const media = url.quotedMessage
+                if (media.type === 'videoMessage') {
+                    sock.sendMessage(m.chat, {
+                        video: { url: media.videoMessage },
+                        mimetype: 'video/mp4',
+                        caption: `${message}`
+                    }, { quoted: m });
+                } else if (media.type === 'imageMessage') {
+                    for (const image of media.imageMessage) {
+                        sock.sendMessage(m.chat, {
+                            image: { url: media.imageMessage,
+                            mimetype: 'image/jpeg' },
+                            caption: `${message}`
+                        }, { quoted: m })
+                    }
+                }
             } else {
-                // Reenvía el mensaje de texto si no hay contenido multimedia
-                await sock.sendMessage(m.chat, { text: commandBody }, m);
+                sock.sendMessage(m.chat, {text: message})
             }
-        } catch (error) {
-            console.error('Error en la ejecución del comando tag:', error);
-            sock.reply(`Se produjo un error al ejecutar el comando tag.`);
+        } catch(e) {
+            console.log(e)
         }
     }
 };
