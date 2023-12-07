@@ -28,8 +28,8 @@ module.exports = {
             const hours = Math.floor((uptimeSeconds % (24 * 60 * 60)) / (60 * 60));
             const minutes = Math.floor((uptimeSeconds % (60 * 60)) / 60);
             const seconds = uptimeSeconds % 60;
-
-            const { greeting, dailyMessage } = getGreeting();
+            
+            const { greeting, dailyMessage, time } = getGreeting();
 
             // Utiliza m.reply en lugar de sock.reply
             await sock.sendMessage(m.chat, {
@@ -50,7 +50,7 @@ Comandos disponibles:
                 contextInfo: {
                     mentionedJid: [m.sender],
                     externalAdReply: {
-                        title: `America/Lima : ${greetingInfo.time}`,
+                        title: `America/Lima : ${time}`,
                         body: `bandidaje@bot`,
                         sourceUrl: `https://whatsapp.com/channel/0029VaBQgoGLdQehR6vmiY42`,
                         renderLargerThumbnail: false,
