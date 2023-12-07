@@ -1,16 +1,21 @@
+const moment = require('moment-timezone');
+
 const getGreeting = () => {
-    const currentHour = new Date().getHours();
+    const currentHour = moment().tz('America/Lima').hours();
 
     if (currentHour >= 5 && currentHour < 12) {
-        return { greeting: '¡Buenos días!', dailyMessage: 'Es un nuevo día para alcanzar tus metas. ¡Vamos!' };
+        return { greeting: '¡Buenos días!', motivationalMessage: 'Es un nuevo día para alcanzar tus metas. ¡Vamos!' };
     } else if (currentHour >= 12 && currentHour < 18) {
-        return { greeting: '¡Buenas tardes!', dailyMessage: 'La tarde es perfecta para seguir progresando. ¡No te detengas!' };
+        return { greeting: '¡Buenas tardes!', motivationalMessage: 'La tarde es perfecta para seguir progresando. ¡No te detengas!' };
     } else if (currentHour >= 18 && currentHour < 24) {
-        return { greeting: '¡Buenas noches!', dailyMessage: 'Descansa y recarga energías para un nuevo día de logros.' };
+        return { greeting: '¡Buenas noches!', motivationalMessage: 'Descansa y recarga energías para un nuevo día de logros.' };
     } else {
-        return { greeting: '¡Buenas madrugadas!', dailyMessage: 'Aunque sea temprano, cada hora cuenta. ¡Sigue adelante!' };
+        return { greeting: '¡Buenas madrugadas!', motivationalMessage: 'Aunque sea temprano, cada hora cuenta. ¡Sigue adelante!' };
     }
 };
+
+// Resto del código...
+
 
 module.exports = {
     name: 'menu',
