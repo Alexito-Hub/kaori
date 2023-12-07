@@ -4,10 +4,10 @@ module.exports = {
     description: 'Reenvía el mensaje, incluyendo texto, audio o video.',
     aliases: ['tag'],
 
-    async execute(sock, m) {
+    async execute(sock, m, args) {
         try {
             const message = args.join(' ');
-            if (!message) return v.reply('¿falta de palabras?')
+            if (!message) return v.reply('¿Falta de palabras?');
 
             // Verifica si el mensaje tiene contenido multimedia
             if (m.hasMedia) {
@@ -35,7 +35,7 @@ module.exports = {
             }
         } catch (error) {
             console.log('Error en la ejecución del comando tag:', error);
-            v.reply(`Se produjo un error al ejecutar el comando tag.`);
+            v.reply('Se produjo un error al ejecutar el comando tag.');
         }
     }
 };
