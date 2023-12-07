@@ -1,3 +1,17 @@
+const getGreeting = () => {
+    const currentHour = new Date().getHours();
+
+    if (currentHour >= 5 && currentHour < 12) {
+        return { greeting: '¡Buenos días!', dailyMessage: 'Es un nuevo día para alcanzar tus metas. ¡Vamos!' };
+    } else if (currentHour >= 12 && currentHour < 18) {
+        return { greeting: '¡Buenas tardes!', dailyMessage: 'La tarde es perfecta para seguir progresando. ¡No te detengas!' };
+    } else if (currentHour >= 18 && currentHour < 24) {
+        return { greeting: '¡Buenas noches!', dailyMessage: 'Descansa y recarga energías para un nuevo día de logros.' };
+    } else {
+        return { greeting: '¡Buenas madrugadas!', dailyMessage: 'Aunque sea temprano, cada hora cuenta. ¡Sigue adelante!' };
+    }
+};
+
 module.exports = {
     name: 'menu',
     description: 'Muestra un menú de comandos',
@@ -14,20 +28,24 @@ module.exports = {
             const minutes = Math.floor((uptimeSeconds % (60 * 60)) / 60);
             const seconds = uptimeSeconds % 60;
 
+            const { greeting, dailyMessage } = getGreeting();
+
             // Utiliza m.reply en lugar de sock.reply
             await sock.sendMessage(m.chat, {
-                text: `    *Hola @${user} 🍥*
-᳃ "Es momento de levantarse y dar pasos largos para lograr nuestros objetivos"
+                text: `    ${greeting} *@${user} 🍥*
+᳃ *"${dailyMessage}"*
 
   *Prefijo:* ${prefixList} 
   *Modo:* Público
   *Actividad:* ${days > 0 ? `${days}d ` : ''}${hours}h ${minutes}m ${seconds}s
+  *Creator:* ziooo_zip
 
 Para obtener información de algún comando usa "Help <command>"
 
 Comandos disponibles:
-- Test
-- Ping`,
+- tiktok *<url>*
+- facebook *<url>* defectuoso
+- youtube *<url>* defectuoso`,
                 contextInfo: {
                     mentionedJid: [m.sender],
                     externalAdReply: {
