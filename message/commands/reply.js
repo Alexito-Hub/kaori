@@ -16,7 +16,7 @@ module.exports = {
                 await sock.sendMessage(m.chat, media, m.type, { quoted: m });
             } else {
                 // Si no hay contenido multimedia, replica el mensaje sin el contenido
-                await sock.sendMessage(m.chat, {text}, { quoted: m });
+                await sock.sendMessage(m.chat, m.body, { quoted: m });
             }
         } catch (error) {
             console.error('Error en la ejecución del comando replicar:', error);
