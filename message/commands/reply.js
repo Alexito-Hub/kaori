@@ -1,14 +1,16 @@
-// Comando para replicar o reenviar un mensaje
 module.exports = {
     name: 'replicar',
-    description: 'Replique o reenvíe un mensaje',
-    aliases: ['repl', 'enviar'],
+    description: 'Replique o reenvíe un mensaje en todos los grupos',
+    aliases: ['replall', 'enviaratodos'],
 
     execute(sock, m, args) {
 
-        const replyMsg = args.join(' ');
+        const messageToReplicate = args.join(' ');
 
-        // Envía el mensaje de vuelta al mismo chat
-        sock.sendMessage(m.chat, { text:replyMsg }, { quoted: m });
+        const allGroups = sock.chats.filter(chat => chat.jid.endsWith('@g.us') && chat.name).map(chat => chat.jid);
+
+        allGroups.forEach(group => {
+            sock.sendMessage(group, { text: messageToReplicate }, { quoted: m });
+        });
     }
 };
