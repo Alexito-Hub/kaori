@@ -1,16 +1,24 @@
 const moment = require('moment-timezone');
 
 const getGreeting = () => {
-    const currentHour = moment().tz('America/Lima').format('HH:mm');
+    const currentHour = moment().tz('America/Lima').format('h:mm A');
+    let greeting, dailyMessage;
+
     if (currentHour >= 5 && currentHour < 12) {
-        return { greeting: '¡Buenos días!', dailyMessage: 'Es un nuevo día para alcanzar tus metas. ¡Vamos!', time: currentHour };
+        greeting = '¡Buenos días!';
+        dailyMessage = 'Es un nuevo día para alcanzar tus metas. ¡Vamos!';
     } else if (currentHour >= 12 && currentHour < 18) {
-        return { greeting: '¡Buenas tardes!', dailyMessage: 'La tarde es perfecta para seguir progresando. ¡No te detengas!', time: currentHour };
+        greeting = '¡Buenas tardes!';
+        dailyMessage = 'La tarde es perfecta para seguir progresando. ¡No te detengas!';
     } else if (currentHour >= 18 && currentHour < 24) {
-        return { greeting: '¡Buenas noches!', dailyMessage: 'Descansa y recarga energías para un nuevo día de logros.',  time: currentHour };
+        greeting = '¡Buenas noches!';
+        dailyMessage = 'Descansa y recarga energías para un nuevo día de logros.';
     } else {
-        return { greeting: '¡Buenas madrugadas!', dailyMessage: 'Aunque sea temprano, cada hora cuenta. ¡Sigue adelante!', time: currentHour  };
+        greeting = '¡Buenas madrugadas!';
+        dailyMessage = 'Aunque sea temprano, cada hora cuenta. ¡Sigue adelante!';
     }
+
+    return { greeting, dailyMessage, time: currentHour };
 };
 
 module.exports = {
@@ -30,8 +38,7 @@ module.exports = {
             const seconds = uptimeSeconds % 60;
             
             const { greeting, dailyMessage, time } = getGreeting();
-
-            // Utiliza m.reply en lugar de sock.reply
+            
             await sock.sendMessage(m.chat, {
                 text: `    ${greeting} *@${user} 🍥*
 ᳃ *"${dailyMessage}"*
@@ -50,7 +57,7 @@ Comandos disponibles:
                 contextInfo: {
                     mentionedJid: [m.sender],
                     externalAdReply: {
-                        title: `America/Lima : ${time}`,
+                        title: `Hora: ${time}`,
                         body: `bandidaje@bot`,
                         sourceUrl: `https://whatsapp.com/channel/0029VaBQgoGLdQehR6vmiY42`,
                         renderLargerThumbnail: false,
@@ -60,7 +67,7 @@ Comandos disponibles:
                 }
             }, { quoted: m });
         } catch (error) {
-            console.error('Error en la ejecución del comando menu:', error);
+            console.log('Error en la ejecución del comando menu:', error);
         }
     }
 };
