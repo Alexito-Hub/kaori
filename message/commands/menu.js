@@ -1,7 +1,7 @@
 const moment = require('moment-timezone');
 
 const getGreeting = () => {
-    const currentHour = moment().tz('America/Lima').format('h:mm A').hours()
+    const currentHour = moment().tz('America/Lima').format('H');
     let greeting, dailyMessage;
 
     if (currentHour >= 5 && currentHour < 12) {
@@ -18,7 +18,7 @@ const getGreeting = () => {
         dailyMessage = 'Aunque sea temprano, cada hora cuenta. ¡Sigue adelante!';
     }
 
-    return { greeting, dailyMessage, time: currentHour };
+    return { greeting, dailyMessage, time: moment().format('h:mm A') };
 };
 
 module.exports = {
@@ -36,9 +36,9 @@ module.exports = {
             const hours = Math.floor((uptimeSeconds % (24 * 60 * 60)) / (60 * 60));
             const minutes = Math.floor((uptimeSeconds % (60 * 60)) / 60);
             const seconds = uptimeSeconds % 60;
-            
+
             const { greeting, dailyMessage, time } = getGreeting();
-            
+
             await sock.sendMessage(m.chat, {
                 text: `    ${greeting} *@${user} 🍥*
 ᳃ *"${dailyMessage}"*
@@ -58,7 +58,6 @@ Comandos disponibles:
                     mentionedJid: [m.sender],
                     externalAdReply: {
                         title: `Hora: ${time}`,
-                        body: `bandidaje@bot`,
                         sourceUrl: `https://whatsapp.com/channel/0029VaBQgoGLdQehR6vmiY42`,
                         renderLargerThumbnail: false,
                         mediaType: 1,
@@ -67,7 +66,7 @@ Comandos disponibles:
                 }
             }, { quoted: m });
         } catch (error) {
-            console.log('Error en la ejecución del comando menu:', error);
+            console.error('Error en la ejecución del comando menu:', error);
         }
     }
 };
