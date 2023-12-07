@@ -1,31 +1,35 @@
-// Comando para enviar un mensaje a todos los grupos
-const sendMessageToAllGroups = async (sock, message) => {
-    try {
-        const groups = await sock.getAllGroups();
-        for (const group of groups) {
-            await sock.sendMessage(group.jid, { text: message });
-            // Agrega un pequeño retraso para evitar posibles restricciones
-            await new Promise(resolve => setTimeout(resolve, 1000));
-        }
-        sock.reply(sock.decodeJid(sock.user.jid), 'Mensaje enviado a todos los grupos.');
-    } catch (error) {
-        console.error('Error al enviar mensaje a todos los grupos:', error);
-        sock.reply(sock.decodeJid(sock.user.jid), 'Error al enviar mensaje a todos los grupos.');
-    }
-};
+const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 module.exports = {
-    name: 'sendallgroups',
-    description: 'Envía un mensaje a todos los grupos',
-    aliases: ['sendgroups', 'broadcast'],
+    name: 'broadcast',
+    description: 'Envía un mensaje a todos los grupos en los que el bot está participando',
+    aliases: ['bcgc', 'bcgroup'],
 
     async execute(sock, m, args) {
-        if (args.length !== 1) {
-            v.reply('Uso incorrecto. Proporcione el mensaje que desea enviar a todos los grupos.');
-            return;
-        }
+        try {
 
-        const message = args[0];
-        sendMessageToAllGroups(sock, message);
+            const isOwner = global.owner.includes(m.sender.split('@')[0]);
+
+            if (!isOwner) return v.reply(`Este comando solo puede ser utilizado por el propietario.`);
+
+            const text = args.join(' ');
+            if (!text) return v.reply(`¿Qué mensaje deseas enviar a todos los grupos?`);
+
+            const groups = await sock.groupFetchAllParticipating();
+            const groupIds = Object.keys(groups);
+
+
+            v.reply(`Enviando mensaje a ${groupIds.length} Grupos. Tiempo Estimado: ${groupIds.length * 1.5} segundos.`);
+
+            for (const groupId of groupIds) {
+                await sleep(1500);
+                // Envia el mensaje a cada grupo
+                sock.sendMessage(groupId, { text });
+            }
+
+            v.reply(`Mensaje enviado correctamente a ${groupIds.length} grupos.`);
+        } catch (error) {
+            console.log('Error en la ejecución del comando broadcast:', error);
+        }
     }
 };
