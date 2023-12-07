@@ -1,5 +1,3 @@
-// commands/ping.js
-
 module.exports = {
     name: 'ping',
     description: 'Obtener el tiempo de respuesta',
