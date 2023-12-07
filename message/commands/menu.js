@@ -18,7 +18,7 @@ const getGreeting = () => {
         dailyMessage = 'Aunque sea temprano, cada hora cuenta. ¡Sigue adelante!';
     }
 
-    return { greeting, dailyMessage, time: moment().format('h:mm A') };
+    return { greeting, dailyMessage, time: moment().tz('America/Lima').format('h:mm A') };
 };
 
 module.exports = {
