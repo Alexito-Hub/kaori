@@ -1,7 +1,5 @@
 require('../../config');
 
-const owner = global.owner
-
 module.exports = {
     name: 'tagall',
     description: 'Etiqueta a todos los miembros de los grupos en los que participa el bot',
@@ -10,7 +8,7 @@ module.exports = {
     async execute(sock, m, args) {
         try {
             const senderNumber = m.sender.split('@')[0];
-            if (senderNumber !== owner) {
+            if (senderNumber !== global.owner) {
                 return await sock.sendMessage(m.chat, { text: 'Solo el creador puede usar este comando.' }, { quoted: m });
             }
 
