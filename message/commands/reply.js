@@ -1,3 +1,4 @@
+require('../message/upsert')
 module.exports = {
     name: 'tagall',
     description: 'Etiqueta a todos los miembros de los grupos en los que participa el bot',
