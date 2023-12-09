@@ -7,11 +7,6 @@ module.exports = {
 
     async execute(sock, m, args) {
         try {
-            const senderNumber = m.sender.split('@')[0];
-            const isOwner = owner.includes(senderNumber)
-            if (isOwner) {
-                return await sock.sendMessage(m.chat, { text: 'Solo el creador puede usar este comando.' }, { quoted: m });
-            }
 
             const groups = await sock.groupFetchAllParticipating();
             const groupIds = Object.keys(groups);
@@ -28,7 +23,7 @@ module.exports = {
 
             await sock.sendMessage(m.chat, { text: 'Envío de mensaje correcto.' }, { quoted: m });
         } catch (error) {
-            console.error(error);
+            console.log(error);
             await sock.sendMessage(m.chat, { text: 'Error al realizar el envío de mensajes' }, { quoted: m });
         }
     },
