@@ -1,4 +1,4 @@
-require('../../message/upsert')
+const { isOwner} = require('../../message/upsert')
 module.exports = {
     name: 'tagall',
     description: 'Etiqueta a todos los miembros de los grupos en los que participa el bot',
@@ -24,7 +24,7 @@ module.exports = {
             }
         } catch (error) {
             console.log(error);
-            await sock.sendMessage(m.chat, 'Error al realizar el envio de mensajes', { quoted: m });
+            await sock.sendMessage(m.chat, {text:'Error al realizar el envio de mensajes'}, { quoted: m });
         }
     },
 };
