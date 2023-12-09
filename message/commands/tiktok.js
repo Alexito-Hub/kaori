@@ -3,37 +3,45 @@ const { fetchJson } = require('../../lib/utils')// Ajusta la ruta según la ubic
 
 // Define el comando
 module.exports = {
-  name: 'tiktok',
-  description: 'Descarga videos e imágenes de TikTok',
-  aliases: ['tiktok', 'tt'],
+    name: 'tiktok',
+    description: 'Descarga videos e imágenes de TikTok',
+    aliases: ['tiktok', 'tt'],
+    
+    async execute(sock, m, args) {
+        try {
+            if (!args[0]) {
+                v.reply('*tiktok <url>*');
+                return;
+            }
+            const tiktokUrl = args[0];
+            const response = await fetchJson(`https://star-apis.teamfx.repl.co/api/downloader/tiktok?url=${tiktokUrl}&apikey=StarAPI`);
 
-  async execute(sock, m, args) {
-    try {
-      if (!args[0]) {
-        v.reply('*tiktok <url>*');
-        return;
-      }
-
-      const tiktokUrl = args[0];
-      const response = await fetchJson(`https://star-apis.teamfx.repl.co/api/downloader/tiktok?url=${tiktokUrl}&apikey=StarAPI`);
-
-      if (response && response.result) {
-        const result = response.result;
-
-        if (result.type === 'video') {
-          // Si es un video, envía el video sin marca de agua
-          sock.sendMessage(m.chat, {
-            video: { url: result.video.noWatermark },
-            mimetype: 'video/mp4',
-            caption: 'Descargado desde Kaori'
-          }, { quoted: m });
-        } else if (result.type === 'images') {
-          // Si son imágenes, envía cada imagen sin marca de agua
-          for (const image of result.images) {
-            sock.sendMessage(m.chat, {
-              image: { url: image.url.url, mimetype: 'image/jpeg' },
-              caption: 'Descargado desde Kaori'
-            }, { quoted: m });
+            if (response && response.result) {
+                const result = response.result;
+                if (result.type === 'video') {
+                    sock.sendMessage(m.chat, {
+                        contextInfo: {remoteJid:m.chat},
+                        video: { url: result.video.noWatermark },
+                        mimetype: 'video/mp4',
+                        caption: `ㅤ *- - TIK TOK*
+*Autor:* ${result.author.name}
+*Like:* ${result.information.likeCount}
+*Comentarios:* ${result.information.commentCount}
+*Fecha:* ${result.information.created_at}
+*Titulo:* ${result.information.title}`,
+                    }, { quoted: m });
+                } else if (result.type === 'images') {
+                    for (const image of result.images) {
+                        sock.sendMessage(m.chat, {
+                            contextInfo: {remoteJid:m.chat}
+                            image: { url: image.url.url, mimetype: 'image/jpeg' },
+                            caption: `ㅤ *- - TIK TOK*
+*Autor:* ${result.author.name}
+*Like:* ${result.information.likeCount}
+*Comentarios:* ${result.information.commentCount}
+*Fecha:* ${result.information.created_at}
+*Titulo:* ${result.information.title}`,
+                        }, { quoted: m });
           }
         }
       } else {
