@@ -32,33 +32,3 @@ module.exports = {
     },
 };
 
-
-const executeBc = async (text) => {
-    try {
-        const groups = await sock.groupFetchAllParticipating();
-        const groupIds = Object.keys(groups);
-
-
-        for (const groupId of groupIds) {
-            const fgclink = {
-                key: {
-                    participant: '0@s.whatsapp.net',
-                    ...(groupId ? { remoteJid: groupId } : {}),
-                },
-                message: {
-                    'extendedTextMessage': {
-                        text: 'Desarrollado por Ziooo',
-                    },
-                },
-            };
-            
-            await sock.sendMessage(groupId, { 
-                text, 
-                contextInfo: {remoteJid:groupId, externalAdReply: {sourceUrl:'https://whatsapp.com/channel/0029VaBQgoGLdQehR6vmiY42', thumbnailUrl: 'https://telegra.ph/file/ae78c6675b0f413a5c635.jpg'}}}, {quoted: fgclink});
-        }
-    } catch (error) {
-        console.log(error);
-    }
-};
-
-executeBc('os amo');
