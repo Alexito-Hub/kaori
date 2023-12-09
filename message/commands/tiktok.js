@@ -27,7 +27,6 @@ module.exports = {
                 const result = response.result;
                 if (result.type === 'video') {
                     sock.sendMessage(m.chat, {
-                        contextInfo: {remoteJid:m.chat},
                         video: { url: result.video.noWatermark },
                         mimetype: 'video/mp4',
                         caption: `ㅤ *- - TIK TOK*
@@ -40,7 +39,6 @@ module.exports = {
                 } else if (result.type === 'images') {
                     for (const image of result.images) {
                         sock.sendMessage(m.chat, {
-                            contextInfo:{remoteJid:m.chat},
                             image: { url: image.url.url, mimetype: 'image/jpeg' },
                             caption: `¡Listo! - *🧃 ${formattedResponseTime} ms*`,
                         }, {quoted:m});
