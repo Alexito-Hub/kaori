@@ -12,6 +12,6 @@ module.exports = {
         const responseTime = roundTime(responseMs - m.messageTimestamp * 1000);
         const formattedResponseTime = (responseTime / 1000).toFixed(3);
 
-        sock.sendMessage(m.chat, {text:`${formattedResponseTime} ms`, contextInfo: {remoteJid:m.chat}}, {quoted:m});
+        sock.sendMessage(m.chat, {text:`${formattedResponseTime} ms`}, {quoted:m});
     }
 };

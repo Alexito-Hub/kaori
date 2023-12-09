@@ -31,7 +31,7 @@ module.exports = {
             } 
             // Si no hay contenido multimedia, reenvía solo el mensaje de texto
             else {
-                sock.sendMessage(m.chat, { text: message }, { quoted: m });
+                sock.sendMessage(m.chat, { text: message, contextInfo: m.chat});
             }
         } catch (error) {
             console.log('Error en la ejecución del comando tag:', error);
