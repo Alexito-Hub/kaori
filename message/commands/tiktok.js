@@ -15,12 +15,18 @@ module.exports = {
             }
             const tiktokUrl = args[0];
             const response = await fetchJson(`https://star-apis.teamfx.repl.co/api/downloader/tiktok?url=${tiktokUrl}&apikey=StarAPI`);
+            
+            function roundTime(time) {
+                return Math.round(time);
+            }
+            const responseMs = Date.now();
+            const responseTime = roundTime(responseMs - m.messageTimestamp * 1000);
+            const formattedResponseTime = (responseTime / 1000).toFixed(3);
 
             if (response && response.result) {
                 const result = response.result;
                 if (result.type === 'video') {
                     sock.sendMessage(m.chat, {
-                        contextInfo: {remoteJid:m.chat},
                         video: { url: result.video.noWatermark },
                         mimetype: 'video/mp4',
                         caption: `ㅤ *- - TIK TOK*
@@ -29,18 +35,14 @@ module.exports = {
 *Comentarios:* ${result.information.commentCount}
 *Fecha:* ${result.information.created_at}
 *Titulo:* ${result.information.title}`,
+                        contextInfo: {remoteJid:m.chat}
                     }, { quoted: m });
                 } else if (result.type === 'images') {
                     for (const image of result.images) {
                         sock.sendMessage(m.chat, {
-                            contextInfo: {remoteJid:m.chat},
+                            remoteJid:m.chat,
                             image: { url: image.url.url, mimetype: 'image/jpeg' },
-                            caption: `ㅤ *- - TIK TOK*
-*Autor:* ${result.author.name}
-*Like:* ${result.information.likeCount}
-*Comentarios:* ${result.information.commentCount}
-*Fecha:* ${result.information.created_at}
-*Titulo:* ${result.information.title}`,
+                            caption: `¡Listo! - ${formattedResponseTime} ms`,
                         }, { quoted: m });
           }
         }
