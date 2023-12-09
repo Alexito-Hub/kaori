@@ -34,13 +34,13 @@ module.exports = {
 *Like:* ${result.information.likeCount}
 *Comentarios:* ${result.information.commentCount}
 *Fecha:* ${result.information.created_at}
-*Titulo:* ${result.information.title}`,
+*Titulo:* ${result.information.title}`
                     }, {quoted:m});
                 } else if (result.type === 'images') {
                     for (const image of result.images) {
                         sock.sendMessage(m.chat, {
                             image: { url: image.url.url, mimetype: 'image/jpeg' },
-                            caption: `¡Listo! - *🧃 ${formattedResponseTime} ms*`,
+                            caption: `¡Listo! - *🧃 ${formattedResponseTime} ms*`
                         }, {quoted:m});
           }
         }
