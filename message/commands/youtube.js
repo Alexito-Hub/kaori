@@ -9,7 +9,7 @@ module.exports = {
     async execute(sock, m, args) {
         try {
             if (args.length !== 1) {
-                sock.sendMessage(m.chat, '*youtube <url>*');
+                v.reply('*youtube <url>*');
                 return;
             }
 
@@ -23,11 +23,11 @@ module.exports = {
                     await sendVideo(sock, m, video);
                 }
             } else {
-                sock.sendMessage(m.chat, 'URL de YouTube no válida.');
+                v.reply('URL de YouTube no válida.');
             }
         } catch (error) {
-            console.error(error);
-            sock.sendMessage(m.chat, 'Error al procesar el comando.');
+            console.log(error);
+            v.reply('Error al procesar el comando.');
         }
     }
 };
@@ -46,7 +46,7 @@ const validateUrl = async (url) => {
             throw new Error('URL de YouTube no válida.');
         }
     } catch (error) {
-        console.error(error);
+        console.log(error);
         return false;
     }
 };
@@ -95,9 +95,9 @@ const downloadYoutubeVideo = async (url) => {
 
 const sendVideo = async (sock, m, video) => {
     try {
-        sock.sendMessage(m.chat, { video: video }, { quoted: m });
+        sock.sendMessage(m.chat, { video: { url: video }, mimetype: 'video/mp4', caption: 'gay'}, { quoted: m });
     } catch (error) {
-        console.error(error);
+        console.log(error);
         throw new Error('Error al enviar el video.');
     }
 };
