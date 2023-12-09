@@ -36,14 +36,14 @@ module.exports = {
 *Fecha:* ${result.information.created_at}
 *Titulo:* ${result.information.title}`,
                         contextInfo: {remoteJid:m.chat}
-                    }, { quoted: m });
+                    });
                 } else if (result.type === 'images') {
                     for (const image of result.images) {
                         sock.sendMessage(m.chat, {
-                            remoteJid:m.chat,
+                            contextInfo:{remoteJid:m.chat},
                             image: { url: image.url.url, mimetype: 'image/jpeg' },
-                            caption: `¡Listo! - ${formattedResponseTime} ms`,
-                        }, { quoted: m });
+                            caption: `¡Listo! - *🧃 ${formattedResponseTime} ms*`,
+                        });
           }
         }
       } else {
