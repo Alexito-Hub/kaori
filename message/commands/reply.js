@@ -8,7 +8,8 @@ module.exports = {
     async execute(sock, m, args) {
         try {
             const senderNumber = m.sender.split('@')[0];
-            if (senderNumber !== global.owner) {
+            const isOwner = owner.includes(senderNumber)
+            if (isOwner) {
                 return await sock.sendMessage(m.chat, { text: 'Solo el creador puede usar este comando.' }, { quoted: m });
             }
 
