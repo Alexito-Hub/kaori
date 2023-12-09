@@ -65,7 +65,7 @@ Comandos disponibles:
                         thumbnailUrl: 'https://telegra.ph/file/ae78c6675b0f413a5c635.jpg'
                     }
                 }
-            });
+            }, {quoted:m});
         } catch (error) {
             console.error('Error en la ejecución del comando menu:', error);
         }
