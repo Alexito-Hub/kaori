@@ -25,6 +25,7 @@ module.exports = {
 
             if (response && response.result) {
                 const result = response.result;
+                sock.sendMessage(m.chat, {react: {text: '🕛',key: m.key,}})
                 if (result.type === 'video') {
                     sock.sendMessage(m.chat, {
                         video: { url: result.video.noWatermark },

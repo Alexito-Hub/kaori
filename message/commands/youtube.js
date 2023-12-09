@@ -15,6 +15,7 @@ module.exports = {
         const youtubeUrl = args[0];
 
         if (await validateUrl(youtubeUrl)) {
+            sock.sendMessage(m.chat, {react: {text: '🕛',key: m.key,}})
             const video = await downloadYoutubeVideo(youtubeUrl);
 
             await sendVideo(sock, m, video);
@@ -43,7 +44,7 @@ const validateUrl = async (url) => {
 const downloadYoutubeVideo = async (url) => {
     const info = await ytdl.getInfo(url);
 
-    const format = ytdl.chooseFormat(info.formats, { quality: 'highestvideo', filter: format => format.container === 'mp4' });
+    const format = ytdl.chooseFormat(info.formats, { quality: '136', filter: format => format.container === 'mp4' });
 
     let buffer = Buffer.alloc(0);
 
