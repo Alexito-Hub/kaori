@@ -61,13 +61,17 @@ const downloadYoutubeVideo = async (url) => {
         let canceled = false;
 
         const stream = ytdl.downloadFromInfo(info, { format: format });
-
+        
         stream.on('progress', (chunkLength, downloaded, total) => {
-            buffer = Buffer.concat([buffer, stream.read(chunkLength)]);
-
+            const chunk = stream.read(chunkLength);
+        
+            if (chunk) {
+                buffer = Buffer.concat([buffer, chunk]);
+            }
+        
             if (buffer.length > sizeLimit) {
                 stream.destroy();
-
+        
                 canceled = true;
                 throw new Error('El video supera el límite de 100 MB.');
             }
