@@ -1,4 +1,4 @@
-const { owner } = require('../config'); // Asegúrate de tener configurada la variable 'owner' en tu archivo de configuración
+const { owner } = require('../../config'); // Asegúrate de tener configurada la variable 'owner' en tu archivo de configuración
 
 module.exports = {
     name: 'tagall',
