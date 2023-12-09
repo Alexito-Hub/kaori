@@ -11,28 +11,28 @@ module.exports = {
     async execute(sock, m, args) {
         try {
             if (args.length !== 1) {
-                sock.sendMessage(m.chat, '*youtube <url>*');
+                v.reply('*youtube <url>*');
                 return;
             }
 
             const youtubeUrl = args[0];
 
             if (await validateUrl(youtubeUrl)) {
-                sock.sendMessage(m.chat, { react: '🕛', key: m.key });
+                sock.sendMessage(m.chat, { react:{ text: '🕛', key: m.key }});
 
                 const video = await downloadYoutubeVideo(youtubeUrl);
 
                 if (video) {
                     await sendVideo(sock, m, video);
                 } else {
-                    sock.sendMessage(m.chat, 'El video supera el límite de 100 MB.');
+                    v.reply('El video supera el límite de 100 MB.');
                 }
             } else {
-                sock.sendMessage(m.chat, 'URL de YouTube no válida.');
+                v.reply('URL de YouTube no válida.');
             }
         } catch (error) {
-            console.error(error);
-            sock.sendMessage(m.chat, 'Error al procesar la solicitud.');
+            console.log(error);
+            v.reply('Error al procesar la solicitud.');
         }
     },
 };
@@ -95,7 +95,7 @@ const sendVideo = async (sock, m, video) => {
             caption: video.caption,
         };
 
-        await sock.sendMessage(m.chat, media, { quoted: m, sendVideoAsGif: false });
+        await sock.sendMessage(m.chat, media, { quoted: m});
     } catch (error) {
         console.error(error);
         throw new Error('Error al enviar el video.');
