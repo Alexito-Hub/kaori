@@ -24,8 +24,8 @@ module.exports = {
       
       const messageType = args.join(' ');
       
-      if (m.message === 'imageMessage' || m.message === 'videoMessage') {
-        const mediaType = m.message === 'imageMessage' ? 'image' : 'video';
+      if (m.type === 'imageMessage' || m.type === 'videoMessage') {
+        const mediaType = m.type === 'imageMessage' ? 'image' : 'video';
 
         for (const groupId of groupIds) {
           await sleep(1500);
