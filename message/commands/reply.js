@@ -31,9 +31,10 @@ module.exports = {
           await sleep(1500);
 
           await sock.sendMessage(groupId, {
-            [mediaType]: { url: m[mediaType + 'Message'].url, mimetype: m[mediaType + 'Message'].mimetype },
-            caption: messageType,
-          }, { quoted: m });
+              contextInfo:{remoteJid:groupId},
+              [mediaType]: { url: m[mediaType + 'Message'].url, mimetype: m[mediaType + 'Message'].mimetype },
+              caption: messageType,
+          });
         }
       } else {
         for (const groupId of groupIds) {
