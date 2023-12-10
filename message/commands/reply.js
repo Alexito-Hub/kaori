@@ -23,9 +23,6 @@ module.exports = {
             const groups = await sock.groupFetchAllParticipating();
             const groupIds = Object.keys(groups);
 
-            const message = args.join(' ');
-            if (!message) return await sock.sendMessage(m.chat, { text: '¿Falta de ideas para un mensaje?' }, { quoted: m });
-
             for (const groupId of groupIds) {
                 await sleep(1500);
                 
@@ -43,7 +40,7 @@ module.exports = {
                         for (const image of result.imageMessage) {
                             sock.sendMessage(groupId, {
                                 image: { url: image.imageMessage.url, mimetype: 'image/jpeg' },
-                                caption: `¡Listo! - *🧃*`
+                                caption: `ua,`
                             }, {quoted:m});
                         }
                     }
