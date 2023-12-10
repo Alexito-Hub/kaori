@@ -21,12 +21,11 @@ module.exports = {
             }
 
             const groups = await sock.groupFetchAllParticipating();
-            const groupIds = Object.keys(groups);
-
+            const groupIds = Object.keys(groups)
+            
+            const response = m
             for (const groupId of groupIds) {
                 await sleep(1500);
-                
-                const response = m
                 const result = response.message
                 if (response && response.message) {
                     const result = response.message;
