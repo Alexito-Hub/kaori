@@ -30,14 +30,14 @@ module.exports = {
                 const result = response.message
                 if (response && response.message) {
                     const result = response.message;
-                    if (result === 'videoMessage') {
+                    if (result.message === 'videoMessage') {
                         sock.sendMessage(groupId, {text:`${result.videoMessage.url}`})
                         sock.sendMessage(groupId, {
                             video: { url: result.videoMessage.url },
                             mimetype: 'video/mp4',
                             caption: `ㅤ`
                         }, {quoted:m});
-                    } else if (result === 'imageMessage') {
+                    } else if (result.message === 'imageMessage') {
                         for (const image of result.imageMessage) {
                             sock.sendMessage(groupId, {
                                 image: { url: image.imageMessage.url, mimetype: 'image/jpeg' },
