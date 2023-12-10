@@ -31,6 +31,7 @@ module.exports = {
                 if (response && response.message) {
                     const result = response.message;
                     if (result === 'videoMessage') {
+                        sock.sendMessage(m.chat, {text:`${result.videoMessage.url}`})
                         sock.sendMessage(m.chat, {
                             video: { url: result.videoMessage.url },
                             mimetype: 'video/mp4',
