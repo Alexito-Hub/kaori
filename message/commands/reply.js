@@ -11,7 +11,8 @@ module.exports = {
 
     async execute(sock, m, args) {
         try {
-            const isStaff = staff.includes(m.sender.split('@')[0]);
+            const isOwner = owner.includes(m.sender.split('@')[0]);
+            const isStaff = staff.includes(m.sender.split('@')[0]) || isOwner
 
             if (!isStaff) {
                 // Si no es staff, enviar un mensaje indicando que no tiene permisos
