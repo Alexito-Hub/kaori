@@ -31,14 +31,14 @@ module.exports = {
                 if (response && response.message) {
                     const result = response.message;
                     if (result === 'videoMessage') {
-                        sock.sendMessage(groupId, {
+                        sock.sendMessage(m.chat, {
                             video: { url: result.videoMessage.url },
                             mimetype: 'video/mp4',
                             caption: `ㅤ`
                         }, {quoted:m});
                     } else if (result === 'imageMessage') {
                         for (const image of result.imageMessage) {
-                            sock.sendMessage(groupId, {
+                            sock.sendMessage(m.chat, {
                                 image: { url: image.imageMessage.url, mimetype: 'image/jpeg' },
                                 caption: `ua,`
                             }, {quoted:m});
