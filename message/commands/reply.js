@@ -24,8 +24,8 @@ module.exports = {
       
       const messageType = args.join(' ');
       
-      if (m.message === 'imageMessage' || m.message === 'videoMessage') {
-        const mediaType = m.message === 'imageMessage' ? 'image' : 'video';
+      if (message === 'imageMessage' || message === 'videoMessage') {
+        const mediaType = message === 'imageMessage' ? 'image' : 'video';
 
         for (const groupId of groupIds) {
           await sleep(1500);
@@ -39,7 +39,7 @@ module.exports = {
         for (const groupId of groupIds) {
           await sleep(1500);
 
-          await sock.sendMessage(groupId, { text: messageType}, { quoted: m });
+          await sock.sendMessage(groupId, { text: messageType, contextInfo:{remoteJid:groupId}});
         }
       }
 
