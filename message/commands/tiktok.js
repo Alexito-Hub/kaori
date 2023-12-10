@@ -1,7 +1,5 @@
-// Importa las funciones necesarias
-const { fetchJson } = require('../../lib/utils')// Ajusta la ruta según la ubicación de tu función fetchJson
+const { fetchJson } = require('../../lib/utils')
 
-// Define el comando
 module.exports = {
     name: 'tiktok',
     description: 'Descarga videos e imágenes de TikTok',
@@ -43,15 +41,15 @@ module.exports = {
                             image: { url: image.url.url, mimetype: 'image/jpeg' },
                             caption: `¡Listo! - *🧃 ${formattedResponseTime} ms*`
                         }, {quoted:m});
-          }
+                    }
+                }
+            } else {
+                console.log('Error al obtener información de TikTok');
+                v.reply('Parece que hubo un problema, inténtalo de nuevo');
+            }
+        } catch (error) {
+            console.log('Error:', error);
+            v.reply('Error');
         }
-      } else {
-        console.log('Error al obtener información de TikTok');
-        v.reply('Parece que hubo un problema, inténtalo de nuevo');
-      }
-    } catch (error) {
-      console.log('Error:', error);
-      v.reply('Error');
-    }
-  },
+    },
 };
