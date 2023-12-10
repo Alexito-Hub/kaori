@@ -26,7 +26,7 @@ module.exports = {
             for (const groupId of groupIds) {
                 await sleep(1500);
                 
-                const response = fetchJson(m)
+                const response = m
                 const result = response.message
                 if (response && response.message) {
                     const result = response.message;
