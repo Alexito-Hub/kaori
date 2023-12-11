@@ -17,7 +17,7 @@ module.exports = {
             
             if (isAdmin) {
                 await sock.groupParticipantsUpdate(m.chat, [targetUser], 'remove');
-                sock.sendMessage(m.chat, {text:`Usuario @${user} expulsado del grupo por @${user}`, contextInfo:{remoteJid:m.chat,mentionedJid: [m.sender]}}, { quoted: m });
+                sock.sendMessage(m.chat, {text:`Usuario @${targetUser} expulsado del grupo por @${user}`, contextInfo:{remoteJid:m.chat,mentionedJid: [m.sender]}});
             } else {
                 sock.sendMessage(m.chat, {text:'Solo los administradores pueden expulsar a miembros del grupo.'}, { quoted: m });
             }
