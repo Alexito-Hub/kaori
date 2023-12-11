@@ -11,8 +11,8 @@ module.exports = {
             }
 
             const groupInfo = await sock.groupMetadata(m.chat);
-            const botNumber = sock.user.id.split(':')[0];
 
+            const botNumber = sock.user.id.split(':')[0];
             const isAdmin = groupInfo && sock.getGroupAdmins(groupInfo.participants).includes(botNumber);
             
             if (!isAdmin) {
