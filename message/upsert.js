@@ -95,39 +95,17 @@ switch (command) {
     default:
         if (isEval && v.body.startsWith('>')) {
             try {
-                let isProcessing = true;
-                let result;
+                await v.reply('Processing...'); // Muestra un mensaje indicando que está en proceso
 
-                // Inicia el proceso de ejecución
-                (async () => {
-                    try {
-                        result = await eval(`(async () => { ${q} })()`);
-                    } catch (e) {
-                        result = String(e);
-                    } finally {
-                        // Marca el proceso como completado
-                        isProcessing = false;
-                    }
-                })();
-
-                // Mientras se está ejecutando, muestra "Processing"
-                while (isProcessing) {
-                    await sleep(100); // Espera 100 milisegundos
-                    await v.reply('Processing');
-                }
-
-                // Muestra el resultado
-                await v.reply(Json(result !== undefined ? result : 'Undefined'));
+                let value = await eval(`(async () => { ${q} })()`);
+                
+                await v.reply(Json(value));
             } catch (e) {
-                console.error(e);
+                await v.reply(String(e));
             }
         }
 }
 
-// Función para pausar la ejecución por un tiempo dado (en milisegundos)
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
 
 
 		/*switch (command) {
