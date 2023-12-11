@@ -14,16 +14,17 @@ module.exports = {
                 return;
             }
             sock.sendMessage(m.chat, {react: {text: '🕛',key: m.key,}})
-            const subcommand = args[1].toLowerCase();
-            const tiktokUrl = args[0];
+            const subcommand = args[0].toLowerCase();
+            const tiktokUrl = args[1];
             const response = await fetchJson(`https://star-apis.teamfx.repl.co/api/downloader/tiktok?url=${tiktokUrl}&apikey=StarAPI`);
             
-            if (subcommand === 'audio') {
+            if (subcommand === 'audio' && tiktokUrl) {
                 if (!args[1]) {
                     v.reply('*tiktok audio <url>*')
                 }
                 if (response && response.result && response.result.type === 'video') {
                     const audioUrl = response.result.music.url;
+                    sock.sendMessage(m.chat, {react: {text: '✅',key: m.key,}})
                     sock.sendMessage(m.chat, {
                         audio: { url: audioUrl },
                         mimetype: 'audio/mp4',
@@ -32,6 +33,7 @@ module.exports = {
                     return;
                 } else {
                     console.log('Error al obtener información de TikTok para el subcomando audio');
+                    sock.sendMessage(m.chat, {react: {text: '❎',key: m.key,}})
                     v.reply('Parece que hubo un problema al obtener el audio, inténtalo de nuevo');
                     return;
                 }
@@ -48,7 +50,7 @@ module.exports = {
             if (response && response.result) {
                 const result = response.result;
                 if (result.type === 'video') {
-                    sock.sendMessage(m.chat, {react: {text: '🎥',key: m.key,}})
+                    sock.sendMessage(m.chat, {react: {text: '✅',key: m.key,}})
                     sock.sendMessage(m.chat, {
                         video: { url: result.video.noWatermark },
                         mimetype: 'video/mp4',
@@ -61,7 +63,7 @@ module.exports = {
                     }, {quoted:m});
                 } else if (result.type === 'images') {
                     for (const image of result.images) {
-                        sock.sendMessage(m.chat, {react: {text: '📷',key: m.key,}})
+                        sock.sendMessage(m.chat, {react: {text: '✅',key: m.key,}})
                         sock.sendMessage(m.chat, {
                             image: { url: image.url.url, mimetype: 'image/jpeg' },
                             caption: `᳃ ¡Listo! - *🧃 ${formattedResponseTime} ms*`
@@ -70,7 +72,7 @@ module.exports = {
         }
       } else {
         console.log('Error al obtener información');
-        sock.sendMessage(m.chat, {react: {text: '❌',key: m.key,}})
+        sock.sendMessage(m.chat, {react: {text: '❎',key: m.key,}})
         v.reply(`Hubo un problema al obtener información?`);
       }
     } catch (error) {
