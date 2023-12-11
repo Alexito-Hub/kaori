@@ -23,7 +23,7 @@ module.exports = {
                 sock.sendMessage(m.chat, {
                     contextInfo:{
                         remoteJid:m.chat,
-                        mentionedJid:[m.sender, userName, user]
+                        mentionedJid:[m.sender]
                     },
                     video: {url: 'https://telegra.ph/file/25ec490a6f4dd4b423110.mp4'},
                     gifPlayback: true,
