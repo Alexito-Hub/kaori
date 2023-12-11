@@ -49,7 +49,7 @@ module.exports = {
                         }, {quoted:m});
                     }
                     
-                } else if (args[0] && args[0].toLowerCase() === 'audio') {
+                } else if (args[0] && args[1].toLowerCase() === 'audio') {
                     sock.sendMessage(m.chat, {text:'hola'})
                     /*sock.sendMessage(m.chat, {
                         audio: {url: result.music.url },
