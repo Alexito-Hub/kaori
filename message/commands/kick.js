@@ -13,7 +13,7 @@ module.exports = {
 
       // Verificar si se proporciona un usuario a expulsar
       if (args.length === 0 && !m.quoted) {
-        sock.sendMessage(m.chat, '*kick <@usuario>*', { quoted: m });
+        v.reply('*kick <@usuario>*');
         return;
       }
 
@@ -26,14 +26,14 @@ module.exports = {
         await sock.groupRemove(m.chat, [targetUser]);
 
         // Enviar mensaje de éxito
-        sock.sendMessage(m.chat, `Usuario ${targetUser} expulsado del grupo.`, { quoted: m });
+        v.reply(`Usuario ${targetUser} expulsado del grupo.`);
       } else {
         // Enviar mensaje de error si el bot o el remitente no son administradores
-        sock.sendMessage(m.chat, 'Solo los administradores pueden expulsar a miembros del grupo.', { quoted: m });
+        v.reply('Solo los administradores pueden expulsar a miembros del grupo.');
       }
     } catch (error) {
       console.error('Error:', error);
-      sock.sendMessage(m.chat, 'Error al ejecutar el comando', { quoted: m });
+      v.reply('Error al ejecutar el comando');
     }
   },
 };
