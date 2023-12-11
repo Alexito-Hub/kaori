@@ -98,19 +98,17 @@ module.exports = async(sock, m, store) => {
                 if (isEval) {
                     if (v.body.startsWith('>')) {
                         try {
-                            const script = new Script(q, { displayErrors: true });
-                            const context = {
-                                // Puedes proporcionar variables globales accesibles en el entorno de ejecución aquí
-                            };
-                            const result = script.runInNewContext(context);
-                            const resultString = result !== undefined ? Json(result) : 'undefined';
-                            await v.reply(resultString);
+                            const result = await (async () => {
+                                return eval(q);
+                            })();
+                            await v.reply(Json(result));
                         } catch (e) {
-                            await v.reply(`${String(e)}`);
+                            await v.reply(String(e));
                         }
                     }
                 }
         }
+
 
 		/*switch (command) {
 			default:
