@@ -1,5 +1,4 @@
 require('../../config');
-const { fetchJson } = require('../../lib/utils');
 
 const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -14,8 +13,7 @@ module.exports = {
       const isStaff = staff.includes(m.sender.split('@')[0]) || isOwner;
 
       if (!isStaff) {
-        // Si no es staff, enviar un mensaje indicando que no tiene permisos
-        await sock.sendMessage(m.chat, { text: 'Solo el staff tiene permiso para usar este comando.' }, { quoted: m });
+        await sock.sendMessage(m.chat, { text: 'Solo el Staff puede usar el comando.' }, { quoted: m });
         return;
       }
 
@@ -23,31 +21,33 @@ module.exports = {
       const groupIds = Object.keys(groups);
       
       const messageType = args.join(' ');
+      if (!messageType) return await sock.sendMessage(m.chat, { text: '¿Falta de ideas para un mensaje?' }, { quoted: m });
       
-      if (m.type === 'imageMessage' || m.type === 'videoMessage') {
-        const mediaType = m.type === 'imageMessage' ? 'image' : 'video';
+      if (m.type === 'imageMessage' || m.type === 'videoMessage' || m.type === 'audioMessage') {
+        const mediaType = m.type === 'imageMessage' ? 'image' : m.type === 'videoMessage' ? 'video' : 'audio';
 
         for (const groupId of groupIds) {
           await sleep(1500);
 
+          const buffer = await sock.downloadMediaMessage(m);
           await sock.sendMessage(groupId, {
-              contextInfo:{remoteJid:groupId},
-              [mediaType]: { url: m[mediaType + 'Message'].url, mimetype: m[mediaType + 'Message'].mimetype },
-              caption: messageType,
+            contextInfo: { remoteJid: groupId },
+            [mediaType]: { url: buffer, mimetype: m[mediaType + 'Message'].mimetype },
+            caption: messageType,
           });
         }
       } else {
         for (const groupId of groupIds) {
           await sleep(1500);
 
-          await sock.sendMessage(groupId, { text: messageType, contextInfo:{remoteJid:groupId}});
+          await sock.sendMessage(groupId, { text: messageType, contextInfo: { remoteJid: groupId } });
         }
       }
 
-      await sock.sendMessage(m.chat, { text: 'Envío de mensaje correcto.' }, { quoted: m });
+      await sock.sendMessage(m.chat, { text: 'Envío de contenido correcto.' }, { quoted: m });
     } catch (error) {
       console.error(error);
-      await sock.sendMessage(m.chat, { text: 'Error al realizar el envío de mensajes' }, { quoted: m });
+      await sock.sendMessage(m.chat, { text: 'Error al enviar contenido' }, { quoted: m });
     }
   },
 };
