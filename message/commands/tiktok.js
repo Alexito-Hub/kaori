@@ -14,8 +14,8 @@ module.exports = {
                 return;
             }
             sock.sendMessage(m.chat, {react: {text: '🕛',key: m.key,}})
-            const subcommand = args[0].toLowerCase();
-            const tiktokUrl = args[1];
+            const subcommand = args[1].toLowerCase();
+            const tiktokUrl = args[0];
             const response = await fetchJson(`https://star-apis.teamfx.repl.co/api/downloader/tiktok?url=${tiktokUrl}&apikey=StarAPI`);
             
             if (subcommand === 'audio' && tiktokUrl) {
