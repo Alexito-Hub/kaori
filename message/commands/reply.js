@@ -32,7 +32,7 @@ module.exports = {
           const buffer = await sock.downloadMediaMessage(m);
           await sock.sendMessage(groupId, {
             contextInfo: { remoteJid: groupId },
-            [mediaType]: { url: buffer, mimetype: m[mediaType + 'Message'].mimetype },
+            [mediaType]: { data: buffer, mimetype: m[mediaType + 'Message'].mimetype },
             caption: messageType,
           });
         }
