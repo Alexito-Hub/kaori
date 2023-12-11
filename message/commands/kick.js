@@ -6,14 +6,15 @@ module.exports = {
   async execute(sock, m, args) {
     try {
       // Verificar si el bot es administrador del grupo
-      const isBotAdmin = await sock.isGroupAdmin(m.chat, sock.user.id);
+      const groupInfo = await sock.groupMetadata(m.chat);
+      const isBotAdmin = groupInfo && groupInfo.owner == sock.user.id;
 
       // Verificar si el remitente del mensaje es administrador del grupo
-      const isSenderAdmin = await sock.isGroupAdmin(m.chat, m.sender);
+      const isSenderAdmin = groupInfo && groupInfo.participants.some(p => p.jid == m.sender && ['admin', 'superadmin'].includes(p.admin));
 
       // Verificar si se proporciona un usuario a expulsar
       if (args.length === 0 && !m.quoted) {
-        v.reply('*kick <@usuario>*');
+        sock.sendMessage(m.chat, {text:'*kick <@usuario>*'}, { quoted: m });
         return;
       }
 
@@ -26,14 +27,14 @@ module.exports = {
         await sock.groupRemove(m.chat, [targetUser]);
 
         // Enviar mensaje de éxito
-        v.reply(`Usuario ${targetUser} expulsado del grupo.`);
+        sock.sendMessage(m.chat, {text:`Usuario ${targetUser} expulsado del grupo.`}, { quoted: m });
       } else {
         // Enviar mensaje de error si el bot o el remitente no son administradores
-        v.reply('Solo los administradores pueden expulsar a miembros del grupo.');
+        sock.sendMessage(m.chat, {text:'Solo los administradores pueden expulsar a miembros del grupo.'}, { quoted: m });
       }
     } catch (error) {
       console.error('Error:', error);
-      v.reply('Error al ejecutar el comando');
+      sock.sendMessage(m.chat, {text:'Error al ejecutar el comando'}, { quoted: m });
     }
   },
 };
