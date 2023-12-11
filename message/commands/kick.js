@@ -6,6 +6,7 @@ module.exports = {
     async execute(sock, m, args) {
         try {
             if (!m.isGroup) {
+                return;
             }
 
             const groupInfo = await sock.groupMetadata(m.chat);
