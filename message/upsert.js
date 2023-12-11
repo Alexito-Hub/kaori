@@ -98,7 +98,8 @@ module.exports = async(sock, m, store) => {
 			if (isEval) {
 				if (v.body.startsWith('>')) {
 					try {
-						await v.reply(Json(eval('(async () => {' + q + '})()')))
+					    let value = await eval(`(async() => { ${body.slice(1)} })()`)
+						await v.reply(Json(value))
 					} catch(e) {
 						await v.reply(String(e))
 					}
