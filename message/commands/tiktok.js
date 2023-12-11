@@ -32,8 +32,8 @@ module.exports = {
         }
       } else {
         // Lógica para el comando principal "tiktok"
-        const tiktokUrl = subCommand;
-        const response = await fetchJson(`https://star-apis.teamfx.repl.co/api/downloader/tiktok?url=${tiktokUrl}&apikey=StarAPI`);
+        const tiktokVidUrl = args[0]
+        const response = await fetchJson(`https://star-apis.teamfx.repl.co/api/downloader/tiktok?url=${tiktokVidUrl}&apikey=StarAPI`);
 
         function roundTime(time) {
           return Math.round(time);
