@@ -31,7 +31,7 @@ module.exports = {
                     const tiktokAudioUrl = args[1];
                     const audio = response.result
                     sock.sendMessage(m.chat, {
-                        audio:{ url: audio.music.url },
+                        audio:{ url: result.music.url },
                         mimetype: 'audio/mp4',
                         ppt: true
                     });
