@@ -42,18 +42,17 @@ module.exports = {
  ∘ *Titulo:* ${result.information.title}`
                     }, {quoted:m});
                 } else if (result.type === 'images') {
+                    sock.sendMessage(m.chat, {
+                        audio: { url: result.music.url },
+                        mimetype: 'audio/mp4',
+                        ppt: true,
+                    }, { quoted: m });
                     for (const image of result.images) {
                         sock.sendMessage(m.chat, {react: {text: '✅',key: m.key,}})
                         sock.sendMessage(m.chat, {
                             image: { url: image.url.url, mimetype: 'image/jpeg' },
                             caption: `᳃ ¡Listo! - *🧃 ${formattedResponseTime} ms*`
                         }, {quoted:m});
-                        sock.sendMessage(m.chat, {
-                            audio: { url: result.music.url },
-                            mimetype: 'audio/mp4',
-                            ppt: true,
-                            
-                        }, { quoted: m });
                     }
                     
                 }
