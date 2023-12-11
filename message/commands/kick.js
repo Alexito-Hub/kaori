@@ -12,11 +12,8 @@ module.exports = {
                 return;
             }
             
-            const userObj = m.quoted.split('@')[0]
-            const user = m.sender.split('@')[0];
-            
             const targetUser = (args.length > 0) ? args[0].replace('@', '').replace(/\s/g, '').split('@')[0] + '@s.whatsapp.net' : m.quoted.sender;
-            
+            const user = m.sender.split('@')[0];
             if (isAdmin) {
                 await sock.groupParticipantsUpdate(m.chat, [targetUser], 'remove');
                 sock.sendMessage(m.chat, {
