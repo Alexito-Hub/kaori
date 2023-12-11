@@ -76,18 +76,17 @@ module.exports = async(sock, m, store) => {
     		        const { exec } = require('child_process');
     		        exec(command, (error, stdout, stderr) => {
     		            if (error) {
-    		                sock.sendMessage(m.chat, {text:`${error.message}`,contextInfo: {externalAdReply: {showAdAttribution: true,}}}, {quoted:m});
+    		                sock.sendMessage(m.chat, {text:`${error.message}`}, {quoted:m});
     		                return;
     		            }
     		            if (stderr) {
-    		                sock.sendMessage(m.chat, {text:`${stderr}`,contextInfo: {externalAdReply: {showAdAttribution: true,}}
-    		                }, {quoted:m});
+    		                sock.sendMessage(m.chat, {text:`${stderr}`}, {quoted:m});
     		                return;
     		            }
-    		            sock.sendMessage(m.chat, {text:`${stdout}`,contextInfo: {externalAdReply: {showAdAttribution: true,}}}, {quoted:m});
+    		            sock.sendMessage(m.chat, {text:`${stdout}`}, {quoted:m});
     		        });
     		    } catch (e) {
-    		        sock.sendMessage(m.chat, { text:`${e.message}`, contextInfo: { externalAdReply: {showAdAttribution: true, }}}, {quoted:m});
+    		        sock.sendMessage(m.chat, { text:`${e.message}`}, {quoted:m});
     		    }
     		}
 		}
@@ -102,6 +101,15 @@ module.exports = async(sock, m, store) => {
 					} catch(e) {
 						await v.reply(String(e))
 					}
+				}
+				if (body.startsWith('<')) {
+				    try {
+				        let value = await eval(`(async() => { return ${q})()`)
+				        await v.reply(Json(value))
+				    } catch(e) {
+				        await v.reply(String(e))
+				    }
+				    
 				}
 			}
 		}
