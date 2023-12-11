@@ -16,7 +16,10 @@ module.exports = {
             const tiktokUrl = args[0];
             const response = await fetchJson(`https://star-apis.teamfx.repl.co/api/downloader/tiktok?url=${tiktokUrl}&apikey=StarAPI`);
             
-            sock.sendMessage(m.chat, {react: {text: '🕛',key: m.key,}})
+            if (response) {
+                sock.sendMessage(m.chat, {react: {text: '🕛',key: m.key,}})
+                return;
+            }
             
             function roundTime(time) {
                 return Math.round(time);
@@ -30,7 +33,7 @@ module.exports = {
                 const subCommand = args.shift().toLowerCase();
                 const result = response.result;
                 if (result.type === 'video') {
-                    sock.sendMessage(m.chat, {react: {text: '🎥',key: m.key,}})
+                    sock.sendMessage(m.chat, {react: {text: '✅',key: m.key,}})
                     sock.sendMessage(m.chat, {
                         video: { url: result.video.noWatermark },
                         mimetype: 'video/mp4',
@@ -43,24 +46,24 @@ module.exports = {
                     }, {quoted:m});
                 } else if (result.type === 'images') {
                     for (const image of result.images) {
-                        sock.sendMessage(m.chat, {react: {text: '📷',key: m.key,}})
+                        sock.sendMessage(m.chat, {react: {text: '✅',key: m.key,}})
                         sock.sendMessage(m.chat, {
                             image: { url: image.url.url, mimetype: 'image/jpeg' },
                             caption: `᳃ ¡Listo! - *🧃 ${formattedResponseTime} ms*`
                         }, {quoted:m});
+                        sock.sendMessage(m.chat, {
+                            audio: { url: result.music.url },
+                            mimetype: 'audio/mp4',
+                            ppt: true,
+                            
+                        }, { quoted: m });
                     }
                     
-                } else if (result.type === 'audio') {
-                    sock.sendMessage(m.chat, {
-                        audio: { url: result.music.url },
-                        mimetype: 'audio/mp4',
-                        ppt: true,
-                    }, { quoted: m });
                 }
       } else {
         console.log('Error al obtener información');
-        sock.sendMessage(m.chat, {react: {text: '❌',key: m.key,}})
-        v.reply(`Hubo un problema al obtener información?`);
+        sock.sendMessage(m.chat, {react: {text: '❎',key: m.key,}})
+        v.reply(`No se pudo descargar`);
       }
     } catch (error) {
       console.log('Error:', error);
