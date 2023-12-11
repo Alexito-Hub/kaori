@@ -50,13 +50,12 @@ module.exports = {
                         }, {quoted:m});
                     }
                     
-                } else if (subCommand === 'audio') {
-                    sock.sendMessage(m.chat, {text:'hola'})
-                    /*sock.sendMessage(m.chat, {
-                        audio: {url: result.music.url },
+                } else if (result.type === 'audio') {
+                    sock.sendMessage(m.chat, {
+                        audio: { url: result.music.url },
                         mimetype: 'audio/mp4',
-                        ptt: true
-                    });*/
+                        ppt: true,
+                    }, { quoted: m });
                 }
       } else {
         console.log('Error al obtener información');
