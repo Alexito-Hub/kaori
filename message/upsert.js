@@ -100,7 +100,7 @@ module.exports = async(sock, m, store) => {
 					    let value = await eval(`(async() => {`+ q +`)()`)
 						await v.reply(Json(value), {quoted: m})
 					} catch(e) {
-						await v.reply(String(e), quoted:m)
+						await v.reply(String(e), {quoted:m})
 					}
 				}
 			}
