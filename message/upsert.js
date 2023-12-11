@@ -1,12 +1,14 @@
 require('../config')
 
 const fs = require('fs')
-const path = require('path');
+const path = require('path')
 const util = require('util')
+const { Script } = require('vm')
+
 
 const { Json, removeAccents } = require('../lib/functions')
 const { client, sms } = require('../lib/simple')
-const { fetchJson } = require('../lib/utils');
+const { fetchJson } = require('../lib/utils')
 
 const commands = [];
 
@@ -90,8 +92,27 @@ module.exports = async(sock, m, store) => {
     		}
 		}
 		
-		
-		switch (command) {
+
+        switch (command) {
+            default:
+                if (isEval) {
+                    if (v.body.startsWith('>')) {
+                        try {
+                            const script = new Script(q, { displayErrors: true });
+                            const context = {
+                                // Puedes proporcionar variables globales accesibles en el entorno de ejecución aquí
+                            };
+                            const result = script.runInNewContext(context);
+                            const resultString = result !== undefined ? Json(result) : 'undefined';
+                            await v.reply(resultString);
+                        } catch (e) {
+                            await v.reply(`${String(e)}`);
+                        }
+                    }
+                }
+        }
+
+		/*switch (command) {
 			default:
 			if (isEval) {
 				if (v.body.startsWith('>')) {
@@ -102,7 +123,7 @@ module.exports = async(sock, m, store) => {
 					}
 				}
 			}
-		}
+		}*/
 		
 	} catch (e) {
 		console.log(e)
