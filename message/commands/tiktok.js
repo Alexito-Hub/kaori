@@ -20,7 +20,23 @@ module.exports = {
             const responseMs = Date.now();
             const responseTime = roundTime(responseMs - m.messageTimestamp * 1000);
             const formattedResponseTime = (responseTime / 1000).toFixed(3);
-
+            
+            const subCommand = args[0].toLowerCase();
+            switch (subCommand) {
+                case 'audio':
+                    if (!args[1]) {
+                        sock.sendMessage(m.chat, '*tiktok audio <url>*');
+                        return;
+                    }
+                    const tiktokAudioUrl = args[1];
+                    const audio = response.result
+                    sock.sendMessage(m.chat, {
+                        audio:{ url: audio.music.url },
+                        mimetype: 'audio/mp4',
+                        ppt: true
+                    });
+                    break
+            }
             if (response && response.result) {
                 const result = response.result;
                 sock.sendMessage(m.chat, {react: {text: '🕛',key: m.key,}})
