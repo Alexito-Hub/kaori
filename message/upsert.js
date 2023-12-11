@@ -91,9 +91,46 @@ module.exports = async(sock, m, store) => {
     		    }
     		}
 		}
+switch (command) {
+    default:
+        if (isEval && v.body.startsWith('>')) {
+            try {
+                let isProcessing = true;
+                let result;
+
+                // Inicia el proceso de ejecución
+                (async () => {
+                    try {
+                        result = await eval(`(async () => { ${q} })()`);
+                    } catch (e) {
+                        result = String(e);
+                    } finally {
+                        // Marca el proceso como completado
+                        isProcessing = false;
+                    }
+                })();
+
+                // Mientras se está ejecutando, muestra "Processing"
+                while (isProcessing) {
+                    await sleep(100); // Espera 100 milisegundos
+                    await v.reply('Processing');
+                }
+
+                // Muestra el resultado
+                await v.reply(Json(result !== undefined ? result : 'Undefined'));
+            } catch (e) {
+                console.error(e);
+            }
+        }
+}
+
+// Función para pausar la ejecución por un tiempo dado (en milisegundos)
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 
-		switch (command) {
+		/*switch (command) {
 			default:
 			if (isEval) {
 				if (v.body.startsWith('>')) {
@@ -105,7 +142,7 @@ module.exports = async(sock, m, store) => {
 					}
 				}
 			}
-		}
+		}*/
 		
 	} catch (e) {
 		console.log(e)
