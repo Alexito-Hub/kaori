@@ -12,7 +12,7 @@ module.exports = {
                 return;
             }
             
-            const userObj = m.quoted.sender.split('@')[0]
+            const userObj = m.quoted.split('@')[0]
             const user = m.sender.split('@')[0];
             
             const targetUser = (args.length > 0) ? args[0].replace('@', '').replace(/\s/g, '').split('@')[0] + '@s.whatsapp.net' : m.quoted.sender;
