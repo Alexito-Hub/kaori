@@ -10,6 +10,12 @@ module.exports = {
             }
 
             const groupInfo = await sock.groupMetadata(m.chat);
+            
+            if (!sock.isGroupAdmin(groupInfo.id)) {
+                sock.sendMessage(m.chat, { text: 'El bot necesita ser administrador del grupo para usar este comando.' }, { quoted: m });
+                return;
+            }
+            
             const isAdmin = groupInfo && groupInfo.participants.some(p => p.id == m.sender && ['admin', 'superadmin'].includes(p.admin));
             
             if (!isAdmin) {
