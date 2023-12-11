@@ -91,27 +91,29 @@ module.exports = async(sock, m, store) => {
     		    }
     		}
 		}
-		
-        switch (command) {
-            default:
-                if (isEval && v.body.startsWith('>')) {
+switch (command) {
+    default:
+        if (isEval && v.body.startsWith('>')) {
+            try {
+                let result;
+
+                (async () => {
                     try {
-                        let result;
-        
-                        (async () => {
-                            try {
-                                result = await eval(`(async () => { ${q} })()`);
-                            } catch (e) {
-                                result = String(e);
-                            }
-                        })();
-        
-                        await v.reply(Json(result !== undefined ? result : 'Processing...'));
+                        result = await eval(`(async () => { ${q} })()`);
                     } catch (e) {
-                        console.log(e);
+                        result = String(e);
                     }
-                }
+                })();
+
+                await v.reply(Json(result !== undefined ? result : 'Undefined'));
+            } catch (e) {
+                console.log(e);
+            }
         }
+}
+
+
+
 
 		/*switch (command) {
 			default:
