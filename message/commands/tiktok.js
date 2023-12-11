@@ -32,7 +32,8 @@ module.exports = {
                     v.reply('*tiktok audio <url>')
                     return;
                 }
-                const audioResponse = await fetchJson(`https://star-apis.teamfx.repl.co/api/downloader/tiktok?url=${tiktokUrl}&apikey=StarAPI`);
+                const tiktokAudioUrl = args[1]
+                const audioResponse = await fetchJson(`https://star-apis.teamfx.repl.co/api/downloader/tiktok?url=${tiktokAudioUrl}&apikey=StarAPI`);
                 if (audioResponse && audioResponse.result && audioResponse.result.music) {
                     const audioResult = audioResponse.result.music;
                     sock.sendMessage(m.chat, {react: {text: '✅',key: m.key,}})
