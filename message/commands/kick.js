@@ -1,4 +1,4 @@
-require('../.. y ahora que tú dices voy a sacar cuatro hojas/message/upsert')
+require('../../message/upsert')
 module.exports = {
     name: 'kick',
     description: 'Expulsa a un miembro del grupo',
