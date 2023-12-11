@@ -1,4 +1,4 @@
-const { fetchJson } = require('../../lib/utils')
+const { fetchJson } = require('../../lib/utils');
 
 module.exports = {
     name: 'tiktok',
@@ -7,73 +7,67 @@ module.exports = {
     
     async execute(sock, m, args) {
         try {
-            function roundTime(time) {
-                return Math.round(time);
+            if (!args[0]) {
+                await v.reply('*tiktok <url>*');
+                return;
             }
-            const responseMs = Date.now();
-            const responseTime = roundTime(responseMs - m.messageTimestamp * 1000);
-            const formattedResponseTime = (responseTime / 1000).toFixed(3);
+            const tiktokUrl = args[0];
+            await sock.sendMessage(m.chat, { react: { text: '🕛', key: m.key } });
             
-            const subCommand = args[0].toLowerCase();
-            switch (subCommand) {
-                case 'audio':
-                    if (!args[1]) {
-                        v.reply('*tiktok audio <url>*');
-                        return;
-                    }
-                    const tiktokAudioUrl = args[1];
-                    const response = await fetchJson(`https://star-apis.teamfx.repl.co/api/downloader/tiktok?url=${tiktokAudioUrl}&apikey=StarAPI`);
-                    if (response && response.result) {
-                        const result = response.result
-                        sock.sendMessage(m.chat, {
-                            audio:{ url: result.music.url },
-                            mimetype: 'audio/mp4',
-                            ppt: true
-                        });
-                    } else {
-                        v.reply('Error al descargar')
-                    }
-                    
-                    break
-                default:
-                    if (!args[0]) {
-                        v.reply('*tiktok <url>*');
-                        return;
-                    }
-                    const tiktokUrl = args[0];
-                    const responseUrl = await fetchJson(`https://star-apis.teamfx.repl.co/api/downloader/tiktok?url=${tiktokUrl}&apikey=StarAPI`);
-                    
-                    if (responseUrl && responseUrl.result) {
-                        const result = responseUrl.result;
-                        sock.sendMessage(m.chat, {react: {text: '🕛',key: m.key,}})
-                        if (result.type === 'video') {
-                            sock.sendMessage(m.chat, {
-                                video: { url: result.video.noWatermark },
-                                mimetype: 'video/mp4',
-                                caption: `ㅤ *- - TIK TOK*
-        *Autor:* ${result.author.name}
-        *Like:* ${result.information.likeCount}
-        *Comentarios:* ${result.information.commentCount}
-        *Fecha:* ${result.information.created_at}
-        *Titulo:* ${result.information.title}`
-                            }, {quoted:m});
-                        } else if (result.type === 'images') {
-                            for (const image of result.images) {
-                                sock.sendMessage(m.chat, {
-                                    image: { url: image.url.url, mimetype: 'image/jpeg' },
-                                    caption: `¡Listo! - *🧃 ${formattedResponseTime} ms*`
-                                }, {quoted:m});
-                            }
+            if (args[1] && args[1].toLowerCase() === 'audio') {
+                const audioResponse = await fetchJson(`https://star-apis.teamfx.repl.co/api/downloader/tiktok/audio?url=${tiktokUrl}&apikey=StarAPI`);
+                if (audioResponse && audioResponse.result === 'music') {
+                    await sock.sendMessage(m.chat, {
+                        audio: { url: audioResponse.result.music.url },
+                        mimetype: 'audio/mp4',
+                        ppt: true
+                    }, { quoted: m });
+                } else {
+                    console.log('Error al obtener información del audio de TikTok');
+                    await v.reply('Hubo un error al descargar');
+                }
+                
+            } else {
+                const videoResponse = await fetchJson(`https://star-apis.teamfx.repl.co/api/downloader/tiktok?url=${tiktokUrl}&apikey=StarAPI`);
+                function roundTime(time) {
+                    return Math.round(time);
+                }
+                
+                const responseMs = Date.now();
+                const responseTime = roundTime(responseMs - m.messageTimestamp * 1000);
+                const formattedResponseTime = (responseTime / 1000).toFixed(3);
+                
+                if (videoResponse && videoResponse.result) {
+                    const result = videoResponse.result;
+                    if (result.type === 'video') {
+                        await sock.sendMessage(m.chat, {
+                            video: { url: result.video.noWatermark },
+                            mimetype: 'video/mp4',
+                            caption: `ㅤ *- - TIK TOK*
+*Autor:* ${result.author.name}
+*Like:* ${result.information.likeCount}
+*Comentarios:* ${result.information.commentCount}
+*Fecha:* ${result.information.created_at}
+*Titulo:* ${result.information.title}`,
+                        }, { quoted: m });
+                    } else if (result.type === 'images') {
+                        for (const image of result.images) {
+                            await sock.sendMessage(m.chat, {
+                                image: { url: image.url.url, mimetype: 'image/jpeg' },
+                                caption: `¡Listo! - *🧃 ${formattedResponseTime} ms*`,
+                                
+                            }, { quoted: m });
                         }
-                    } else {
-                        console.log('Error al obtener información de TikTok');
-                        v.reply('Error al descargar');
                     }
-                    break
+                } else {
+                    console.log('Error al obtener información de TikTok');
+                    await sock.sendMessage(m.chat, { react: { text: '❌', key: m.key } });
+                    await v.reply('Parece que hubo un problema. Inténtalo de nuevo.');
+                }
             }
         } catch (error) {
             console.log('Error:', error);
-            v.reply('Hubo un tremendo problema 😵‍💫');
+            await v.reply('Error al ejecutar el comando.');
         }
     },
 };
