@@ -28,11 +28,11 @@ module.exports = {
             const formattedResponseTime = (responseTime / 1000).toFixed(3);
             
             if (args[1] && args[1].toLowerCase() === 'audio') {
-                if (!args[1]) {
+                if (!args[0]) {
                     v.reply('*tiktok audio <url>')
                     return;
                 }
-                const tiktokAudioUrl = args[1]
+                const tiktokAudioUrl = args[0]
                 const audioResponse = await fetchJson(`https://star-apis.teamfx.repl.co/api/downloader/tiktok?url=${tiktokAudioUrl}&apikey=StarAPI`);
                 if (audioResponse && audioResponse.result && audioResponse.result.music) {
                     const audioResult = audioResponse.result.music;
