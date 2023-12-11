@@ -5,12 +5,16 @@ module.exports = {
 
   async execute(sock, m, args) {
     try {
-      // Verificar si el bot es administrador del grupo
+      // Obtener información del grupo
       const groupInfo = await sock.groupMetadata(m.chat);
+      console.log('Información del grupo:', groupInfo);
+
+      // Verificar si el bot es administrador del grupo
       const isBotAdmin = groupInfo && groupInfo.owner == sock.user.id;
 
       // Verificar si el remitente del mensaje es administrador del grupo
       const isSenderAdmin = groupInfo && groupInfo.participants.some(p => p.jid == m.sender && ['admin', 'superadmin'].includes(p.admin));
+      console.log('Es administrador del grupo:', isSenderAdmin);
 
       // Verificar si se proporciona un usuario a expulsar
       if (args.length === 0 && !m.quoted) {
