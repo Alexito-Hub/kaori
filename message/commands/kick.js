@@ -1,3 +1,4 @@
+require('../message/upsert')
 module.exports = {
     name: 'kick',
     description: 'Expulsa a un miembro del grupo',
@@ -11,7 +12,7 @@ module.exports = {
 
             const groupInfo = await sock.groupMetadata(m.chat);
             
-            if (!sock.isGroupAdmin(groupInfo.id)) {
+            if (!isBotAdmin) {
                 sock.sendMessage(m.chat, { text: 'El bot necesita ser administrador del grupo para usar este comando.' }, { quoted: m });
                 return;
             }
