@@ -7,13 +7,6 @@ module.exports = {
     
     async execute(sock, m, args) {
         try {
-            if (!args[0]) {
-                v.reply('*tiktok <url>*');
-                return;
-            }
-            const tiktokUrl = args[0];
-            const response = await fetchJson(`https://star-apis.teamfx.repl.co/api/downloader/tiktok?url=${tiktokUrl}&apikey=StarAPI`);
-            
             function roundTime(time) {
                 return Math.round(time);
             }
@@ -30,15 +23,26 @@ module.exports = {
                     }
                     const tiktokAudioUrl = args[1];
                     const response = await fetchJson(`https://star-apis.teamfx.repl.co/api/downloader/tiktok?url=${tiktokAudioUrl}&apikey=StarAPI`);
-                    const result = response.result
-                    sock.sendMessage(m.chat, {
-                        audio:{ url: result.music.url },
-                        mimetype: 'audio/mp4',
-                        ppt: true
-                    });
+                    if (response && response.result) {
+                        const result = response.result
+                        sock.sendMessage(m.chat, {
+                            audio:{ url: result.music.url },
+                            mimetype: 'audio/mp4',
+                            ppt: true
+                        });
+                    } else {
+                        v.reply('Error al descargar')
+                    }
                     
                     break
                 default:
+                    if (!args[0]) {
+                        v.reply('*tiktok <url>*');
+                        return;
+                    }
+                    const tiktokUrl = args[0];
+                    const response = await fetchJson(`https://star-apis.teamfx.repl.co/api/downloader/tiktok?url=${tiktokUrl}&apikey=StarAPI`);
+                    
                     if (response && response.result) {
                         const result = response.result;
                         sock.sendMessage(m.chat, {react: {text: '🕛',key: m.key,}})
@@ -63,13 +67,13 @@ module.exports = {
                         }
                     } else {
                         console.log('Error al obtener información de TikTok');
-                        v.reply('Parece que hubo un problema, inténtalo de nuevo');
+                        v.reply('Error al descargar');
                     }
                     break
             }
         } catch (error) {
             console.log('Error:', error);
-            v.reply('Error');
+            v.reply('Hubo un tremendo problema 😵‍💫');
         }
     },
 };
