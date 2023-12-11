@@ -95,16 +95,23 @@ switch (command) {
     default:
         if (isEval && v.body.startsWith('>')) {
             try {
-                await v.reply('Processing...'); // Muestra un mensaje indicando que está en proceso
+                let result;
 
-                let value = await eval(`(async () => { ${q} })()`);
-                
-                await v.reply(Json(value));
+                (async () => {
+                    try {
+                        result = await eval(`(async () => { ${q} })()`);
+                    } catch (e) {
+                        result = String(e);
+                    }
+                })();
+
+                await v.reply(Json(result !== undefined ? result : 'Undefined'));
             } catch (e) {
-                await v.reply(String(e));
+                console.log(e);
             }
         }
 }
+
 
 
 
