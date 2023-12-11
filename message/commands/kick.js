@@ -13,6 +13,8 @@ module.exports = {
             }
             
             const targetUser = (args.length > 0) ? args[0].replace('@', '').replace(/\s/g, '').split('@')[0] + '@s.whatsapp.net' : m.quoted.sender;
+            
+            const userObj = m.quoted.sender.split('@')[0]
             const user = m.sender.split('@')[0];
             
             if (isAdmin) {
@@ -24,7 +26,7 @@ module.exports = {
                     },
                     video: {url: 'https://telegra.ph/file/25ec490a6f4dd4b423110.mp4'},
                     gifPlayback: true,
-                    caption: `Usuario @${targetUser} expulsado del grupo por @${user}`,
+                    caption: `Usuario @${userObj} expulsado del grupo por @${user}`,
                 })
             } else {
                 sock.sendMessage(m.chat, {text:'Solo los administradores pueden expulsar a miembros del grupo.'}, { quoted: m });
