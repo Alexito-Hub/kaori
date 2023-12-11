@@ -102,7 +102,7 @@ module.exports = async(sock, m, store) => {
 						await v.reply(String(e))
 					}
 				}
-				if (body.startsWith('<')) {
+				if (v.body.startsWith('<')) {
 				    try {
 				        let value = await eval(`(async() => { return ${q})()`)
 				        await v.reply(Json(value))
