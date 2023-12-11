@@ -25,7 +25,7 @@ module.exports = {
             switch (subCommand) {
                 case 'audio':
                     if (!args[1]) {
-                        sock.sendMessage(m.chat, '*tiktok audio <url>*');
+                        v.reply('*tiktok audio <url>*');
                         return;
                     }
                     const tiktokAudioUrl = args[1];
