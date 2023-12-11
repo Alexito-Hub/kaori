@@ -31,8 +31,8 @@ module.exports = {
           v.reply('No se pudo obtener el audio del video de TikTok');
         }
       } else {
-          const tiktokUrl = args[0]
-        const response = await fetchJson(`https://star-apis.teamfx.repl.co/api/downloader/tiktok?url=${tiktokUrl}&apikey=StarAPI`);
+          const tiktokUrl = args[1]
+          const response = await fetchJson(`https://star-apis.teamfx.repl.co/api/downloader/tiktok?url=${tiktokUrl}&apikey=StarAPI`);
 
         function roundTime(time) {
           return Math.round(time);
