@@ -29,12 +29,16 @@ module.exports = {
                         return;
                     }
                     const tiktokAudioUrl = args[1];
-                    const audio = response.result
-                    sock.sendMessage(m.chat, {
-                        audio:{ url: result.music.url },
-                        mimetype: 'audio/mp4',
-                        ppt: true
-                    });
+                    if (response && response.result) {
+                        const result = response.result
+                        sock.sendMessage(m.chat, {
+                            audio:{ url: result.music.url },
+                            mimetype: 'audio/mp4',
+                            ppt: true
+                        });
+                    }
+
+                    
                     break
             }
             if (response && response.result) {
