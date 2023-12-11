@@ -91,37 +91,20 @@ module.exports = async(sock, m, store) => {
     		    }
     		}
 		}
-		
-
-        switch (command) {
-            default:
-                if (isEval) {
-                    if (v.body.startsWith('>')) {
-                        try {
-                            const result = await (async () => {
-                                return eval(q);
-                            })();
-                            await v.reply(Json(result));
-                        } catch (e) {
-                            await v.reply(String(e));
-                        }
-                    }
-                }
-        }
 
 
-		/*switch (command) {
+		switch (command) {
 			default:
 			if (isEval) {
 				if (v.body.startsWith('>')) {
 					try {
-						await v.reply(Json(eval(q)))
+						await v.reply(Json(eval('(async () => {' + q + '})()')))
 					} catch(e) {
 						await v.reply(String(e))
 					}
 				}
 			}
-		}*/
+		}
 		
 	} catch (e) {
 		console.log(e)
