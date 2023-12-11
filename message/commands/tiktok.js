@@ -49,12 +49,13 @@ module.exports = {
                         }, {quoted:m});
                     }
                     
-                } else if (args[1] && args[1].toLowerCase() === 'audio' || response && response.result === 'music') {
-                    sock.sendMessage(m.chat, {
+                } else if (args[1] && args[1].toLowerCase() === 'audio') {
+                    sock.sendMessage(m.chat, {text:'hola'})
+                    /*sock.sendMessage(m.chat, {
                         audio: {url: result.music.url },
                         mimetype: 'audio/mp4',
                         ptt: true
-                    });
+                    });*/
                 }
       } else {
         console.log('Error al obtener información');
