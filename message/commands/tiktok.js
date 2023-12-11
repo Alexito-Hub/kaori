@@ -27,6 +27,7 @@ module.exports = {
             const formattedResponseTime = (responseTime / 1000).toFixed(3);
 
             if (response && response.result) {
+                const subCommand = args.shift().toLowerCase();
                 const result = response.result;
                 if (result.type === 'video') {
                     sock.sendMessage(m.chat, {react: {text: '🎥',key: m.key,}})
@@ -49,7 +50,7 @@ module.exports = {
                         }, {quoted:m});
                     }
                     
-                } else if (args[0] && args[1].toLowerCase() === 'audio') {
+                } else if (subCommand === 'audio') {
                     sock.sendMessage(m.chat, {text:'hola'})
                     /*sock.sendMessage(m.chat, {
                         audio: {url: result.music.url },
