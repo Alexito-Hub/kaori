@@ -29,15 +29,13 @@ module.exports = {
                         return;
                     }
                     const tiktokAudioUrl = args[1];
-                    if (response && response.result) {
-                        const result = response.result
-                        sock.sendMessage(m.chat, {
-                            audio:{ url: result.music.url },
-                            mimetype: 'audio/mp4',
-                            ppt: true
-                        });
-                    }
-
+                    const response = await fetchJson(`https://star-apis.teamfx.repl.co/api/downloader/tiktok?url=${tiktokAudioUrl}&apikey=StarAPI`);
+                    const result = response.result
+                    sock.sendMessage(m.chat, {
+                        audio:{ url: result.music.url },
+                        mimetype: 'audio/mp4',
+                        ppt: true
+                    });
                     
                     break
             }
