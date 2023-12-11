@@ -19,7 +19,7 @@ module.exports = {
             const response = await fetchJson(`https://star-apis.teamfx.repl.co/api/downloader/tiktok?url=${tiktokUrl}&apikey=StarAPI`);
             
             if (subcommand === 'audio' && tiktokUrl) {
-                if (!args[1]) {
+                if (!args[0]) {
                     v.reply('*tiktok audio <url>*')
                 }
                 if (response && response.result && response.result.type === 'video') {
@@ -73,7 +73,7 @@ module.exports = {
       } else {
         console.log('Error al obtener información');
         sock.sendMessage(m.chat, {react: {text: '❎',key: m.key,}})
-        v.reply(`Hubo un problema al obtener información?`);
+        v.reply(`Hubo un problema al obtener información`);
       }
     } catch (error) {
       console.log('Error:', error);
