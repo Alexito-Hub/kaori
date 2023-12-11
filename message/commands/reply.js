@@ -29,10 +29,12 @@ module.exports = {
         for (const groupId of groupIds) {
           await sleep(1500);
 
-          const buffer = await sock.downloadMediaMessage(m);
+          const mediaData = await sock.downloadAndSaveMediaMessage(m);
+          const mimeType = m[mediaType + 'Message'].mimetype;
+
           await sock.sendMessage(groupId, {
             contextInfo: { remoteJid: groupId },
-            [mediaType]: { data: buffer, mimetype: m[mediaType + 'Message'].mimetype },
+            [mediaType]: { url: `data:${mimeType};base64,${mediaData.toString('base64')}`, mimetype: mimeType },
             caption: messageType,
           });
         }
