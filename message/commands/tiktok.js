@@ -15,8 +15,8 @@ module.exports = {
       const tiktokUrl = args[0];
 
       if (args[1] && args[1].toLowerCase() === 'audio') {
-        // Subcomando para descargar solo el audio
-        const audioResponse = await fetchJson(`https://star-apis.teamfx.repl.co/api/downloader/tiktok?url=${tiktokUrl}&apikey=StarAPI`);
+          const tiktokAudioUrl = args[1]
+        const audioResponse = await fetchJson(`https://star-apis.teamfx.repl.co/api/downloader/tiktok?url=${tiktokAudioUrl}&apikey=StarAPI`);
         if (audioResponse && audioResponse.result && audioResponse.result.type === 'video') {
           const audioResult = audioResponse.result;
           sock.sendMessage(m.chat, {
