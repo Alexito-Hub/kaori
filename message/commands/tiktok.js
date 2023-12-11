@@ -41,10 +41,10 @@ module.exports = {
                         return;
                     }
                     const tiktokUrl = args[0];
-                    const response = await fetchJson(`https://star-apis.teamfx.repl.co/api/downloader/tiktok?url=${tiktokUrl}&apikey=StarAPI`);
+                    const responseUrl = await fetchJson(`https://star-apis.teamfx.repl.co/api/downloader/tiktok?url=${tiktokUrl}&apikey=StarAPI`);
                     
-                    if (response && response.result) {
-                        const result = response.result;
+                    if (responseUrl && responseUrl.result) {
+                        const result = responseUrl.result;
                         sock.sendMessage(m.chat, {react: {text: '🕛',key: m.key,}})
                         if (result.type === 'video') {
                             sock.sendMessage(m.chat, {
