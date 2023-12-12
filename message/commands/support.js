@@ -33,7 +33,7 @@ module.exports = {
                     const reactions = sock.messageReactions[confirmationMsgID].reactions || [];
 
                     // Filtrar las reacciones que tienen el emoji 🎫
-                    const ticketReactions = reactions.filter(reaction => reaction.emoji === '🎫');
+                    const ticketReactions = reactions.filter(reaction => reaction.emoji === '✅');
 
                     // Si hay al menos una reacción con 🎫
                     if (ticketReactions.length > 0) {
