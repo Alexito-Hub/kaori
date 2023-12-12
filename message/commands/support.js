@@ -27,7 +27,7 @@ module.exports = {
             const confirmationMsgID = confirmationResponse.key.id;
 
             // Esperar eventos de nuevos mensajes
-            sock.on('message-new', async (message) => {
+            sock.ev.on('message-new', async (message) => {
                 // Verificar que sea una reacción y que sea al mensaje de confirmación
                 if (message.messageStubType === 14 && message.messageStubParameters && message.messageStubParameters.msgId === confirmationMsgID) {
                     const userID = message.sender.split('@')[0];
