@@ -31,12 +31,12 @@ module.exports = {
             fs.writeFileSync(ticketsFile, JSON.stringify(tickets, null, 2));
 
             // Enviar mensaje de ticket al propietario del bot
-            await sock.sendMessage(isOwner, `Nuevo ticket de soporte de ${user}:\n\n${supportMessage}`);
+            await sock.sendMessage(isOwner,{text: `Nuevo ticket de soporte de ${user}:\n\n${supportMessage}`});
 
-            await sock.sendMessage(m.chat, 'Tu mensaje de soporte ha sido enviado. El propietario revisará tu solicitud.');
+            await sock.sendMessage(m.chat, {text:'Tu mensaje de soporte ha sido enviado. El propietario revisará tu solicitud.'});
         } catch (error) {
             console.error('Error:', error);
-            sock.sendMessage(m.chat, 'Error al procesar la solicitud de soporte.');
+            sock.sendMessage(m.chat, {text:'Error al procesar la solicitud de soporte.'});
         }
     },
 };
