@@ -38,7 +38,7 @@ module.exports = {
                 sock.sendMessage(m.chat, {
                     video: {
                         url: format.url,
-                        mimetype: format.mimeType,
+                        mimetype: 'video/mp4',
                         filename: 'video.mp4'
                     }
                 }, { quoted: m });
