@@ -15,7 +15,7 @@ module.exports = {
     
     async execute(sock, m, args) {
         try {
-            const isOwner = owner.includes(m.sender.split('@')[0]);
+            const isOwner = owner.includes(m.sender); // Verificar directamente con el sufijo
             const user = m.sender.split('@')[0];
             const supportMessage = args.join(' ');
 
