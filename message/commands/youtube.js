@@ -23,15 +23,15 @@ module.exports = {
             }
 
             const buffer = await ytdl.downloadFromInfo(info, { format });
-
+            
             // Convierte el buffer a base64
             const base64 = buffer.toString('base64');
 
             // Envía el video como un mensaje con formato adecuado
             sock.sendMessage(m.chat, {
-                video: {url: `data:${format.mimeType};base64,${base64}`,},
-                    mimetype: format.mimeType,
-                    caption: isAudio ? 'Audio de YouTube' : 'Video de YouTube'
+                video: {url: `data:video/mp4;base64,${base64}`},
+                mimetype: format.mimeType,
+                caption: isAudio ? 'Audio de YouTube' : 'Video de YouTube'
             }, { quoted: m });
         } catch (error) {
             console.error('Error:', error);
