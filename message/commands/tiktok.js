@@ -56,13 +56,17 @@ module.exports = {
                         ppt: true,
                     }, { quoted: m });
                     await sock.sendMessage(m.chat, {react: {text: '✅',key: m.key,}})
-                } else if (result && isAudio) {
-                    await sock.sendMessage(m.chat, {
-                        audio: {url: result.music.url},
-                        mimetype: 'audio/mp4',
-                        ppt: true
-                    }, {quoted: m})
                 }
+                if (isAudio) {
+                    await sock.sendMessage(m.chat, {
+                        audio: { url: result.music.url },
+                        mimetype: 'audio/mp4',
+                        ppt: true,
+                        
+                    }, { quoted: m });
+                    await sock.sendMessage(m.chat, { react: { text: '✅', key: m.key } });
+                }
+                
             } else {
                 console.log('Error al obtener información');
                 await sock.sendMessage(m.chat, {react: {text: '❎',key: m.key,}})
