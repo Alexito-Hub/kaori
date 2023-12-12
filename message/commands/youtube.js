@@ -1,4 +1,5 @@
 const ytdl = require('ytdl-core');
+const ffmpeg = require('fluent-ffmpeg');
 
 module.exports = {
     name: 'youtube',
@@ -22,19 +23,40 @@ module.exports = {
                 return;
             }
 
-            const buffer = await ytdl.downloadFromInfo(info, { format });
-            
-            // Convierte el buffer a base64
-            const base64 = buffer.toString('base64');
+            const readableStream = ytdl.downloadFromInfo(info, { format });
 
-            // Envía el video como un mensaje con formato adecuado
-            sock.sendMessage(m.chat, {
-                video: {
-                    url: `data:video/mp4;base64,${base64}`,
-                },
-                mimetype: 'video/mp4',
-                fileSha256: Buffer.from(base64, 'base64').toString('hex')
-            }, { quoted: m });
+            const buffer = await new Promise((resolve) => {
+                const chunks = [];
+                readableStream.on('data', (chunk) => chunks.push(chunk));
+                readableStream.on('end', () => resolve(Buffer.concat(chunks)));
+            });
+
+            if (isAudio) {
+                // Envía el audio como un mensaje de voz
+                sock.sendMessage(m.chat, {
+                    audio: {
+                        url: `data:audio/mp4;base64,${buffer.toString('base64')}`,
+                    },
+                    ppt: true
+                }, { quoted: m });
+            } else {
+                // Convierte el video en formato compatible
+                const videoBuffer = await new Promise((resolve) => {
+                    ffmpeg(buffer)
+                        .inputFormat('mp4')
+                        .toFormat('mp4')
+                        .on('end', () => resolve())
+                        .toBuffer();
+                });
+
+                // Envía el video como un mensaje
+                sock.sendMessage(m.chat, {
+                    video: {
+                        url: `data:video/mp4;base64,${videoBuffer.toString('base64')}`,
+                    },
+                    mimetype: 'video/mp4'
+                }, { quoted: m });
+            }
         } catch (error) {
             console.error('Error:', error);
             sock.sendMessage(m.chat, { text: 'Error al ejecutar el comando' }, { quoted: m });
