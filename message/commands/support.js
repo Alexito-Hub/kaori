@@ -15,7 +15,7 @@ module.exports = {
     
     async execute(sock, m, args) {
         try {
-            const isOwner = owner.includes(m.sender); // Verificar directamente con el sufijo
+            const isOwner = owner + '@s.whatsapp.net'
             const user = m.sender.split('@')[0];
             const supportMessage = args.join(' ');
 
