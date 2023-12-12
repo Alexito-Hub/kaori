@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const { owner } = require('../../config'); // Asegúrate de tener la referencia adecuada al archivo de configuración
+require('../../config'); // Asegúrate de tener la referencia adecuada al archivo de configuración
 
 const ticketsFile = path.join(__dirname, 'tickets.json');
 let tickets = [];
@@ -15,6 +15,7 @@ module.exports = {
     
     async execute(sock, m, args) {
         try {
+            const isOwner = owner.includes(m.sender.split('@')[0]);
             const user = m.sender.split('@')[0];
             const supportMessage = args.join(' ');
 
@@ -30,7 +31,7 @@ module.exports = {
             fs.writeFileSync(ticketsFile, JSON.stringify(tickets, null, 2));
 
             // Enviar mensaje de ticket al propietario del bot
-            await sock.sendMessage(owner, { text: `Nuevo ticket de soporte de ${user}:\n\n${supportMessage}` });
+            await sock.sendMessage(isOwner, { text: `Nuevo ticket de soporte de ${user}:\n\n${supportMessage}` });
 
             await sock.sendMessage(m.chat, { text: 'Tu mensaje de soporte ha sido enviado. El propietario revisará tu solicitud.' });
         } catch (error) {
