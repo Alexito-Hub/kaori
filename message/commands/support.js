@@ -28,7 +28,7 @@ module.exports = {
 
             // Esperar a que los usuarios reaccionen al mensaje de confirmación
             const reactionTimeout = 60000; // 60 segundos
-            const reactions = await sock.getReactions(confirmationMsgID, reactionTimeout);
+            const reactions = await sock.messageReactions(confirmationMsgID, reactionTimeout);
 
             // Filtrar las reacciones que tienen el emoji 🎫
             const ticketReactions = reactions.filter(reaction => reaction.emoji === '🎫');
