@@ -35,7 +35,6 @@ module.exports = {
                         mimetype: 'audio/mp4',
                         ppt: true,
                     }, { quoted: m });
-                    await sock.sendMessage(m.chat, { react: { text: '✅', key: m.key } });
                 } else if (result.type === 'video') {
                     await sock.sendMessage(m.chat, {
                         video: { url: result.video.noWatermark },
@@ -48,7 +47,6 @@ module.exports = {
  ∘ *Fecha:* ${result.information.created_at}
  ∘ *Titulo:* ${result.information.title}`
                     }, { quoted: m });
-                    await sock.sendMessage(m.chat, { react: { text: '✅', key: m.key } });
                 } else if (result.type === 'images') {
                     for (const image of result.images) {
                         await sock.sendMessage(m.chat, {
@@ -61,8 +59,10 @@ module.exports = {
                         mimetype: 'audio/mp4',
                         ppt: true,
                     }, { quoted: m });
-                    await sock.sendMessage(m.chat, { react: { text: '✅', key: m.key } });
                 }
+
+                await sock.sendMessage(m.chat, { react: { text: '✅', key: m.key } });
+
             } else {
                 console.log('Error al obtener información');
                 await sock.sendMessage(m.chat, { react: { text: '❎', key: m.key } });
