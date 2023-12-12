@@ -59,7 +59,7 @@ module.exports = {
                         fs.writeFileSync(ticketsFile, JSON.stringify(tickets, null, 2));
                     }
                 }
-            }, 3000); // 30 segundos de espera
+            }, 30000); // 30 segundos de espera
         } catch (error) {
             console.error('Error:', error);
             sock.sendMessage(m.chat, { text: 'Error al procesar la solicitud de soporte.' });
