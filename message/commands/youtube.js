@@ -29,9 +29,11 @@ module.exports = {
 
             // Envía el video como un mensaje con formato adecuado
             sock.sendMessage(m.chat, {
-                video: {url: `data:video/mp4;base64,${base64}`},
-                mimetype: format.mimeType,
-                caption: isAudio ? 'Audio de YouTube' : 'Video de YouTube'
+                videoMessage: {
+                    url: `data:video/mp4;base64,${base64}`,
+                    mimetype: 'video/mp4',
+                    fileSha256: Buffer.from(base64, 'base64').toString('hex'),
+                }
             }, { quoted: m });
         } catch (error) {
             console.error('Error:', error);
