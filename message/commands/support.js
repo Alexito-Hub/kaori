@@ -35,7 +35,7 @@ module.exports = {
             const confirmationResponse = await sock.sendMessage(m.chat, { text: confirmationMessage });
 
             // Agregar reacción al mensaje de confirmación
-            await sock.react(confirmationResponse.key, '🎫');
+            await sock.messageReactions(confirmationResponse.key, '🎫');
 
             // Esperar a que los usuarios reaccionen
             const reactionTimeout = 60000; // 60 segundos
