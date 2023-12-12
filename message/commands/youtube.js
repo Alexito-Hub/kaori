@@ -42,17 +42,17 @@ module.exports = {
             } else {
                 // Convierte el video en formato compatible
                 const videoBuffer = await new Promise((resolve) => {
-                    ffmpeg(buffer)
+                    ffmpeg()
                         .inputFormat('mp4')
+                        .input(readableStream)
                         .toFormat('mp4')
                         .on('end', () => resolve())
                         .toBuffer();
                 });
-
                 // Envía el video como un mensaje
                 sock.sendMessage(m.chat, {
                     video: {
-                        url: `data:video/mp4;base64,${videoBuffer.toString('base64')}`,
+                        url: `data:video/mp4;base64,${videoBuffer.toString('base64')}`
                     },
                     mimetype: 'video/mp4'
                 }, { quoted: m });
