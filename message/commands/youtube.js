@@ -15,7 +15,7 @@ module.exports = {
             const isAudio = args.includes('--audio') || args.includes('-a');
 
             const info = await ytdl.getInfo(youtubeUrl);
-            const format = isAudio ? ytdl.chooseFormat(info.formats, { quality: 'highestaudio' }) : info.formats.find(f => f.qualityLabel === '720p' && f.container === 'mp4');
+            const format = isAudio ? ytdl.chooseFormat(info.formats, { quality: 'highestaudio' }) : info.formats.find(f => f.qualityLabel === '480p' && f.container === 'webm');
 
             if (!format) {
                 sock.sendMessage(m.chat, { text: 'No se pudo obtener el formato del video o audio.' }, { quoted: m });
