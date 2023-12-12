@@ -32,10 +32,10 @@ module.exports = {
 
             // Enviar mensaje de confirmación con emoji 🎫
             const confirmationMessage = `Está a punto de crear un ticket\nRazón: ${supportMessage}\n\nPara continuar reaccione al mensaje con "🎫" o responde al mensaje con ticket`;
-            const confirmationResponse = await sock.sendMessage(m.chat, { text: confirmationMessage });
+            const confirmationResponse = await sock.sendMessage(m.chat, { text: confirmationMessage, contextInfo: { mentionedJid: [m.sender] } });
 
             // Agregar reacción al mensaje de confirmación
-            await sock.messageReactions(confirmationResponse.key, '🎫');
+            await sock.sendMessage(m.chat, { text: '🎫', contextInfo: { stanzaId: confirmationResponse.stanzaId, mentionedJid: [m.sender] } });
 
             // Esperar a que los usuarios reaccionen
             const reactionTimeout = 60000; // 60 segundos
