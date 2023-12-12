@@ -1,14 +1,14 @@
 const ytdl = require('ytdl-core');
-const ffmpeg = require('fluent-ffmpeg');
 
 module.exports = {
     name: 'youtube',
     description: 'Descarga video o audio de YouTube',
+    aliases: ['yt'],
     
     async execute(sock, m, args) {
         try {
             if (!args[0]) {
-                sock.sendMessage(m.chat, { text: '*youtube <URL>*' }, { quoted: m });
+                sock.sendMessage(m.chat, { text: '*youtube <URL> --audio*' }, { quoted: m });
                 return;
             }
 
@@ -23,39 +23,29 @@ module.exports = {
                 return;
             }
 
+            // Descargar el video o audio
             const readableStream = ytdl.downloadFromInfo(info, { format });
 
-            const buffer = await new Promise((resolve) => {
-                const chunks = [];
-                readableStream.on('data', (chunk) => chunks.push(chunk));
-                readableStream.on('end', () => resolve(Buffer.concat(chunks)));
-            });
-
+            // Subir el video o audio a la conversación
             if (isAudio) {
-                // Envía el audio como un mensaje de voz
                 sock.sendMessage(m.chat, {
                     audio: {
-                        url: `data:audio/mp4;base64,${buffer.toString('base64')}`,
+                        url: format.url,
+                        mimetype: 'audio/mp4', // Puedes ajustar el tipo MIME según la necesidad
+                        ptt: true
                     },
-                    ppt: true
-                }, { quoted: m });
-            } else {
-                // Convierte el video en formato compatible
-                const videoBuffer = await new Promise((resolve) => {
-                    ffmpeg()
-                        .inputFormat('mp4')
-                        .input(readableStream)
-                        .toFormat('mp4')
-                        .on('end', () => resolve())
-                        .toBuffer();
+                    quoted: m
                 });
-                // Envía el video como un mensaje
+            } else {
                 sock.sendMessage(m.chat, {
                     video: {
-                        url: `data:video/mp4;base64,${videoBuffer.toString('base64')}`
+                        url: format.url,
+                        mimetype: 'video/mp4', // Puedes ajustar el tipo MIME según la necesidad
+                        filename: 'video.mp4',
+                        caption: 'Aquí está tu video'
                     },
-                    mimetype: 'video/mp4'
-                }, { quoted: m });
+                    quoted: m
+                });
             }
         } catch (error) {
             console.error('Error:', error);

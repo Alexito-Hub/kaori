@@ -11,10 +11,13 @@ module.exports = {
                 await v.reply('*tiktok <url>*');
                 return;
             }
-            const tiktokUrl = args[0];
-            const response = await fetchJson(`https://star-apis.teamfx.repl.co/api/downloader/tiktok?url=${tiktokUrl}&apikey=StarAPI`);
             
             await sock.sendMessage(m.chat, {react: {text: '🕛',key: m.key,}})
+            const isAudio = args.includes('--audio') || args.includes('-a');
+
+
+            const tiktokUrl = args[0];
+            const response = await fetchJson(`https://star-apis.teamfx.repl.co/api/downloader/tiktok?url=${tiktokUrl}&apikey=StarAPI`);
             
             function roundTime(time) {
                 return Math.round(time);
@@ -53,6 +56,12 @@ module.exports = {
                         ppt: true,
                     }, { quoted: m });
                     await sock.sendMessage(m.chat, {react: {text: '✅',key: m.key,}})
+                } else if (result && isAudio) {
+                    await sock.sendMessage(m.chat, {
+                        audio: {url: result.music.url},
+                        mimetype: 'audio/mp4',
+                        ppt: true
+                    }, {quoted: m})
                 }
             } else {
                 console.log('Error al obtener información');
