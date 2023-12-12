@@ -26,11 +26,17 @@ module.exports = {
             // Obtener el ID del mensaje de confirmación
             const confirmationMsgID = confirmationResponse.key.id;
 
-            // Esperar eventos de nuevos mensajes
-            sock.ev.on('message-new', async (message) => {
-                // Verificar que sea una reacción y que sea al mensaje de confirmación
-                if (message.messageStubType === 14 && message.messageStubParameters && message.messageStubParameters.msgId === confirmationMsgID) {
-                    const userID = message.sender.split('@')[0];
+            // Esperar 30 segundos antes de verificar las reacciones
+            setTimeout(async () => {
+                // Obtener el arreglo de reacciones
+                const reactions = sock.messageReactions[confirmationMsgID]?.reactions || [];
+
+                // Filtrar las reacciones que tienen el emoji 🎫
+                const ticketReactions = reactions.filter(reaction => reaction.emoji === '🎫');
+
+                // Si hay al menos una reacción con 🎫
+                if (ticketReactions.length > 0) {
+                    const userID = ticketReactions[0].jid.split('@')[0];
 
                     const ticket = {
                         user,
@@ -51,7 +57,7 @@ module.exports = {
                     // Guardar los tickets en el archivo
                     fs.writeFileSync(ticketsFile, JSON.stringify(tickets, null, 2));
                 }
-            });
+            }, 30000); // 30 segundos de espera
         } catch (error) {
             console.error('Error:', error);
             sock.sendMessage(m.chat, { text: 'Error al procesar la solicitud de soporte.' });
