@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-require('../../config');
+require('../../config'); // Asegúrate de tener la referencia adecuada al archivo de configuración
 
 const ticketsFile = path.join(__dirname, 'tickets.json');
 let tickets = [];
@@ -15,44 +15,47 @@ module.exports = {
     
     async execute(sock, m, args) {
         try {
-            const isOwner = owner + '@s.whatsapp.net';
             const user = m.sender.split('@')[0];
             const supportMessage = args.join(' ');
 
-            const ticket = {
-                user,
-                message: supportMessage,
-                date: new Date().toLocaleString(),
-                closed: false,
-            };
+            // Crear mensaje de confirmación y esperar reacciones
+            const confirmationResponse = await sock.sendMessage(m.chat, {
+                text: `Está a punto de crear un ticket\n\nRazón: ${supportMessage}\n\nPara continuar reaccione al mensaje con "🎫" o responde al mensaje con "ticket"`,
+            });
 
-            tickets.push(ticket);
+            // Obtener el ID del mensaje de confirmación
+            const confirmationMsgID = confirmationResponse.key.id;
 
-            fs.writeFileSync(ticketsFile, JSON.stringify(tickets, null, 2));
-
-            // Enviar mensaje de confirmación con emoji 🎫
-            const confirmationMessage = `Está a punto de crear un ticket\nRazón: ${supportMessage}\n\nPara continuar reaccione al mensaje con "🎫" o responde al mensaje con ticket`;
-            const confirmationResponse = await sock.sendMessage(m.chat, { text: confirmationMessage, contextInfo: { mentionedJid: [m.sender] } });
-
-            // Agregar reacción al mensaje de confirmación
-            await sock.sendMessage(m.chat, { text: '🎫', contextInfo: { stanzaId: confirmationResponse.stanzaId, mentionedJid: [m.sender] } });
-
-            // Esperar a que los usuarios reaccionen
+            // Esperar a que los usuarios reaccionen al mensaje de confirmación
             const reactionTimeout = 60000; // 60 segundos
-            const reactions = await sock.getReactions(confirmationResponse.key, reactionTimeout);
+            const reactions = await sock.getReactions(confirmationMsgID, reactionTimeout);
 
-            // Verificar si alguien reaccionó con 🎫
+            // Filtrar las reacciones que tienen el emoji 🎫
             const ticketReactions = reactions.filter(reaction => reaction.emoji === '🎫');
 
-            if (ticketReactions.length > 0) {
-                // Enviar mensaje al propietario
-                await sock.sendMessage(isOwner, { text: `Nuevo ticket de soporte de ${user}:\n\n${supportMessage}` });
-                await sock.sendMessage(m.chat, { text: 'Tu mensaje de soporte ha sido enviado. El propietario revisará tu solicitud.' });
-            } else {
-                // Nadie reaccionó, informar al usuario
-                await sock.sendMessage(m.chat, { text: 'Nadie reaccionó al mensaje de confirmación con 🎫. El ticket no ha sido procesado.' });
+            // Procesar las reacciones y crear tickets
+            for (const reaction of ticketReactions) {
+                const userID = reaction.jid;
+
+                const ticket = {
+                    user,
+                    userID,
+                    message: supportMessage,
+                    date: new Date().toLocaleString(),
+                    closed: false,
+                };
+
+                tickets.push(ticket);
+
+                // Enviar mensaje de ticket al propietario del bot
+                await sock.sendMessage(owner + '@s.whatsapp.net', { text: `Nuevo ticket de soporte de ${user}:\n\n${supportMessage}` });
+
+                // Enviar mensaje de confirmación al usuario que reaccionó
+                await sock.sendMessage(userID, { text: 'Tu mensaje de soporte ha sido enviado. El propietario revisará tu solicitud.' });
             }
 
+            // Guardar los tickets en el archivo
+            fs.writeFileSync(ticketsFile, JSON.stringify(tickets, null, 2));
         } catch (error) {
             console.error('Error:', error);
             sock.sendMessage(m.chat, { text: 'Error al procesar la solicitud de soporte.' });
