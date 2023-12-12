@@ -30,7 +30,15 @@ module.exports = {
             if (response && response.result) {
                 const subCommand = args.shift().toLowerCase();
                 const result = response.result;
-                if (result.type === 'video') {
+                if (isAudio) {
+                    await sock.sendMessage(m.chat, {
+                        audio: { url: result.music.url },
+                        mimetype: 'audio/mp4',
+                        ppt: true,
+                        
+                    }, { quoted: m });
+                    await sock.sendMessage(m.chat, { react: { text: '✅', key: m.key } });
+                } else if (result.type === 'video') {
                     await sock.sendMessage(m.chat, {
                         video: { url: result.video.noWatermark },
                         mimetype: 'video/mp4',
@@ -57,15 +65,7 @@ module.exports = {
                     }, { quoted: m });
                     await sock.sendMessage(m.chat, {react: {text: '✅',key: m.key,}})
                 }
-                if (isAudio) {
-                    await sock.sendMessage(m.chat, {
-                        audio: { url: result.music.url },
-                        mimetype: 'audio/mp4',
-                        ppt: true,
-                        
-                    }, { quoted: m });
-                    await sock.sendMessage(m.chat, { react: { text: '✅', key: m.key } });
-                }
+               
                 
             } else {
                 console.log('Error al obtener información');
