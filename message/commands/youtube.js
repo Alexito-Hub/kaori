@@ -15,34 +15,24 @@ module.exports = {
             const isAudio = args.includes('--audio') || args.includes('-a');
 
             const info = await ytdl.getInfo(youtubeUrl);
-            const format = isAudio ? ytdl.chooseFormat(info.formats, { quality: 'highestaudio' }) : ytdl.chooseFormat(info.formats, { quality: 'hd720' });
+            const format = isAudio ? ytdl.chooseFormat(info.formats, { quality: 'highestaudio' }) : ytdl.chooseFormat(info.formats, { quality: 'highest' });
 
             if (!format) {
                 sock.sendMessage(m.chat, { text: 'No se pudo obtener el formato del video o audio.' }, { quoted: m });
                 return;
             }
 
-            const readableStream = ytdl.downloadFromInfo(info, { format });
+            const buffer = await ytdl.downloadFromInfo(info, { format });
 
-            // Puedes adaptar esto según tu necesidad, por ejemplo, guardar el archivo o enviarlo como mensaje
-            if (isAudio) {
-                sock.sendMessage(m.chat, {
-                    audio: {
-                        url: format.url,
-                        mimetype: format.mimeType,
-                        ptt: true
-                    }
-                }, { quoted: m });
-            } else {
-                // Envía el video como un mensaje
-                sock.sendMessage(m.chat, {
-                    video: {
-                        url: format.url,
-                        mimetype: format.mimeType,
-                        filename: 'video.mp4'
-                    }
-                }, { quoted: m });
-            }
+            // Convierte el buffer a base64
+            const base64 = buffer.toString('base64');
+
+            // Envía el video como un mensaje con formato adecuado
+            sock.sendMessage(m.chat, {
+                video: {url: `data:${format.mimeType};base64,${base64}`,},
+                    mimetype: format.mimeType,
+                    caption: isAudio ? 'Audio de YouTube' : 'Video de YouTube'
+            }, { quoted: m });
         } catch (error) {
             console.error('Error:', error);
             sock.sendMessage(m.chat, { text: 'Error al ejecutar el comando' }, { quoted: m });
