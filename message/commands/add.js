@@ -6,7 +6,7 @@ module.exports = {
         try {
             const groupInfo = await sock.groupMetadata(m.chat);
             const isAdmin = groupInfo && groupInfo.participants.some(p => p.id == m.sender && ['admin', 'superadmin'].includes(p.admin));
-
+            const m 
             if (isAdmin) {
                 if (args.length === 0) {
                     sock.sendMessage(m.chat, { text: '*add <número>*' }, { quoted: m });
