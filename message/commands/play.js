@@ -1,57 +1,53 @@
-const ytsr = require('ytsr');
+// Importa la librería necesaria para realizar solicitudes HTTP
 const axios = require('axios');
 
+// Comando play
 module.exports = {
     name: 'play',
-    description: 'Buscar y mostrar información del primer video relacionado con la búsqueda.',
-    aliases: ['p'],
+    description: 'Muestra información sobre el contenido y espera confirmación para descargar en formato MP4 o MP3.',
+    aliases: ['play'],
 
-    async execute(sock, m, args) {
+    async execute(sock, m) {
         try {
-            if (!args[0]) {
-                return sock.sendMessage(m.chat, { text: 'Por favor, proporciona una búsqueda.' });
-            }
+            // Obtiene la URL del video desde el mensaje
+            const searchQuery = m.body.slice(m.body.indexOf(' ') + 1);
 
-            const searchQuery = args.join(' ');
-            const searchResults = await ytsr(searchQuery, { limit: 1 });
+            // Realiza una búsqueda para obtener información del video
+            const searchUrl = `https://star-apis.teamfx.repl.co/api/ytdl/search?query=${encodeURIComponent(searchQuery)}&apikey=StarAPI`;
+            const searchResponse = await axios.get(searchUrl);
 
-            if (searchResults && searchResults.items && searchResults.items.length > 0) {
-                const firstVideo = searchResults.items[0];
-                const videoInfo = `*Título:* ${firstVideo.title}\n*Duración:* ${firstVideo.duration || 'Desconocida'}\n*Visitas:* ${firstVideo.views || 'Desconocido'}\n*Enlace:* ${firstVideo.url}`;
+            // Verifica si se encontraron resultados
+            if (searchResponse.data && searchResponse.data.result && searchResponse.data.result.length > 0) {
+                const videoInfo = searchResponse.data.result[0]; // Tomar el primer resultado
 
-                await sock.sendMessage(m.chat, { text: `Información del Video:\n${videoInfo}`, quoted: m });
+                // Muestra la información del video y espera confirmación para descargar
+                const messageText = `Información del Video:\n\nTítulo: ${videoInfo.title}\nDuración: ${videoInfo.duration}\nVisualizaciones: ${videoInfo.views}\n\n¿Deseas descargar en formato MP4 o MP3?\nResponde con "MP4" o "MP3".`;
+                await sock.sendMessage(m.chat, { text: messageText });
 
-                const confirmationMessage = '¿Quieres descargar el video como MP4 o MP3?\n\n1. MP4\n2. MP3';
-                await sock.sendMessage(m.chat, { text: confirmationMessage });
+                // Espera la respuesta durante un tiempo límite (5 minutos)
+                const response = await sock.receiveMessage(m.key.remoteJid, (msg) => {
+                    return msg.message?.message?.conversation?.toUpperCase() === 'MP4' || msg.message?.message?.conversation?.toUpperCase() === 'MP3';
+                }, 5 * 60 * 1000); // 5 minutos en milisegundos
 
-                const response = await sock.receiveMessage(m.chat);
-                const choice = response.text.toLowerCase();
+                // Verifica la respuesta y realiza la descarga si es válida
+                if (response) {
+                    const format = response.message?.message?.conversation?.toUpperCase();
+                    const downloadUrl = `https://star-apis.teamfx.repl.co/api/downloader/ytplay?url=${videoInfo.url}&format=${format}&apikey=StarAPI`;
 
-                if (choice === '1' || choice === 'mp4') {
-                    await downloadAndSendVideo(sock, m, firstVideo.url, 'video/mp4');
-                } else if (choice === '2' || choice === 'mp3') {
-                    await downloadAndSendVideo(sock, m, firstVideo.url, 'audio/mp3');
+                    // Realiza la descarga y envía el archivo al usuario
+                    const downloadResponse = await axios.get(downloadUrl, { responseType: 'arraybuffer' });
+                    await sock.sendMessage(m.key.remoteJid, { buffer: Buffer.from(downloadResponse.data), mimetype: format === 'MP4' ? 'video/mp4' : 'audio/mp3' }, { quoted: m });
                 } else {
-                    sock.sendMessage(m.chat, { text: 'Opción no válida. La descarga ha sido cancelada.' });
+                    // Si no hay respuesta dentro del tiempo límite, muestra un mensaje indicando la cancelación
+                    await sock.sendMessage(m.chat, { text: 'Tiempo de espera agotado. Descarga cancelada.' });
                 }
             } else {
-                sock.sendMessage(m.chat, { text: 'No se encontraron resultados para la búsqueda.' });
+                // Si no se encontraron resultados, informa al usuario
+                await sock.sendMessage(m.chat, { text: 'No se encontraron resultados para la búsqueda.' });
             }
         } catch (error) {
-            console.error('Error en el comando play:', error);
-            sock.sendMessage(m.chat, { text: 'Se produjo un error al ejecutar el comando play.' });
+            console.error('Error en la ejecución del comando play:', error);
+            await sock.sendMessage(m.chat, { text: 'Se produjo un error al ejecutar el comando play.' });
         }
-    },
-};
-
-async function downloadAndSendVideo(sock, m, videoUrl, mimeType) {
-    try {
-        const downloadUrl = `https://star-apis.teamfx.repl.co/api/downloader/ytplay?url=${encodeURIComponent(videoUrl)}&apikey=StarAPI`;
-
-        await sock.sendMessage(m.chat, { text: 'Descargando el video...', quoted: m });
-        await sock.sendMessage(m.chat, { video: { url: downloadUrl }, mimetype: mimeType, quoted: m });
-    } catch (error) {
-        console.error('Error al descargar y enviar el video:', error);
-        sock.sendMessage(m.chat, { text: 'Se produjo un error al descargar y enviar el video.' });
     }
-}
+};
