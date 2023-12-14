@@ -1,35 +1,36 @@
-const ytdl = require('ytdl-core');
+const ytsr = require('ytsr');
+const axios = require('axios');
 
 module.exports = {
     name: 'play',
-    description: 'Busca y reproduce el primer video de YouTube.',
+    description: 'Buscar y reproducir el primer video relacionado con la búsqueda.',
+    aliases: [],
 
     async execute(sock, m, args) {
         try {
             if (!args[0]) {
-                v.reply('Por favor, proporciona una búsqueda válida.');
-                return;
+                return sock.sendMessage(m.chat, 'Por favor, proporciona una búsqueda.');
             }
 
             const searchQuery = args.join(' ');
-            const searchResult = await ytdl.getBasicInfo(searchQuery, { 'format': 'mp4' });
+            const searchResults = await ytsr(searchQuery, { limit: 1 });
 
-            if (!searchResult) {
-                v.reply('No se encontraron resultados.');
-                return;
+            if (searchResults && searchResults.items && searchResults.items.length > 0) {
+                const firstVideo = searchResults.items[0];
+                const videoUrl = `https://star-apis.teamfx.repl.co/api/downloader/ytplay?url=${encodeURIComponent(firstVideo.url)}&apikey=StarAPI`;
+
+                await sock.sendMessage(m.chat, { 
+                    video: { url: videoUrl },
+                    mimetype: 'video/mp4',
+                    caption: `hecho`
+                    
+                }, { quoted: m });
+            } else {
+                sock.sendMessage(m.chat, 'No se encontraron resultados para la búsqueda.');
             }
-
-            const videoInfo = searchResult.videoDetails;
-            const videoUrl = `https://star-apis.teamfx.repl.co/api/downloader/ytplay?url=${videoInfo.video_url}&apikey=StarAPI`;
-
-            await sock.sendMessage(m.chat, { 
-                video: { url: videoUrl },
-                mimetype: 'video/mp4',
-                caption: `${videoInfo.title}`
-            }, { quoted: m });
         } catch (error) {
             console.error('Error en el comando play:', error);
-            v.reply('Ocurrió un error al ejecutar el comando play.');
+            sock.sendMessage(m.chat, 'Se produjo un error al ejecutar el comando play.');
         }
     },
 };
