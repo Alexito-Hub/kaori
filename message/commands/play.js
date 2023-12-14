@@ -7,7 +7,7 @@ module.exports = {
     async execute(sock, m, args) {
         try {
             if (!args[0]) {
-                sock.sendMessage(m.chat, 'Por favor, proporciona una búsqueda válida.');
+                v.reply('Por favor, proporciona una búsqueda válida.');
                 return;
             }
 
@@ -15,7 +15,7 @@ module.exports = {
             const searchResult = await ytdl.getBasicInfo(searchQuery, { 'format': 'mp4' });
 
             if (!searchResult) {
-                sock.sendMessage(m.chat, 'No se encontraron resultados.');
+                v.reply('No se encontraron resultados.');
                 return;
             }
 
@@ -29,7 +29,7 @@ module.exports = {
             }, { quoted: m });
         } catch (error) {
             console.error('Error en el comando play:', error);
-            sock.sendMessage(m.chat, 'Ocurrió un error al ejecutar el comando play.');
+            v.reply('Ocurrió un error al ejecutar el comando play.');
         }
     },
 };
