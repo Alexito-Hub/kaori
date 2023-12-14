@@ -1,5 +1,4 @@
 const ytdl = require('ytdl-core');
-const fetch = require('node-fetch');
 
 module.exports = {
     name: 'play',
