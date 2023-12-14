@@ -1,7 +1,6 @@
-// Importa la librería necesaria para realizar solicitudes HTTP
+const ytsr = require('ytsr');
 const axios = require('axios');
 
-// Comando play
 module.exports = {
     name: 'play',
     description: 'Muestra información sobre el contenido y espera confirmación para descargar en formato MP4 o MP3.',
@@ -9,16 +8,21 @@ module.exports = {
 
     async execute(sock, m) {
         try {
-            // Obtiene la URL del video desde el mensaje
             const searchQuery = m.body.slice(m.body.indexOf(' ') + 1);
 
-            // Realiza una búsqueda para obtener información del video
-            const searchUrl = `https://star-apis.teamfx.repl.co/api/ytdl/search?query=${encodeURIComponent(searchQuery)}&apikey=StarAPI`;
-            const searchResponse = await axios.get(searchUrl);
+            // Usa ytsr para buscar el video
+            const filters = await ytsr.getFilters(searchQuery);
+            const filter = filters.get('Type').get('Video');
+            const options = {
+                limit: 1,
+                nextpageRef: filter.ref,
+            };
+
+            const searchResults = await ytsr(null, options);
 
             // Verifica si se encontraron resultados
-            if (searchResponse.data && searchResponse.data.result && searchResponse.data.result.length > 0) {
-                const videoInfo = searchResponse.data.result[0]; // Tomar el primer resultado
+            if (searchResults && searchResults.items.length > 0) {
+                const videoInfo = searchResults.items[0];
 
                 // Muestra la información del video y espera confirmación para descargar
                 const messageText = `Información del Video:\n\nTítulo: ${videoInfo.title}\nDuración: ${videoInfo.duration}\nVisualizaciones: ${videoInfo.views}\n\n¿Deseas descargar en formato MP4 o MP3?\nResponde con "MP4" o "MP3".`;
@@ -27,12 +31,12 @@ module.exports = {
                 // Espera la respuesta durante un tiempo límite (5 minutos)
                 const response = await sock.receiveMessage(m.key.remoteJid, (msg) => {
                     return msg.message?.message?.conversation?.toUpperCase() === 'MP4' || msg.message?.message?.conversation?.toUpperCase() === 'MP3';
-                }, 5 * 60 * 1000); // 5 minutos en milisegundos
+                }, 5 * 60 * 1000);
 
                 // Verifica la respuesta y realiza la descarga si es válida
                 if (response) {
                     const format = response.message?.message?.conversation?.toUpperCase();
-                    const downloadUrl = `https://star-apis.teamfx.repl.co/api/downloader/ytplay?url=${videoInfo.url}&format=${format}&apikey=StarAPI`;
+                    const downloadUrl = `https://star-apis.teamfx.repl.co/api/downloader/ytplay?url=${videoInfo.link}&format=${format}&apikey=StarAPI`;
 
                     // Realiza la descarga y envía el archivo al usuario
                     const downloadResponse = await axios.get(downloadUrl, { responseType: 'arraybuffer' });
