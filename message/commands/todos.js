@@ -1,7 +1,7 @@
 const { Presence } = require('@adiwajshing/baileys');
 
 module.exports = {
-    name: 'tag',
+    name: '@todos',
     description: 'Menciona a todos los miembros del grupo.',
     aliases: ['@tag'],
 
