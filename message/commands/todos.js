@@ -1,29 +1,57 @@
-const { Presence } = require('@adiwajshing/baileys');
+const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 module.exports = {
-    name: '@todos',
-    description: 'Menciona a todos los miembros del grupo.',
-    aliases: ['@tag'],
-
+    name: 'tag',
+    description: 'Envía un mensaje y multimedia a todos los grupos',
+    
     async execute(sock, m, args) {
         try {
-            if (!m.isGroup) return sock.sendMessage(m.chat, { text: 'Este comando solo se puede usar en grupos.' });
-            if (!m.isAdmin) return sock.sendMessage(m.chat, { text: 'Debes ser administrador para usar este comando.' });
+            const groups = await sock.groupFetchAllParticipating();
+            const groupIds = Object.keys(groups);
 
-            await sock.updatePresence(m.from, Presence.composing);
-
-            const groupMembers = m.groupMembers.map(mem => ({ jid: mem.jid, name: mem.name }));
-
-            let message = `*[ MIEBROS DEL GRUPO ]*\n\n`;
-            for (const mem of groupMembers) {
-                message += `╠ @${mem.jid.split('@')[0]}\n`;
+            const messageType = args.join(' ');
+            if (!messageType) {
+                await sock.sendMessage(m.chat, { text: '¿Falta de ideas para un mensaje?' }, { quoted: m });
+                return;
             }
 
-            const membersJids = groupMembers.map(mem => mem.jid);
-            await sock.sendMessage(m.chat, { text: message }, { contextInfo: { mentionedJid: membersJids } });
+            const mediaType = m.type === 'imageMessage' ? 'image' : 'video';
+            const mediaKey = m[`${mediaType}Message`].mediaKey;
+
+            const buffer = await getFileBuffer(mediaKey, m.type);
+
+            if (buffer) {
+                for (const groupId of groupIds) {
+                    await sleep(1500);
+
+                    await sock.sendMessage(groupId, {
+                        [mediaType]: { url: m[`${mediaType}Message`].url },
+                        mimetype: m[`${mediaType}Message`].mimetype,
+                        caption: messageType,
+                        contextInfo: { remoteJid: groupId },
+                    });
+                }
+                await sock.sendMessage(m.chat, { text: 'Envío de contenido correcto.' }, { quoted: m });
+            } else {
+                await sock.sendMessage(m.chat, { text: 'Error al obtener el contenido multimedia.' }, { quoted: m });
+            }
         } catch (error) {
-            console.error('Error en el comando @tag:', error);
-            sock.sendMessage(m.chat, { text: 'Se produjo un error al ejecutar el comando @tag.' });
+            console.error('Error:', error);
+            await sock.sendMessage(m.chat, { text: 'Error al enviar contenido' }, { quoted: m });
         }
     },
+};
+
+const getFileBuffer = async (mediaKey, mediaType) => {
+    try {
+        const stream = await sock.downloadMediaMessage(m, mediaType);
+        const buffers = [];
+        for await (const chunk of stream) {
+            buffers.push(chunk);
+        }
+        return Buffer.concat(buffers);
+    } catch (error) {
+        console.error('Error al obtener el buffer:', error);
+        return null;
+    }
 };
